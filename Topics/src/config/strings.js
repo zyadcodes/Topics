@@ -5,4 +5,7 @@ export default {
     ExploreTopicsYouLove: 'Explore\nTopics you love',
     SubscribeToYourFavorites: 'Subscribe\nTo your favorites',
     StartYourOwn: 'Start\nYour own',
+    Next: 'Next',
+    Go: 'Go',
+    Skip: 'Skip'
 }

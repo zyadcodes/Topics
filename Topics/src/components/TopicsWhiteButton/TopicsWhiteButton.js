@@ -5,11 +5,11 @@ import TopicsWhiteButtonStyle from './TopicsWhiteButtonStyle';
 import fontStyles from '../../config/fontStyles';
 
 // Creates the functional component
-const TopicsWhiteButton = ({text, onClick, height, width, fontSize}) => {
+const TopicsWhiteButton = ({text, onPress, height, width, fontSize}) => {
   // Renders the component
   return (
     <TouchableOpacity
-      onClick={onClick}
+      onPress={onPress}
       style={[
         TopicsWhiteButtonStyle.outerView,
         {height, width, borderRadius: height / 2},

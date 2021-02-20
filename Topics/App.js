@@ -3,8 +3,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import IntroScreen from './src/screens/onboardingScreens/IntroScreen/IntroScreen';
-import LaunchScreen from './src/screens/onboardingScreens/LaunchScreen/LaunchScreen'
+import MainStackNavigator from './src/screens/MainStackNavigator'
 
 // Creates the functional component
 const App = (props) => {
@@ -12,7 +11,7 @@ const App = (props) => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <IntroScreen />
+        <MainStackNavigator />
       </NavigationContainer>
     </SafeAreaProvider>
   );

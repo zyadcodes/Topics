@@ -161,7 +161,6 @@
 				FA31A52B008ED6CA9003D089 /* Pods-Topics-tvOSTests.debug.xcconfig */,
 				9A3B433BDA7A65BB39985BD6 /* Pods-Topics-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -487,7 +486,7 @@
 		};
 		D9698F82C006999E30E5BA47 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (

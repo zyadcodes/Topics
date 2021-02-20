@@ -5,11 +5,11 @@ import TopicsBlueButtonStyle from './TopicsBlueButtonStyle';
 import fontStyles from '../../config/fontStyles'
 
 // Creates the functional component
-const TopicsBlueButton = ({text, onClick, height, width, fontSize}) => {
+const TopicsBlueButton = ({text, onPress, height, width, fontSize}) => {
   // Renders the component
   return (
     <TouchableOpacity
-      onClick={onClick}
+      onPress={onPress}
       style={[TopicsBlueButtonStyle.mainButtonStyle, {height, width, borderRadius: height / 2}]}>
       <Text style={[fontSize, fontStyles.white, fontStyles.bold]}>{text}</Text>
     </TouchableOpacity>

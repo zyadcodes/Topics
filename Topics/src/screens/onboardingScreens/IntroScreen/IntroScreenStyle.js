@@ -11,6 +11,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     height: screenHeight,
     width: screenWidth,
+    paddingHorizontal: screenWidth * 0.025,
     backgroundColor: colors.darkBlue,
   },
   titleText: {
@@ -23,6 +24,39 @@ export default StyleSheet.create({
     shadowOpacity: 0.5,
   },
   imageStyle: {
-      height: screenHeight * 0.55
-  }
+    height: screenHeight * 0.55,
+    maxWidth: screenWidth,
+  },
+  buttonContainer: {
+    alignItems: 'center',
+  },
+  onboardingRow: {
+    marginTop: screenHeight * 0.05,
+    flexDirection: 'row',
+    width: screenWidth * 0.9,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  threeDots: {
+    flexDirection: 'row',
+    width: screenWidth * 0.2,
+    justifyContent: 'space-between',
+  },
+  selectedDot: {
+    height: screenHeight * 0.02,
+    width: screenHeight * 0.02,
+    borderRadius: screenHeight * 0.02,
+    backgroundColor: colors.white,
+    borderColor: colors.white,
+    borderWidth: 1,
+  },
+  unselectedDot: {
+    height: screenHeight * 0.02,
+    width: screenHeight * 0.02,
+    borderRadius: screenHeight * 0.02,
+    backgroundColor: colors.darkBlue,
+    borderColor: colors.white,
+    borderWidth: 1,
+  },
 });

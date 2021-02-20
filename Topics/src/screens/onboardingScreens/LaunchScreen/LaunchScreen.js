@@ -9,7 +9,7 @@ import Logo from '../../../assets/Logo.png';
 import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueButton';
 
 // Creates the functional component
-const LaunchScreen = (props) => {
+const LaunchScreen = ({navigation}) => {
   // Creates the animation states
   let currentImagePos = new Animated.ValueXY({
     x: 0,
@@ -69,10 +69,13 @@ const LaunchScreen = (props) => {
         ]}>
         {strings.Topics}
       </Animated.Text>
-      <Animated.View style={[LaunchScreenStyle.buttonContainer, {opacity: currentOpacity}]}>
+      <Animated.View
+        style={[LaunchScreenStyle.buttonContainer, {opacity: currentOpacity}]}>
         <TopicsBlueButton
           text={strings.LetsGo}
-          onClick={() => {}}
+          onPress={() => {
+            navigation.push('IntroScreen');
+          }}
           height={screenHeight * 0.065}
           width={screenWidth * 0.75}
           fontSize={fontStyles.bigFontStyle}
