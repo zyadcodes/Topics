@@ -23,4 +23,16 @@ export default {
     Create: 'Create',
     AlreadyHaveAnAccount: 'Already have an account? ',
     LogIn: 'Log in',
+    Whoops: 'Whoops',
+    Ok: 'Ok',
+    PleaseEnterAValidEmailAddress: 'Please enter a valid email address.',
+    PleaseEnterAValidPhoneNumber: 'Please enter a valid phone number.',
+    PleaseEnterAValidPassword: 'Your password must be greater than 6 characters.',
+    PleaseAcceptTheTermsAndConditions: 'Please accept the terms and conditions.',
+    ThisEmailIsInUse: 'This email is already in use. Please go back and log in.',
+    SaveInfo: 'Save Info',
+    MyAccount: 'My\nAccount',
+    PrivacyPolicy: 'Privacy Policy',
+    SignOut: 'Sign Out'
+
 }

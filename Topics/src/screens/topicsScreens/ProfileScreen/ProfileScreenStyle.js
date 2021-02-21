@@ -7,7 +7,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
   },
   logoStyle: {
     shadowColor: colors.black,
@@ -67,4 +67,59 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  blueSection: {
+    width: screenWidth,
+    height: screenHeight * 0.245,
+    marginBottom: screenHeight * 0.025,
+  },
+  blueSectionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    marginTop: screenHeight * 0.05,
+    width: screenWidth * 0.9,
+  },
+  logoContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: screenHeight * 0.075,
+    height: screenHeight * 0.075,
+    borderRadius: screenHeight * 0.0375,
+    backgroundColor: colors.white,
+  },
+  myAccountLogoStyle: {
+    width: screenHeight * 0.05,
+    height: screenHeight * 0.05,
+  },
+  topicsManagerStyle: {
+    textAlign: 'right',
+  },
+  myAccountStyle: {
+    textAlign: 'left',
+    marginLeft: screenWidth * 0.05,
+    marginTop: screenHeight * 0.015,
+  },
+  linkRow: {
+    flexDirection: 'row',
+    width: screenWidth * 0.9,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: screenHeight * 0.025,
+    height: screenHeight * 0.05
+  },
+  iconStyle: {
+    backgroundColor: colors.lightBlue,
+    height: screenHeight * 0.05,
+    width: screenHeight * 0.05,
+    borderRadius: screenHeight * 0.025,
+    paddingLeft: screenHeight * 0.005,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  signOutButton: {
+    alignSelf: 'flex-end',
+    marginRight: screenWidth * 0.05,
+    marginTop: screenHeight * 0.11
+  }
 });

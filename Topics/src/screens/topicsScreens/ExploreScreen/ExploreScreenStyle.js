@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   blueSection: {
     width: screenWidth,
-    height: screenHeight * 0.275,
+    height: screenHeight * 0.245,
   },
   blueSectionRow: {
     flexDirection: 'row',
@@ -37,8 +37,8 @@ export default StyleSheet.create({
   },
   searchContainer: {
     width: screenWidth * 0.9,
-    height: screenHeight * 0.08,
-    marginTop: screenHeight * 0.035,
+    height: screenHeight * 0.07,
+    marginTop: screenHeight * 0.025,
     borderRadius: screenHeight * 0.025,
     backgroundColor: colors.mediumBlue,
     alignSelf: 'center',

@@ -58,7 +58,7 @@ const MyTopicsScreen = ({navigation}) => {
                 name={'search'}
                 type={'font-awesome'}
                 color={colors.white}
-                size={screenHeight * 0.055}
+                size={screenHeight * 0.045}
               />
             </View>
             <TextInput
