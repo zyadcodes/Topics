@@ -6,6 +6,21 @@ import colors from './colors';
 export default StyleSheet.create({
   /* The font sizes */
 
+  smallFontStyle: {
+    fontFamily: 'HelveticaNeue-Medium',
+    fontSize: RFPercentage(1),
+  },
+
+  subFontStyle: {
+    fontFamily: 'HelveticaNeue-Medium',
+    fontSize: RFPercentage(2),
+  },
+
+  midFontStyle: {
+    fontFamily: 'HelveticaNeue-Medium',
+    fontSize: RFPercentage(2.5),
+  },
+
   mainFontStyle: {
     fontFamily: 'HelveticaNeue-Medium',
     fontSize: RFPercentage(3),

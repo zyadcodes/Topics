@@ -10,6 +10,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.4",
+    "@react-native-community/checkbox": "^0.5.7",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/analytics": "^10.8.0",
     "@react-native-firebase/app": "^10.8.0",
@@ -24,11 +26,14 @@
     "react-native": "0.63.4",
     "react-native-elements": "^3.2.0",
     "react-native-gesture-handler": "^1.10.1",
+    "react-native-linear-gradient": "^2.5.6",
+    "react-native-phone-number-input": "^2.0.0",
     "react-native-reanimated": "^1.13.2",
     "react-native-responsive-fontsize": "^0.5.0",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.17.1",
     "react-native-simple-animations": "^0.2.3",
+    "react-native-spinkit": "^1.5.1",
     "react-native-vector-icons": "^8.0.0"
   },
   "devDependencies": {

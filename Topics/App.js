@@ -1,16 +1,64 @@
 // This is going to be the main file that is run when the app is first launched
 import 'react-native-gesture-handler';
-import React, {useRef} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import {View} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import MainStackNavigator from './src/screens/MainStackNavigator';
 import analytics from '@react-native-firebase/analytics';
+import Spinner from 'react-native-spinkit';
+import colors from './src/config/colors';
+import {sleep} from './src/config/sleep';
 
 // Creates the functional component
 const App = (props) => {
   // Creates references for analytics
   const navigationRef = useRef();
   const routeNameRef = useRef();
+
+  // Sets the loading state as well as the state of the onboarding process
+  const [isFirstAppLaunch, setIsFirstAppLaunch] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  // This is going to perform the logic for whether or not to show the intro onboarding screens
+  useEffect(() => {
+    // Starts the animation for the opacity for the button and the text
+    detectOnboarding();
+  }, []);
+
+  // This is an asynchronous helper function for the useEffect function
+  const detectOnboarding = async () => {
+    const isFirstAppLaunch = await AsyncStorage.getItem('isFirstAppLaunch');
+    if (isFirstAppLaunch === 'false') {
+      setIsFirstAppLaunch(false);
+    } else {
+      setIsFirstAppLaunch(true);
+      await AsyncStorage.setItem('isFirstAppLaunch', 'false');
+    }
+    await sleep(1500);
+    setIsLoading(false);
+  };
+
+  // Renders the loading component
+  if (isLoading === true) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: colors.white,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Spinner
+          isVisible={true}
+          size={100}
+          type={'Bounce'}
+          color={colors.lightBlue}
+        />
+      </View>
+    );
+  }
 
   // Renders the component
   return (
@@ -20,9 +68,9 @@ const App = (props) => {
         onReady={() =>
           (routeNameRef.current = navigationRef.current.getCurrentRoute().name)
         }
-        onStateChange={async () => {
+        onStateChange={async (state) => {
           const previousRouteName = routeNameRef.current;
-          const currentRouteName = getActiveRouteName(state);
+          const currentRouteName = navigationRef.current.getCurrentRoute().name;
 
           if (previousRouteName !== currentRouteName) {
             await analytics().logScreenView({
@@ -31,7 +79,7 @@ const App = (props) => {
             });
           }
         }}>
-        <MainStackNavigator />
+        <MainStackNavigator isFirstAppLaunch={isFirstAppLaunch} />
       </NavigationContainer>
     </SafeAreaProvider>
   );
