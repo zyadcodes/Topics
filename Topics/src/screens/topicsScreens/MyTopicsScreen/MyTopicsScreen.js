@@ -1,5 +1,5 @@
 // This is going to be the tab that contains the subscribed topics for the user
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -17,11 +17,26 @@ import strings from '../../../config/strings';
 import {Icon} from 'react-native-elements';
 import fontStyles from '../../../config/fontStyles';
 import {screenHeight} from '../../../config/dimensions';
+import auth from '@react-native-firebase/auth';
 
 // Creates the functional component
-const MyTopicsScreen = ({navigation}) => {
-  // Stores the state of the searched item
+const MyTopicsScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
+  // Stores the state of the searched item & other various state variables
   const [searchInput, setSearchInput] = useState('');
+  const [screenUserObject, setScreenUserObject] = useState(userObject);
+
+  // This is going to perform the logic for whether or not to show the intro onboarding screens
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
+  // Checks if a user is logged in
+  const onAuthStateChanged = async (user) => {
+    if (!user) {
+      setScreenUserObject('');
+    }
+  };
 
   // Renders the screen
   return (
@@ -40,7 +55,14 @@ const MyTopicsScreen = ({navigation}) => {
                 source={Logo}
               />
             </View>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() => {
+                if (screenUserObject === '') {
+                  navigation.navigate('Profile');
+                } else {
+                  navigation.push('TopicsManager', {isTopicManagerFirstLaunch});
+                }
+              }}>
               <Text
                 style={[
                   fontStyles.mainFontStyle,

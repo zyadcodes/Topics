@@ -1,5 +1,5 @@
 // This is the file that is the navigator for the initial onboarding stack
-import React from 'react'
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import LaunchScreen from './LaunchScreen/LaunchScreen';
 import IntroScreen from './IntroScreen/IntroScreen';
@@ -8,14 +8,18 @@ import IntroScreen from './IntroScreen/IntroScreen';
 const Stack = createStackNavigator();
 
 // Declares the functional component
-const OnboardingStackNav = () => {
+const OnboardingStackNav = ({userObject}) => {
   return (
     <Stack.Navigator
       initialRouteName={'LaunchScreen'}
       headerMode={'none'}
       screenOptions={{gestureEnabled: false}}>
-      <Stack.Screen component={LaunchScreen} name={'LaunchScreen'} />
-      <Stack.Screen component={IntroScreen} name={'IntroScreen'} />
+      <Stack.Screen name={'LaunchScreen'}>
+        {(props) => <LaunchScreen {...props} userObject={userObject} />}
+      </Stack.Screen>
+      <Stack.Screen name={'IntroScreen'}>
+        {(props) => <IntroScreen {...props} userObject={userObject} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

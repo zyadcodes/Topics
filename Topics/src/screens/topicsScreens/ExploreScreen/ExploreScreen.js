@@ -18,11 +18,27 @@ import strings from '../../../config/strings';
 import {Icon} from 'react-native-elements';
 import fontStyles from '../../../config/fontStyles';
 import {screenHeight} from '../../../config/dimensions';
+import auth from '@react-native-firebase/auth';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 // Creates the functional component
-const ExploreScreen = ({navigation}) => {
+const ExploreScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
   // Stores the state of the searched item
   const [searchInput, setSearchInput] = useState('');
+  const [screenUserObject, setScreenUserObject] = useState(userObject);
+
+  // This is going to perform the logic for whether or not to show the intro onboarding screens
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
+  // Checks if a user is logged in
+  const onAuthStateChanged = async (user) => {
+    if (!user) {
+      setScreenUserObject('');
+    }
+  };
 
   // Renders the screen
   return (
@@ -41,7 +57,14 @@ const ExploreScreen = ({navigation}) => {
                 source={Logo}
               />
             </View>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() => {
+                if (screenUserObject === '') {
+                  navigation.navigate('Profile');
+                } else {
+                  navigation.push('TopicsManager', {isTopicManagerFirstLaunch});
+                }
+              }}>
               <Text
                 style={[
                   fontStyles.mainFontStyle,
@@ -77,6 +100,20 @@ const ExploreScreen = ({navigation}) => {
             />
           </View>
         </LinearGradient>
+        <AwesomeAlert
+          show={isLoading}
+          closeOnTouchOutside={false}
+          showCancelButton={false}
+          showConfirmButton={false}
+          customView={
+            <Spinner
+              isVisible={true}
+              size={100}
+              type={'Bounce'}
+              color={colors.lightBlue}
+            />
+          }
+        />
       </View>
     </TouchableWithoutFeedback>
   );

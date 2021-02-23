@@ -14,7 +14,7 @@ import {screenHeight} from '../../config/dimensions';
 const Tab = createBottomTabNavigator();
 
 // Declares the functional component
-const TopicsScreensNav = () => {
+const TopicsScreensNav = ({userObject}) => {
   return (
     <Tab.Navigator
       initialRouteName={strings.MyTopics}
@@ -35,7 +35,6 @@ const TopicsScreensNav = () => {
       }}>
       <Tab.Screen
         name={'My Topics'}
-        component={MyTopicsScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon
@@ -45,11 +44,11 @@ const TopicsScreensNav = () => {
               color={color}
             />
           ),
-        }}
-      />
+        }}>
+        {(props) => <MyTopicsScreen {...props} userObject={userObject} />}
+      </Tab.Screen>
       <Tab.Screen
         name={'Explore'}
-        component={ExploreScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon
@@ -59,11 +58,11 @@ const TopicsScreensNav = () => {
               color={color}
             />
           ),
-        }}
-      />
+        }}>
+        {(props) => <ExploreScreen {...props} userObject={userObject} />}
+      </Tab.Screen>
       <Tab.Screen
         name={'Profile'}
-        component={ProfileScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon
@@ -73,8 +72,9 @@ const TopicsScreensNav = () => {
               color={color}
             />
           ),
-        }}
-      />
+        }}>
+        {(props) => <ProfileScreen {...props} userObject={userObject} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };

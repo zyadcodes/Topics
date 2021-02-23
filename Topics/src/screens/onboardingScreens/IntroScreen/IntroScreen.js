@@ -1,7 +1,7 @@
 // This is going to be the screen that onboards the user by tellin them some basics about the app the first time
 // they open it
 import React, {useRef} from 'react';
-import {View, Text, Image, ScrollView} from 'react-native';
+import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import strings from '../../../config/strings';
 import OnboardingSS1 from '../../../assets/OnboardingSS1.png';
 import OnboardingSS2 from '../../../assets/OnboardingSS2.png';
@@ -10,7 +10,6 @@ import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhite
 import {screenHeight, screenWidth} from '../../../config/dimensions';
 import fontStyles from '../../../config/fontStyles';
 import IntroScreenStyle from './IntroScreenStyle';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 // Creates the functional component
 const IntroScreen = ({navigation}) => {
@@ -124,7 +123,7 @@ const IntroScreen = ({navigation}) => {
         )}
       </View>
       <View style={IntroScreenStyle.onboardingContainer}>
-        {getOnboardingComponent(strings.StartYourOwn, OnboardingSS3, 2)}
+        {getOnboardingComponent(strings.GetDailyMessages, OnboardingSS3, 2)}
       </View>
     </ScrollView>
   );

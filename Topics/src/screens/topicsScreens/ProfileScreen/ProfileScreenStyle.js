@@ -120,6 +120,6 @@ export default StyleSheet.create({
   signOutButton: {
     alignSelf: 'flex-end',
     marginRight: screenWidth * 0.05,
-    marginTop: screenHeight * 0.11
+    marginTop: screenHeight * 0.02
   }
 });

@@ -25,22 +25,32 @@ import CheckBox from '@react-native-community/checkbox';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
 import {sleep} from '../../../config/sleep';
-import {createUser, signOut} from '../../../config/server';
+import {createUser, updateUserInfo, signOut} from '../../../config/server';
 import LinearGradient from 'react-native-linear-gradient';
 
 // Creates the functional component
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
   // The input state variables
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
+  const [screenUserObject, setScreenUserObject] = useState(userObject);
+  const [email, setEmail] = useState(
+    screenUserObject === '' ? '' : screenUserObject.email,
+  );
+  const [phoneNumber, setPhoneNumber] = useState(
+    screenUserObject === '' ? '' : screenUserObject.phoneNumber,
+  );
+  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState(
+    screenUserObject === '' ? '' : screenUserObject.formattedPhoneNumber,
+  );
   const [password, setPassword] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [errorVisible, setErrorVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [countryCode, setCountryCode] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(screenUserObject !== '');
+  const [countryCode, setCountryCode] = useState(
+    screenUserObject === '' ? '' : screenUserObject.countryCode,
+  );
+  const [userInfoSavedSuccess, setUserInfoSavedSuccess] = useState(false);
 
   // The animated variables
   let currentPos = new Animated.ValueXY({
@@ -56,53 +66,55 @@ const ProfileScreen = ({navigation}) => {
 
   // The method which will control the animated values
   useEffect(() => {
-    // Starts the animation for the image positioning
-    Animated.spring(currentPos, {
-      overshootClamping: true,
-      mass: 100,
-      delay: 500,
-      toValue: {
-        x: 0,
-        y: screenHeight * 0.025,
-      },
-      useNativeDriver: false,
-    }).start();
+    if (isLoggedIn === false) {
+      // Starts the animation for the image positioning
+      Animated.spring(currentPos, {
+        overshootClamping: true,
+        mass: 100,
+        delay: 500,
+        toValue: {
+          x: 0,
+          y: screenHeight * 0.025,
+        },
+        useNativeDriver: false,
+      }).start();
 
-    // Starts the animation for the image zoom
-    Animated.timing(currentImageWidth, {
-      toValue: screenWidth * 0.35,
-      duration: 1200,
-      delay: 500,
-      useNativeDriver: false,
-    }).start();
+      // Starts the animation for the image zoom
+      Animated.timing(currentImageWidth, {
+        toValue: screenWidth * 0.35,
+        duration: 1200,
+        delay: 500,
+        useNativeDriver: false,
+      }).start();
 
-    // Starts the animation for the font size
-    Animated.timing(currentTextSize, {
-      toValue: fontStyles.bigFontStyle.fontSize,
-      duration: 1200,
-      delay: 500,
-      useNativeDriver: false,
-    }).start();
+      // Starts the animation for the font size
+      Animated.timing(currentTextSize, {
+        toValue: fontStyles.bigFontStyle.fontSize,
+        duration: 1200,
+        delay: 500,
+        useNativeDriver: false,
+      }).start();
 
-    // Starts the animation for the view opacity
-    Animated.timing(viewOpacity, {
-      toValue: 1,
-      duration: 1000,
-      delay: 1700,
-      useNativeDriver: false,
-    }).start();
+      // Starts the animation for the view opacity
+      Animated.timing(viewOpacity, {
+        toValue: 1,
+        duration: 1000,
+        delay: 1700,
+        useNativeDriver: false,
+      }).start();
+    }
   }, [isLoggedIn]);
 
   // This method is going to validate the input and, if correct, it will send the proper data up
   // to the server. If anything is off, it will show an error message
-  const validateInput = async () => {
-    if (!email.includes('@') || email.length < 5) {
+  const validateSignUpInput = async () => {
+    if (!email.includes('@') || email.trim().length < 5) {
       setErrorMessage(strings.PleaseEnterAValidEmailAddress);
       setErrorVisible(true);
-    } else if (phoneNumber.length === 0) {
+    } else if (phoneNumber.trim().length === 0) {
       setErrorMessage(strings.PleaseEnterAValidPhoneNumber);
       setErrorVisible(true);
-    } else if (password.length <= 6) {
+    } else if (password.trim().length <= 6) {
       setErrorMessage(strings.PleaseEnterAValidPassword);
       setErrorVisible(true);
     } else if (isChecked === false) {
@@ -111,11 +123,11 @@ const ProfileScreen = ({navigation}) => {
     } else {
       setIsLoading(true);
       const result = await createUser(
-        email,
-        formattedPhoneNumber,
-        phoneNumber,
+        email.trim(),
+        formattedPhoneNumber.trim(),
+        phoneNumber.trim(),
         countryCode,
-        password,
+        password.trim(),
       );
       if (result === 1) {
         await sleep(1500);
@@ -123,12 +135,65 @@ const ProfileScreen = ({navigation}) => {
         await sleep(500);
         setErrorMessage(strings.ThisEmailIsInUse);
         setErrorVisible(true);
+      } else if (result === 2) {
+        setErrorMessage(strings.PleaseEnterAValidEmailAddress);
+        setErrorVisible(true);
       } else {
         await sleep(1500);
         setIsLoading(false);
         await sleep(500);
         // Starts the animation to show the new screen
         setIsLoggedIn(true);
+      }
+    }
+  };
+
+  // This method is going to validate the input for the saving of existing profile information
+  const validateSaveInput = async () => {
+    if (
+      email.trim() === screenUserObject.email &&
+      phoneNumber.trim() === screenUserObject.phoneNumber
+    ) {
+      setIsLoading(true);
+      await sleep(1000);
+      setIsLoading(false);
+      await sleep(500);
+      setUserInfoSavedSuccess(true);
+      return;
+    }
+    if (!email.includes('@') || email.trim().length < 5) {
+      setErrorMessage(strings.PleaseEnterAValidEmailAddress);
+      setErrorVisible(true);
+    } else if (phoneNumber.trim().length === 0) {
+      setErrorMessage(strings.PleaseEnterAValidPhoneNumber);
+      setErrorVisible(true);
+    } else {
+      setIsLoading(true);
+      const result = await updateUserInfo(
+        screenUserObject.userID,
+        screenUserObject.email,
+        email.trim(),
+        formattedPhoneNumber.trim(),
+        phoneNumber.trim(),
+        password.trim(),
+      );
+      console.log(result);
+      await sleep(1000);
+      setIsLoading(false);
+      await sleep(500);
+      if (result === 1) {
+        setErrorMessage(strings.ThisEmailIsInUse);
+        setErrorVisible(true);
+      } else if (result === 2) {
+        setErrorMessage(strings.PleaseEnterAValidEmailAddress);
+        setErrorVisible(true);
+      } else if (result === -1) {
+        setErrorMessage(strings.YourPasswordIsIncorrect);
+        setErrorVisible(true);
+      } else {
+        setPassword('');
+        setScreenUserObject(result);
+        setUserInfoSavedSuccess(true);
       }
     }
   };
@@ -155,7 +220,12 @@ const ProfileScreen = ({navigation}) => {
                     source={Logo}
                   />
                 </View>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.push('TopicsManager', {
+                      isTopicManagerFirstLaunch,
+                    });
+                  }}>
                   <Text
                     style={[
                       fontStyles.mainFontStyle,
@@ -222,9 +292,36 @@ const ProfileScreen = ({navigation}) => {
                 }}
               />
             </View>
+            <View style={ProfileScreenStyle.inputContainer}>
+              <Icon
+                color={colors.gray}
+                type={'font-awesome'}
+                name={'lock'}
+                size={screenHeight * 0.05}
+              />
+              <TextInput
+                value={password}
+                autoCapitalize={'none'}
+                autoCompleteType={'password'}
+                autoCorrect={false}
+                textContentType={'password'}
+                returnKeyType={'done'}
+                onChangeText={(newText) => setPassword(newText)}
+                placeholder={strings.PasswordDotDotDot}
+                placeholderTextColor={colors.gray}
+                style={[
+                  fontStyles.gray,
+                  fontStyles.subFontStyle,
+                  ProfileScreenStyle.textInput,
+                ]}
+                secureTextEntry={true}
+              />
+            </View>
             <TopicsBlueButton
               text={strings.SaveInfo}
-              onPress={() => {}}
+              onPress={() => {
+                validateSaveInput();
+              }}
               height={screenHeight * 0.065}
               width={screenWidth * 0.75}
               fontSize={fontStyles.bigFontStyle}
@@ -260,6 +357,10 @@ const ProfileScreen = ({navigation}) => {
                 text={strings.SignOut}
                 onPress={async () => {
                   signOut();
+                  setScreenUserObject('');
+                  setEmail('');
+                  setFormattedPhoneNumber('');
+                  setPhoneNumber('');
                   setIsLoading(true);
                   await sleep(1500);
                   setIsLoading(false);
@@ -284,6 +385,62 @@ const ProfileScreen = ({navigation}) => {
                   color={colors.lightBlue}
                 />
               }
+            />
+            <AwesomeAlert
+              show={errorVisible}
+              title={strings.Whoops}
+              message={errorMessage}
+              closeOnTouchOutside={true}
+              showCancelButton={false}
+              showConfirmButton={true}
+              titleStyle={[
+                fontStyles.mainFontStyle,
+                fontStyles.gray,
+                {textAlign: 'center'},
+              ]}
+              messageStyle={[
+                fontStyles.subFontStyle,
+                fontStyles.gray,
+                {textAlign: 'center'},
+              ]}
+              confirmButtonTextStyle={[
+                fontStyles.subFontStyle,
+                fontStyles.white,
+                {textAlign: 'center'},
+              ]}
+              confirmText={strings.Ok}
+              confirmButtonColor={colors.darkBlue}
+              onConfirmPressed={() => {
+                setErrorVisible(false);
+              }}
+            />
+            <AwesomeAlert
+              show={userInfoSavedSuccess}
+              title={strings.Success}
+              message={strings.YourInfoHasBeenSaved}
+              closeOnTouchOutside={true}
+              showCancelButton={false}
+              showConfirmButton={true}
+              titleStyle={[
+                fontStyles.mainFontStyle,
+                fontStyles.gray,
+                {textAlign: 'center'},
+              ]}
+              messageStyle={[
+                fontStyles.subFontStyle,
+                fontStyles.gray,
+                {textAlign: 'center'},
+              ]}
+              confirmButtonTextStyle={[
+                fontStyles.subFontStyle,
+                fontStyles.white,
+                {textAlign: 'center'},
+              ]}
+              confirmText={strings.Ok}
+              confirmButtonColor={colors.darkBlue}
+              onConfirmPressed={() => {
+                setUserInfoSavedSuccess(false);
+              }}
             />
           </View>
         </TouchableWithoutFeedback>
@@ -424,7 +581,7 @@ const ProfileScreen = ({navigation}) => {
               <TopicsBlueButton
                 text={strings.Create}
                 onPress={() => {
-                  validateInput();
+                  validateSignUpInput();
                 }}
                 height={screenHeight * 0.065}
                 width={screenWidth * 0.75}
@@ -435,7 +592,10 @@ const ProfileScreen = ({navigation}) => {
               <Text style={[fontStyles.midFontStyle, fontStyles.black]}>
                 {strings.AlreadyHaveAnAccount}
               </Text>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.push('LogInScreen');
+                }}>
                 <Text style={[fontStyles.midFontStyle, fontStyles.lightBlue]}>
                   {strings.LogIn}
                 </Text>
