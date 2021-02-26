@@ -29,9 +29,10 @@ import {createUser, updateUserInfo, signOut} from '../../../config/server';
 import LinearGradient from 'react-native-linear-gradient';
 import {getUserByID} from '../../../config/server';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Creates the functional component
-const ProfileScreen = ({navigation, isTopicManagerFirstLaunch}) => {
+const ProfileScreen = ({navigation}) => {
   // The input state variables
   const [userObject, setUserObject] = useState('');
   const [email, setEmail] = useState('');
@@ -72,6 +73,7 @@ const ProfileScreen = ({navigation, isTopicManagerFirstLaunch}) => {
   const onAuthStateChanged = async (user) => {
     if (!user) {
       setUserObject('');
+
       await sleep(500);
       setIsScreenLoading(false);
       setIsLoggedIn(false);
@@ -276,10 +278,14 @@ const ProfileScreen = ({navigation, isTopicManagerFirstLaunch}) => {
                   />
                 </View>
                 <TouchableOpacity
-                  onPress={() => {
+                  onPress={async () => {
+                    const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
+                      'isTopicManagerFirstLaunch',
+                    );
+                   
                     navigation.push('TopicsManager', {
-                      isTopicManagerFirstLaunch,
-                      userObject,
+                      isTopicManagerFirstLaunch: isTopicManagerFirstLaunch === 'false' ? false : true,
+                      userID: userObject.userID,
                     });
                   }}>
                   <Text

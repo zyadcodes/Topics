@@ -204,7 +204,6 @@ const getTopicByID = async (topicID) => {
     ) {
       return -1;
     } else {
-      console.log(error.message);
     }
   }
 };

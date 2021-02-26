@@ -13,7 +13,6 @@ const Stack = createStackNavigator();
 // Declares the functional component
 const MainStackNavigator = ({
   isFirstAppLaunch,
-  isTopicManagerFirstLaunch,
 }) => {
   return (
     <Stack.Navigator
@@ -26,7 +25,6 @@ const MainStackNavigator = ({
         {(props) => (
           <OnboardingStackNav
             {...props}
-            isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
           />
         )}
       </Stack.Screen>
@@ -34,7 +32,6 @@ const MainStackNavigator = ({
         {(props) => (
           <TopicsScreensNav
             {...props}
-            isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
           />
         )}
       </Stack.Screen>
@@ -42,7 +39,6 @@ const MainStackNavigator = ({
         {(props) => (
           <TopicsManagerStackNav
             {...props}
-            isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
           />
         )}
       </Stack.Screen>
@@ -50,7 +46,6 @@ const MainStackNavigator = ({
         {(props) => (
           <LogInScreen
             {...props}
-            isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
           />
         )}
       </Stack.Screen>
@@ -58,7 +53,6 @@ const MainStackNavigator = ({
         {(props) => (
           <ForgotPasswordScreen
             {...props}
-            isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
           />
         )}
       </Stack.Screen>

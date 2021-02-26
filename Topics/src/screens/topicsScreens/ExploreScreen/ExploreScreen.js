@@ -22,11 +22,11 @@ import auth from '@react-native-firebase/auth';
 import {getUserByID} from '../../../config/server';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {sleep} from '../../../config/sleep';
 
 // Creates the functional component
-const ExploreScreen = ({navigation, isTopicManagerFirstLaunch}) => {
+const ExploreScreen = ({navigation}) => {
   // Stores the state of the searched item
   const [searchInput, setSearchInput] = useState('');
   const [userObject, setUserObject] = useState('');
@@ -98,13 +98,18 @@ const ExploreScreen = ({navigation, isTopicManagerFirstLaunch}) => {
               />
             </View>
             <TouchableOpacity
-              onPress={() => {
+              onPress={async () => {
                 if (userObject === '') {
                   navigation.navigate('Profile');
                 } else {
+                  const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
+                    'isTopicManagerFirstLaunch',
+                  );
+
                   navigation.push('TopicsManager', {
-                    isTopicManagerFirstLaunch,
-                    userObject,
+                    isTopicManagerFirstLaunch:
+                      isTopicManagerFirstLaunch === 'false' ? false : true,
+                    userID: userObject.userID,
                   });
                 }
               }}>

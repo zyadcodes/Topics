@@ -45,7 +45,11 @@ const TopicsScreensNav = () => {
             />
           ),
         }}>
-        {(props) => <MyTopicsScreen {...props} />}
+        {(props) => (
+          <MyTopicsScreen
+            {...props}
+          />
+        )}
       </Tab.Screen>
       <Tab.Screen
         name={'Explore'}
@@ -59,7 +63,11 @@ const TopicsScreensNav = () => {
             />
           ),
         }}>
-        {(props) => <ExploreScreen {...props} />}
+        {(props) => (
+          <ExploreScreen
+            {...props}
+          />
+        )}
       </Tab.Screen>
       <Tab.Screen
         name={'Profile'}
@@ -73,7 +81,11 @@ const TopicsScreensNav = () => {
             />
           ),
         }}>
-        {(props) => <ProfileScreen {...props} />}
+        {(props) => (
+          <ProfileScreen
+            {...props}
+          />
+        )}
       </Tab.Screen>
     </Tab.Navigator>
   );

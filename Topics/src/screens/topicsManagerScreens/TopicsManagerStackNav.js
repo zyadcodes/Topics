@@ -9,11 +9,11 @@ import MyTopicsManagerScreen from './MyTopicsManagerScreen/MyTopicsManagerScreen
 const Stack = createStackNavigator();
 
 // Declares the functional component
-const OnboardingStackNav = ({isTopicManagerFirstLaunch, route}) => {
+const OnboardingStackNav = ({route}) => {
   return (
     <Stack.Navigator
       initialRouteName={
-        isTopicManagerFirstLaunch === true
+        route.params.isTopicManagerFirstLaunch === true
           ? 'TopicsManageOnboard'
           : 'MyTopicsManagerScreen'
       }

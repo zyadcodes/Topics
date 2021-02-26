@@ -19,9 +19,6 @@ const App = (props) => {
 
   // Sets the loading state as well as the state of the onboarding process as well as the auth state
   const [isFirstAppLaunch, setIsFirstAppLaunch] = useState('');
-  const [isTopicManagerFirstLaunch, setIsTopicManagerFirstLaunch] = useState(
-    '',
-  );
   const [isLoading, setIsLoading] = useState(true);
   // This is going to perform the logic for whether or not to show the intro onboarding screens
   useEffect(() => {
@@ -31,20 +28,14 @@ const App = (props) => {
   // Checks if a user is logged in
   const fetchInitialValues = async () => {
     const isFirstAppLaunch = await AsyncStorage.getItem('isFirstAppLaunch');
-    const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
-      'isTopicManagerFirstLaunch',
-    );
+    
     if (isFirstAppLaunch === 'false') {
       setIsFirstAppLaunch(false);
     } else {
       setIsFirstAppLaunch(true);
       await AsyncStorage.setItem('isFirstAppLaunch', 'false');
     }
-    if (isTopicManagerFirstLaunch === 'false') {
-      setIsTopicManagerFirstLaunch(false);
-    } else {
-      setIsTopicManagerFirstLaunch(true);
-    }
+   
     await sleep(1500);
     setIsLoading(false);
   };
@@ -90,7 +81,6 @@ const App = (props) => {
         }}>
         <MainStackNavigator
           isFirstAppLaunch={isFirstAppLaunch}
-          isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
         />
       </NavigationContainer>
     </SafeAreaProvider>

@@ -23,7 +23,7 @@ import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueBut
 import Spinner from 'react-native-spinkit';
 import {sleep} from '../../../config/sleep';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import {getTopicByID} from '../../../config/server';
+import {getTopicByID, getUserByID} from '../../../config/server';
 
 // Creates the functional component
 const MyTopicsManagerScreen = ({navigation, route}) => {
@@ -31,7 +31,7 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
   const [searchInput, setSearchInput] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [userTopics, setUserTopics] = useState([]);
-  const [userObject, setUserObject] = useState(route.params.userObject)
+  const [userObject, setUserObject] = useState('');
 
   // The useEffect method will fetch the user's created topic object if there are any and store them as an
   // array
@@ -41,17 +41,18 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
 
   // Helper method for the useEffect method
   const setInitialUserState = async () => {
-    console.log(userObject);
-    if (userObject.createdTopics.length === 0) {
+    const newUserObject = await getUserByID(route.params.userID);
+    if (newUserObject.createdTopics.length === 0) {
       await sleep(500);
       setIsLoading(false);
     } else {
       // One line solution to fetch all promises
       const allUserTopicObjects = await Promise.all(
-        userObject.createdTopics.map((eachTopicID) =>
+        newUserObject.createdTopics.map((eachTopicID) =>
           getTopicByID(eachTopicID),
         ),
       );
+      setUserObject(newUserObject);
       setUserTopics(allUserTopicObjects);
       await sleep(500);
       setIsLoading(false);
