@@ -21,7 +21,7 @@ import {screenHeight, screenWidth} from '../../../config/dimensions';
 import LogInScreenStyle from './LogInScreenStyle';
 import colors from '../../../config/colors';
 import Logo from '../../../assets/Logo.png';
-import {logIn, getUserByID} from '../../../config/server';
+import {logIn} from '../../../config/server';
 
 // Creates the functional component
 const LogInScreen = ({navigation, isTopicManagerFirstLaunch}) => {
@@ -47,11 +47,9 @@ const LogInScreen = ({navigation, isTopicManagerFirstLaunch}) => {
       await sleep(500);
       setIsErrorVisible(true);
     } else {
-      // Navigates back to the main screen after user object is fetched
-      const userObject = await getUserByID(userID);
       setIsLoading(false);
       await sleep(500);
-      navigation.push('TopicsScreens', {userObject, isTopicManagerFirstLaunch});
+      navigation.push('TopicsScreens', {isTopicManagerFirstLaunch});
     }
   };
 

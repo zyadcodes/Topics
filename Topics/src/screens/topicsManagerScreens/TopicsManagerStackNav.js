@@ -3,26 +3,30 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import TopicsManagerOnboard from './TopicsManagerOnboard/TopicsManagerOnboard';
 import CreateTopicScreen from './CreateTopicScreen/CreateTopicScreen';
+import MyTopicsManagerScreen from './MyTopicsManagerScreen/MyTopicsManagerScreen';
 
 // Creates the navigator
 const Stack = createStackNavigator();
 
 // Declares the functional component
-const OnboardingStackNav = ({userObject, isTopicManagerFirstLaunch}) => {
+const OnboardingStackNav = ({isTopicManagerFirstLaunch, route}) => {
   return (
     <Stack.Navigator
       initialRouteName={
         isTopicManagerFirstLaunch === true
           ? 'TopicsManageOnboard'
-          : 'CreateTopicScreen'
+          : 'MyTopicsManagerScreen'
       }
       headerMode={'none'}
       screenOptions={{gestureEnabled: false}}>
       <Stack.Screen name={'TopicsManageOnboard'}>
-        {(props) => <TopicsManagerOnboard {...props} userObject={userObject} />}
+        {(props) => <TopicsManagerOnboard {...props} route={route} />}
       </Stack.Screen>
       <Stack.Screen name={'CreateTopicScreen'}>
-        {(props) => <CreateTopicScreen {...props} userObject={userObject} />}
+        {(props) => <CreateTopicScreen {...props} route={route} />}
+      </Stack.Screen>
+      <Stack.Screen name={'MyTopicsManagerScreen'}>
+        {(props) => <MyTopicsManagerScreen {...props} route={route} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

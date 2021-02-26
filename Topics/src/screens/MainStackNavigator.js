@@ -14,7 +14,6 @@ const Stack = createStackNavigator();
 const MainStackNavigator = ({
   isFirstAppLaunch,
   isTopicManagerFirstLaunch,
-  userObject,
 }) => {
   return (
     <Stack.Navigator
@@ -27,7 +26,6 @@ const MainStackNavigator = ({
         {(props) => (
           <OnboardingStackNav
             {...props}
-            userObject={userObject}
             isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
           />
         )}
@@ -36,7 +34,6 @@ const MainStackNavigator = ({
         {(props) => (
           <TopicsScreensNav
             {...props}
-            userObject={userObject}
             isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
           />
         )}
@@ -45,7 +42,6 @@ const MainStackNavigator = ({
         {(props) => (
           <TopicsManagerStackNav
             {...props}
-            userObject={userObject}
             isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
           />
         )}
@@ -54,7 +50,6 @@ const MainStackNavigator = ({
         {(props) => (
           <LogInScreen
             {...props}
-            userObject={userObject}
             isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
           />
         )}
@@ -63,7 +58,6 @@ const MainStackNavigator = ({
         {(props) => (
           <ForgotPasswordScreen
             {...props}
-            userObject={userObject}
             isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
           />
         )}

@@ -52,5 +52,8 @@ export default {
     TopicDescription: 'Topic description...',
     CreateTopic: 'Create Topic',
     AddTag: 'Add tag',
+    PleaseEnterTopicInfo: 'Please enter a topic name & description.',
+    PleaseEnterTopicImages: 'Please upload images for your topic.',
+    CreateNewTopic: 'Create\nNew Topic',
 
 }

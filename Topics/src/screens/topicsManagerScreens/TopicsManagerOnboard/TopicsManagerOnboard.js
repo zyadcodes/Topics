@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TopicsManagerOnboardStyle from './TopicsManagerOnboardStyle';
 
 // Creates the functional component
-const TopicsManagerOnboard = ({navigation, userObject}) => {
+const TopicsManagerOnboard = ({navigation, route}) => {
   let position = new Animated.ValueXY({
     x: 0,
     y: screenHeight * 0.1,
@@ -67,7 +67,11 @@ const TopicsManagerOnboard = ({navigation, userObject}) => {
         />
         <View style={TopicsManagerOnboardStyle.buttonContainer}>
           <TopicsWhiteButton
-            onPress={() => {navigation.push('CreateTopicScreen', {userObject})}}
+            onPress={() => {
+              navigation.push('CreateTopicScreen', {
+                userObject: route.params.userObject,
+              });
+            }}
             height={screenHeight * 0.065}
             width={screenWidth * 0.55}
             text={strings.LetsGo}

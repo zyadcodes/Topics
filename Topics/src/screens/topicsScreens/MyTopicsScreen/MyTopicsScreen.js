@@ -18,14 +18,18 @@ import {Icon} from 'react-native-elements';
 import fontStyles from '../../../config/fontStyles';
 import {screenHeight} from '../../../config/dimensions';
 import auth from '@react-native-firebase/auth';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import Spinner from 'react-native-spinkit';
+import {getUserByID} from '../../../config/server';
+import {sleep} from '../../../config/sleep';
 
 // Creates the functional component
-const MyTopicsScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
+const MyTopicsScreen = ({navigation, isTopicManagerFirstLaunch}) => {
   // Stores the state of the searched item & other various state variables
   const [searchInput, setSearchInput] = useState('');
-  const [screenUserObject, setScreenUserObject] = useState(userObject);
+  const [userObject, setUserObject] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // This is going to perform the logic for whether or not to show the intro onboarding screens
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber;
@@ -34,9 +38,44 @@ const MyTopicsScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => 
   // Checks if a user is logged in
   const onAuthStateChanged = async (user) => {
     if (!user) {
-      setScreenUserObject('');
+      setUserObject('');
+      await sleep(500);
+      setIsLoading(false);
+    } else {
+      fetchUser(user.uid);
     }
   };
+
+  // Fetches the sets the userID
+  const fetchUser = async (userID) => {
+    const newUserObject = await getUserByID(userID);
+    setUserObject(newUserObject);
+    await sleep(500);
+    setIsLoading(false);
+  };
+
+  if (isLoading === true) {
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={MyTopicsScreenStyle.container}>
+          <AwesomeAlert
+            show={isLoading}
+            closeOnTouchOutside={false}
+            showCancelButton={false}
+            showConfirmButton={false}
+            customView={
+              <Spinner
+                isVisible={true}
+                size={100}
+                type={'Bounce'}
+                color={colors.lightBlue}
+              />
+            }
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
 
   // Renders the screen
   return (
@@ -57,10 +96,13 @@ const MyTopicsScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => 
             </View>
             <TouchableOpacity
               onPress={() => {
-                if (screenUserObject === '') {
+                if (userObject === '') {
                   navigation.navigate('Profile');
                 } else {
-                  navigation.push('TopicsManager', {isTopicManagerFirstLaunch});
+                  navigation.push('TopicsManager', {
+                    isTopicManagerFirstLaunch,
+                    userObject,
+                  });
                 }
               }}>
               <Text

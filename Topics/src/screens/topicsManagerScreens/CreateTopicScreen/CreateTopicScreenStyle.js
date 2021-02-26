@@ -20,18 +20,26 @@ export default StyleSheet.create({
     position: 'absolute',
     left: screenWidth * 0.05,
     top: screenHeight * 0.075,
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: 3,
+    },
+    shadowOpacity: 0.5,
   },
   coverPictureContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     width: screenWidth,
-    paddingTop: screenHeight * 0.05,
     height: screenHeight * 0.26,
     shadowColor: colors.black,
     shadowOffset: {
       height: 3,
     },
     shadowOpacity: 0.5,
+  },
+  coverPicture: {
+    width: screenWidth,
+    height: screenHeight * 0.26,
   },
   grayBackground: {
     backgroundColor: colors.lightGray,
@@ -55,6 +63,11 @@ export default StyleSheet.create({
       height: 3,
     },
     shadowOpacity: 0.5,
+  },
+  profPicture: {
+    width: screenHeight * 0.12,
+    borderRadius: screenHeight * 0.06,
+    height: screenHeight * 0.12,
   },
   topicNameInput: {
     width: screenWidth * 0.5,
@@ -95,6 +108,6 @@ export default StyleSheet.create({
     paddingBottom: screenHeight * 0.01,
   },
   blueButtonContainer: {
-    marginTop: screenHeight * 0.15
+    marginTop: screenHeight * 0.15,
   },
 });

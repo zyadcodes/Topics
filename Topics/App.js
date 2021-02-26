@@ -10,8 +10,6 @@ import analytics from '@react-native-firebase/analytics';
 import Spinner from 'react-native-spinkit';
 import colors from './src/config/colors';
 import {sleep} from './src/config/sleep';
-import auth from '@react-native-firebase/auth';
-import {getUserByID} from './src/config/server';
 
 // Creates the functional component
 const App = (props) => {
@@ -25,41 +23,30 @@ const App = (props) => {
     '',
   );
   const [isLoading, setIsLoading] = useState(true);
-  const [userObject, setUserObject] = useState('');
-  const [authChecked, setAuthChecked] = useState(false);
-
   // This is going to perform the logic for whether or not to show the intro onboarding screens
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
+    fetchInitialValues();
   }, []);
 
   // Checks if a user is logged in
-  const onAuthStateChanged = async (user) => {
-    if (authChecked === false) {
-      if (user) {
-        const userObj = await getUserByID(user.uid);
-        setUserObject(userObj);
-      }
-      setAuthChecked(true);
-      const isFirstAppLaunch = await AsyncStorage.getItem('isFirstAppLaunch');
-      const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
-        'isTopicManagerFirstLaunch',
-      );
-      if (isFirstAppLaunch === 'false') {
-        setIsFirstAppLaunch(false);
-      } else {
-        setIsFirstAppLaunch(true);
-        await AsyncStorage.setItem('isFirstAppLaunch', 'false');
-      }
-      if (isTopicManagerFirstLaunch === 'false') {
-        setIsTopicManagerFirstLaunch(false);
-      } else {
-        setIsTopicManagerFirstLaunch(true);
-      }
-      await sleep(1500);
-      setIsLoading(false);
+  const fetchInitialValues = async () => {
+    const isFirstAppLaunch = await AsyncStorage.getItem('isFirstAppLaunch');
+    const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
+      'isTopicManagerFirstLaunch',
+    );
+    if (isFirstAppLaunch === 'false') {
+      setIsFirstAppLaunch(false);
+    } else {
+      setIsFirstAppLaunch(true);
+      await AsyncStorage.setItem('isFirstAppLaunch', 'false');
     }
+    if (isTopicManagerFirstLaunch === 'false') {
+      setIsTopicManagerFirstLaunch(false);
+    } else {
+      setIsTopicManagerFirstLaunch(true);
+    }
+    await sleep(1500);
+    setIsLoading(false);
   };
 
   // Renders the loading component
@@ -104,7 +91,6 @@ const App = (props) => {
         <MainStackNavigator
           isFirstAppLaunch={isFirstAppLaunch}
           isTopicManagerFirstLaunch={isTopicManagerFirstLaunch}
-          userObject={userObject}
         />
       </NavigationContainer>
     </SafeAreaProvider>

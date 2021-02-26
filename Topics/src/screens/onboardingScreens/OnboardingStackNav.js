@@ -8,17 +8,17 @@ import IntroScreen from './IntroScreen/IntroScreen';
 const Stack = createStackNavigator();
 
 // Declares the functional component
-const OnboardingStackNav = ({userObject}) => {
+const OnboardingStackNav = () => {
   return (
     <Stack.Navigator
       initialRouteName={'LaunchScreen'}
       headerMode={'none'}
       screenOptions={{gestureEnabled: false}}>
       <Stack.Screen name={'LaunchScreen'}>
-        {(props) => <LaunchScreen {...props} userObject={userObject} />}
+        {(props) => <LaunchScreen {...props}  />}
       </Stack.Screen>
       <Stack.Screen name={'IntroScreen'}>
-        {(props) => <IntroScreen {...props} userObject={userObject} />}
+        {(props) => <IntroScreen {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

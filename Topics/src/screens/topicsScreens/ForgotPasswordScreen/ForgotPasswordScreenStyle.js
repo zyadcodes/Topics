@@ -19,6 +19,11 @@ export default StyleSheet.create({
     borderRadius: screenHeight * 0.025,
     paddingRight: screenHeight * 0.005,
     zIndex: 1,
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: 3,
+    },
+    shadowOpacity: 0.5,
   },
   textContainer: {
     shadowColor: colors.black,

@@ -18,7 +18,12 @@ export default StyleSheet.create({
     width: screenHeight * 0.05,
     borderRadius: screenHeight * 0.025,
     paddingRight: screenHeight * 0.005,
-    zIndex: 1
+    zIndex: 1,
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: 3,
+    },
+    shadowOpacity: 0.5,
   },
   textContainer: {
     shadowColor: colors.black,
@@ -59,9 +64,9 @@ export default StyleSheet.create({
     marginLeft: screenWidth * 0.05,
   },
   forgotPasswordStyle: {
-      textAlign: 'center'
+    textAlign: 'center',
   },
   buttonContainer: {
-      marginTop: screenHeight * 0.05
-  }
+    marginTop: screenHeight * 0.05,
+  },
 });

@@ -1,6 +1,8 @@
 // This is going to export all named functions that are going to interact with the Cloud
-import auth from '@react-native-firebase/auth';
+import auth, {firebase} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
+import imageToBase64 from 'react-native-image-base64';
 
 // This function is going to take in some information about a user and is going to send their information
 // up to Firebase Auth and store it in Firestore
@@ -22,6 +24,8 @@ const createUser = async (
       formattedPhoneNumber,
       phoneNumber,
       countryCode,
+      createdTopics: [],
+      subscribedTopics: [],
     });
 
     await auth().signInWithEmailAndPassword(email, password);
@@ -65,7 +69,6 @@ const updateUserInfo = async (
     ).data();
     return userObject;
   } catch (error) {
-    console.log(error.message);
     if (
       error.message ===
       '[auth/email-already-in-use] The email address is already in use by another account.'
@@ -111,6 +114,101 @@ const getUserByID = async (id) => {
   return user.data();
 };
 
+// This method is going to take in topic information and upload it to both Firestore
+// and Storage. It will use the topicID to link the storage with the Firestore together
+const createTopic = async (
+  topicName,
+  topicDescription,
+  topicCoverImage,
+  topicProfileImage,
+  tags,
+  userID,
+) => {
+  // Creates the document topic
+  const topic = await firestore().collection('Topics').add({
+    topicName,
+    topicDescription,
+    userID,
+    tags,
+    subscribers: 0,
+  });
+
+  // Creates promises to speed up the process
+  const firestorePromise = firestore()
+    .collection('Users')
+    .doc(userID)
+    .update({
+      createdTopics: firestore.FieldValue.arrayUnion(topic.id),
+    });
+
+  const topicIDPromise = topic.update({
+    topicID: topic.id,
+  });
+
+  const storagePromiseCover = storage()
+    .ref()
+    .child('topicsCoverImages/' + topic.id)
+    .putFile(topicCoverImage);
+  const storagePromiseProfile = storage()
+    .ref()
+    .child('topicsProfileImages/' + topic.id)
+    .putFile(topicProfileImage);
+
+  await Promise.all([
+    firestorePromise,
+    topicIDPromise,
+    storagePromiseCover,
+    storagePromiseProfile,
+  ]);
+
+  return 0;
+};
+
+// This is going to fetch a topic by ID by getting the document as well as the profile images for the topic, combining
+// them into one object, and returning it. If the topic doesn't exist, returns -1
+const getTopicByID = async (topicID) => {
+  // Constructs the promises
+  const firestorePromise = firestore().collection('Topics').doc(topicID).get();
+  const storageProfilePromise = storage()
+    .ref()
+    .child('topicsProfileImages/' + topicID)
+    .getDownloadURL();
+  const storageCoverPromise = storage()
+    .ref()
+    .child('topicsCoverImages/' + topicID)
+    .getDownloadURL();
+
+  try {
+    const results = await Promise.all([
+      firestorePromise,
+      storageProfilePromise,
+      storageCoverPromise,
+    ]);
+
+    // Converts the images to base64 for simpler front end processing
+    const images = await Promise.all([
+      imageToBase64.getBase64String(results[1]),
+      imageToBase64.getBase64String(results[2]),
+    ]);
+
+    return {
+      ...results[0].data(),
+      profileImage: images[0],
+      coverImage: images[1],
+    };
+  } catch (error) {
+    if (
+      error.message.includes(
+        '[storage/object-not-found] No object exists at the desired reference.',
+      )
+    ) {
+      return -1;
+    } else {
+      console.log(error.message);
+    }
+  }
+};
+
 // This method is going to sign the current user out
 const signOut = async () => {
   await auth().signOut();
@@ -119,4 +217,13 @@ const signOut = async () => {
 };
 
 // Exports all of the functions
-export {createUser, updateUserInfo, logIn, resetPassword, getUserByID, signOut};
+export {
+  createUser,
+  updateUserInfo,
+  logIn,
+  resetPassword,
+  getUserByID,
+  createTopic,
+  getTopicByID,
+  signOut,
+};

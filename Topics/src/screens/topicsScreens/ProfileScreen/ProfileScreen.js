@@ -27,29 +27,24 @@ import Spinner from 'react-native-spinkit';
 import {sleep} from '../../../config/sleep';
 import {createUser, updateUserInfo, signOut} from '../../../config/server';
 import LinearGradient from 'react-native-linear-gradient';
+import {getUserByID} from '../../../config/server';
+import auth from '@react-native-firebase/auth';
 
 // Creates the functional component
-const ProfileScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
+const ProfileScreen = ({navigation, isTopicManagerFirstLaunch}) => {
   // The input state variables
-  const [screenUserObject, setScreenUserObject] = useState(userObject);
-  const [email, setEmail] = useState(
-    screenUserObject === '' ? '' : screenUserObject.email,
-  );
-  const [phoneNumber, setPhoneNumber] = useState(
-    screenUserObject === '' ? '' : screenUserObject.phoneNumber,
-  );
-  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState(
-    screenUserObject === '' ? '' : screenUserObject.formattedPhoneNumber,
-  );
+  const [userObject, setUserObject] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [countryCode, setCountryCode] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [errorVisible, setErrorVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(screenUserObject !== '');
-  const [countryCode, setCountryCode] = useState(
-    screenUserObject === '' ? '' : screenUserObject.countryCode,
-  );
+  const [isScreenLoading, setIsScreenLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState('');
   const [userInfoSavedSuccess, setUserInfoSavedSuccess] = useState(false);
 
   // The animated variables
@@ -64,46 +59,79 @@ const ProfileScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
   // A ref variable for the phone number
   const phoneRef = useRef();
 
-  // The method which will control the animated values
   useEffect(() => {
-    if (isLoggedIn === false) {
-      // Starts the animation for the image positioning
-      Animated.spring(currentPos, {
-        overshootClamping: true,
-        mass: 100,
-        delay: 500,
-        toValue: {
-          x: 0,
-          y: screenHeight * 0.025,
-        },
-        useNativeDriver: false,
-      }).start();
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
 
-      // Starts the animation for the image zoom
-      Animated.timing(currentImageWidth, {
-        toValue: screenWidth * 0.35,
-        duration: 1200,
-        delay: 500,
-        useNativeDriver: false,
-      }).start();
-
-      // Starts the animation for the font size
-      Animated.timing(currentTextSize, {
-        toValue: fontStyles.bigFontStyle.fontSize,
-        duration: 1200,
-        delay: 500,
-        useNativeDriver: false,
-      }).start();
-
-      // Starts the animation for the view opacity
-      Animated.timing(viewOpacity, {
-        toValue: 1,
-        duration: 1000,
-        delay: 1700,
-        useNativeDriver: false,
-      }).start();
-    }
+  useEffect(() => {
+    startAnimations();
   }, [isLoggedIn]);
+
+  // Checks if a user is logged in
+  const onAuthStateChanged = async (user) => {
+    if (!user) {
+      setUserObject('');
+      await sleep(500);
+      setIsScreenLoading(false);
+      setIsLoggedIn(false);
+      startAnimations();
+    } else {
+      fetchUser(user.uid);
+    }
+  };
+
+  // This is going to fetch the user's information from firestore
+  const fetchUser = async (userID) => {
+    const newUserObject = await getUserByID(userID);
+    setUserObject(newUserObject);
+    setEmail(newUserObject.email);
+    setPhoneNumber(newUserObject.phoneNumber);
+    setFormattedPhoneNumber(newUserObject.formattedPhoneNumber);
+    setCountryCode(newUserObject.countryCode);
+    setIsLoggedIn(true);
+    await sleep(500);
+    setIsScreenLoading(false);
+  };
+
+  // Starts the animations
+  const startAnimations = () => {
+    // Starts the animation for the image positioning
+    Animated.spring(currentPos, {
+      overshootClamping: true,
+      mass: 100,
+      delay: 500,
+      toValue: {
+        x: 0,
+        y: screenHeight * 0.025,
+      },
+      useNativeDriver: false,
+    }).start();
+
+    // Starts the animation for the image zoom
+    Animated.timing(currentImageWidth, {
+      toValue: screenWidth * 0.35,
+      duration: 1200,
+      delay: 500,
+      useNativeDriver: false,
+    }).start();
+
+    // Starts the animation for the font size
+    Animated.timing(currentTextSize, {
+      toValue: fontStyles.bigFontStyle.fontSize,
+      duration: 1200,
+      delay: 500,
+      useNativeDriver: false,
+    }).start();
+
+    // Starts the animation for the view opacity
+    Animated.timing(viewOpacity, {
+      toValue: 1,
+      duration: 1000,
+      delay: 1700,
+      useNativeDriver: false,
+    }).start();
+  };
 
   // This method is going to validate the input and, if correct, it will send the proper data up
   // to the server. If anything is off, it will show an error message
@@ -151,8 +179,8 @@ const ProfileScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
   // This method is going to validate the input for the saving of existing profile information
   const validateSaveInput = async () => {
     if (
-      email.trim() === screenUserObject.email &&
-      phoneNumber.trim() === screenUserObject.phoneNumber
+      email.trim() === userObject.email &&
+      phoneNumber.trim() === userObject.phoneNumber
     ) {
       setIsLoading(true);
       await sleep(1000);
@@ -170,14 +198,13 @@ const ProfileScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
     } else {
       setIsLoading(true);
       const result = await updateUserInfo(
-        screenUserObject.userID,
-        screenUserObject.email,
+        userObject.userID,
+        userObject.email,
         email.trim(),
         formattedPhoneNumber.trim(),
         phoneNumber.trim(),
         password.trim(),
       );
-      console.log(result);
       await sleep(1000);
       setIsLoading(false);
       await sleep(500);
@@ -192,11 +219,39 @@ const ProfileScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
         setErrorVisible(true);
       } else {
         setPassword('');
-        setScreenUserObject(result);
+        setUserObject(result);
         setUserInfoSavedSuccess(true);
       }
     }
   };
+
+  if (isScreenLoading === true) {
+    return (
+      <KeyboardAvoidingView
+        key={currentTextSize}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={[ProfileScreenStyle.container]}>
+            <AwesomeAlert
+              show={true}
+              closeOnTouchOutside={false}
+              showCancelButton={false}
+              showConfirmButton={false}
+              customView={
+                <Spinner
+                  isVisible={true}
+                  size={100}
+                  type={'Bounce'}
+                  color={colors.lightBlue}
+                />
+              }
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    );
+  }
 
   // Renders the screen if a user is logged in
   if (isLoggedIn) {
@@ -224,6 +279,7 @@ const ProfileScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
                   onPress={() => {
                     navigation.push('TopicsManager', {
                       isTopicManagerFirstLaunch,
+                      userObject,
                     });
                   }}>
                   <Text
@@ -356,16 +412,13 @@ const ProfileScreen = ({navigation, userObject, isTopicManagerFirstLaunch}) => {
               <TopicsBlueButton
                 text={strings.SignOut}
                 onPress={async () => {
-                  signOut();
-                  setScreenUserObject('');
+                  setIsLoading(true);
                   setEmail('');
                   setFormattedPhoneNumber('');
                   setPhoneNumber('');
-                  setIsLoading(true);
                   await sleep(1500);
+                  signOut();
                   setIsLoading(false);
-                  await sleep(500);
-                  setIsLoggedIn(false);
                 }}
                 height={screenHeight * 0.05}
                 width={screenWidth * 0.32}
