@@ -10,6 +10,7 @@ import {
   Image,
   TextInput,
   FlatList,
+  Animated,
 } from 'react-native';
 import MyTopicsManagerScreenStyle from './MyTopicsManagerScreenStyle';
 import {Icon} from 'react-native-elements';
@@ -24,6 +25,8 @@ import Spinner from 'react-native-spinkit';
 import {sleep} from '../../../config/sleep';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {getTopicByID, getUserByID} from '../../../config/server';
+import Fade from 'react-native-fade';
+import * as Animatable from 'react-native-animatable';
 
 // Creates the functional component
 const MyTopicsManagerScreen = ({navigation, route}) => {
@@ -141,24 +144,38 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
               data={userTopics}
               keyExtractor={(eachItem) => eachItem.topicID}
               numColumns={2}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  style={MyTopicsManagerScreenStyle.topicContainer}>
-                  <Image
-                    source={{uri: item.profileImage}}
-                    resizeMode={'contain'}
-                    style={MyTopicsManagerScreenStyle.topicProfile}
-                  />
-                  <Text
-                    style={[
-                      fontStyles.black,
-                      fontStyles.bold,
-                      fontStyles.mainFontStyle,
-                    ]}>
-                    {item.topicName}
-                  </Text>
-                </TouchableOpacity>
-              )}
+              renderItem={({item}) => {
+                return (
+                  <Animatable.View
+                    style={MyTopicsManagerScreenStyle.topicContainer}
+                    animation={'bounceInUp'}>
+                    <TouchableOpacity>
+                      <View
+                        style={
+                          MyTopicsManagerScreenStyle.topicProfileContainer
+                        }>
+                        <Image
+                          source={{
+                            uri: 'data:image/png;base64,' + item.profileImage,
+                          }}
+                          resizeMode={'contain'}
+                          style={MyTopicsManagerScreenStyle.topicProfile}
+                        />
+                      </View>
+                      <View style={MyTopicsManagerScreenStyle.verticalSpacer} />
+                      <Text
+                        style={[
+                          fontStyles.black,
+                          fontStyles.bold,
+                          fontStyles.mainFontStyle,
+                          {textAlign: 'center'},
+                        ]}>
+                        {item.topicName}
+                      </Text>
+                    </TouchableOpacity>
+                  </Animatable.View>
+                );
+              }}
             />
           </View>
         )}

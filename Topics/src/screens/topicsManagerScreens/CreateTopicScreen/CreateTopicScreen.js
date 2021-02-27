@@ -153,7 +153,7 @@ const CreateTopicScreen = ({navigation, route}) => {
             </TouchableOpacity>
             <TextInput
               value={topicName}
-              maxLength={22}
+              maxLength={13}
               onChangeText={(newText) => setTopicName(newText)}
               placeholder={strings.TopicNameDotDotDot}
               placeholderTextColor={colors.gray}
