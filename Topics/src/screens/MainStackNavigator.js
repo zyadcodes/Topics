@@ -5,15 +5,16 @@ import OnboardingStackNav from './onboardingScreens/OnboardingStackNav';
 import TopicsScreensNav from './topicsScreens/TopicsScreensNav';
 import LogInScreen from './topicsScreens/LogInScreen/LogInScreen';
 import ForgotPasswordScreen from './topicsScreens/ForgotPasswordScreen/ForgotPasswordScreen';
-import TopicsManagerStackNav from './topicsManagerScreens/TopicsManagerStackNav';
+import TopicsManagerOnboard from './topicsManagerScreens/TopicsManagerOnboard/TopicsManagerOnboard';
+import CreateTopicScreen from './topicsManagerScreens/CreateTopicScreen/CreateTopicScreen';
+import MyTopicsManagerScreen from './topicsManagerScreens/MyTopicsManagerScreen/MyTopicsManagerScreen';
+import TopicManagerMessagesScreen from './topicsManagerScreens/TopicManagerMessagesScreen/TopicManagerMessagesScreen';
 
 // Creates the navigator
 const Stack = createStackNavigator();
 
 // Declares the functional component
-const MainStackNavigator = ({
-  isFirstAppLaunch,
-}) => {
+const MainStackNavigator = ({isFirstAppLaunch}) => {
   return (
     <Stack.Navigator
       initialRouteName={
@@ -21,41 +22,26 @@ const MainStackNavigator = ({
       }
       headerMode={'none'}
       screenOptions={{gestureEnabled: false}}>
-      <Stack.Screen name={'OnboardingScreens'}>
-        {(props) => (
-          <OnboardingStackNav
-            {...props}
-          />
-        )}
-      </Stack.Screen>
-      <Stack.Screen name={'TopicsScreens'}>
-        {(props) => (
-          <TopicsScreensNav
-            {...props}
-          />
-        )}
-      </Stack.Screen>
-      <Stack.Screen name={'TopicsManager'}>
-        {(props) => (
-          <TopicsManagerStackNav
-            {...props}
-          />
-        )}
-      </Stack.Screen>
-      <Stack.Screen name={'LogInScreen'}>
-        {(props) => (
-          <LogInScreen
-            {...props}
-          />
-        )}
-      </Stack.Screen>
-      <Stack.Screen name={'ForgotPasswordScreen'}>
-        {(props) => (
-          <ForgotPasswordScreen
-            {...props}
-          />
-        )}
-      </Stack.Screen>
+      <Stack.Screen name={'OnboardingScreens'} component={OnboardingStackNav} />
+      <Stack.Screen name={'TopicsScreens'} component={TopicsScreensNav} />
+      <Stack.Screen name={'LogInScreen'} component={LogInScreen} />
+      <Stack.Screen
+        name={'ForgotPasswordScreen'}
+        component={ForgotPasswordScreen}
+      />
+      <Stack.Screen
+        name={'TopicsManageOnboard'}
+        component={TopicsManagerOnboard}
+      />
+      <Stack.Screen name={'CreateTopicScreen'} component={CreateTopicScreen} />
+      <Stack.Screen
+        name={'MyTopicsManagerScreen'}
+        component={MyTopicsManagerScreen}
+      />
+      <Stack.Screen
+        name={'TopicManagerMessagesScreen'}
+        component={TopicManagerMessagesScreen}
+      />
     </Stack.Navigator>
   );
 };

@@ -14,12 +14,8 @@ const OnboardingStackNav = () => {
       initialRouteName={'LaunchScreen'}
       headerMode={'none'}
       screenOptions={{gestureEnabled: false}}>
-      <Stack.Screen name={'LaunchScreen'}>
-        {(props) => <LaunchScreen {...props}  />}
-      </Stack.Screen>
-      <Stack.Screen name={'IntroScreen'}>
-        {(props) => <IntroScreen {...props} />}
-      </Stack.Screen>
+      <Stack.Screen name={'LaunchScreen'} component={LaunchScreen} />
+      <Stack.Screen name={'IntroScreen'} component={IntroScreen} />
     </Stack.Navigator>
   );
 };

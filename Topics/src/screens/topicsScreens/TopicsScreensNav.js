@@ -44,13 +44,9 @@ const TopicsScreensNav = () => {
               color={color}
             />
           ),
-        }}>
-        {(props) => (
-          <MyTopicsScreen
-            {...props}
-          />
-        )}
-      </Tab.Screen>
+        }}
+        component={MyTopicsScreen}
+      />
       <Tab.Screen
         name={'Explore'}
         options={{
@@ -62,13 +58,9 @@ const TopicsScreensNav = () => {
               color={color}
             />
           ),
-        }}>
-        {(props) => (
-          <ExploreScreen
-            {...props}
-          />
-        )}
-      </Tab.Screen>
+        }}
+        component={ExploreScreen}
+      />
       <Tab.Screen
         name={'Profile'}
         options={{
@@ -80,13 +72,9 @@ const TopicsScreensNav = () => {
               color={color}
             />
           ),
-        }}>
-        {(props) => (
-          <ProfileScreen
-            {...props}
-          />
-        )}
-      </Tab.Screen>
+        }}
+        component={ProfileScreen}
+      />
     </Tab.Navigator>
   );
 };

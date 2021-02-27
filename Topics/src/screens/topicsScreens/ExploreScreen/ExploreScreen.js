@@ -106,11 +106,15 @@ const ExploreScreen = ({navigation}) => {
                     'isTopicManagerFirstLaunch',
                   );
 
-                  navigation.push('TopicsManager', {
-                    isTopicManagerFirstLaunch:
-                      isTopicManagerFirstLaunch === 'false' ? false : true,
-                    userID: userObject.userID,
-                  });
+                  if (isTopicManagerFirstLaunch === 'false') {
+                    navigation.push('MyTopicsManagerScreen', {
+                      userObject: userObject,
+                    });
+                  } else {
+                    navigation.push('TopicsManageOnboard', {
+                      userObject: userObject,
+                    });
+                  }
                 }
               }}>
               <Text

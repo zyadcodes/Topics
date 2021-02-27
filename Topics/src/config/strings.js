@@ -55,5 +55,8 @@ export default {
     PleaseEnterTopicInfo: 'Please enter a topic name & description.',
     PleaseEnterTopicImages: 'Please upload images for your topic.',
     CreateNewTopic: 'Create\nNew Topic',
+    Subscriber: 'Subscriber',
+    Subscribers: 'Subscribers',
+    SendYourTopicAMessage: 'Send your topic a message...'
 
 }

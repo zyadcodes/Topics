@@ -24,7 +24,7 @@ import Logo from '../../../assets/Logo.png';
 import {logIn} from '../../../config/server';
 
 // Creates the functional component
-const LogInScreen = ({navigation, isTopicManagerFirstLaunch}) => {
+const LogInScreen = ({navigation}) => {
   // The state variables for the screen
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -49,7 +49,7 @@ const LogInScreen = ({navigation, isTopicManagerFirstLaunch}) => {
     } else {
       setIsLoading(false);
       await sleep(500);
-      navigation.push('TopicsScreens', {isTopicManagerFirstLaunch});
+      navigation.push('TopicsScreens');
     }
   };
 

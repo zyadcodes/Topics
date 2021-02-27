@@ -26,7 +26,7 @@ import {sleep} from '../../../config/sleep';
 // Creates the functional component
 const CreateTopicScreen = ({navigation, route}) => {
   // Stores the state variables for all of the inputs
-  const [userID, setUserObject] = useState(route.params.userID);
+  const [userID, setUserObject] = useState(route.params.userObject.userID);
   const [coverImage, setCoverImage] = useState('');
   const [profileImage, setProfileImage] = useState('');
   const [topicName, setTopicName] = useState('');
@@ -62,9 +62,8 @@ const CreateTopicScreen = ({navigation, route}) => {
       await sleep(500);
       setIsLoading(false);
       await sleep(500);
-      navigation.replace('TopicsManager', {
+      navigation.replace('MyTopicsManagerScreen', {
         userObject: newUserObject,
-        isTopicManagerFirstLaunch: false,
       });
     }
   };

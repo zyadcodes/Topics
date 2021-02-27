@@ -44,7 +44,7 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
 
   // Helper method for the useEffect method
   const setInitialUserState = async () => {
-    const newUserObject = await getUserByID(route.params.userID);
+    const newUserObject = await getUserByID(route.params.userObject.userID);
     if (newUserObject.createdTopics.length === 0) {
       await sleep(500);
       setIsLoading(false);
@@ -149,7 +149,13 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
                   <Animatable.View
                     style={MyTopicsManagerScreenStyle.topicContainer}
                     animation={'bounceInUp'}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.push('TopicManagerMessagesScreen', {
+                          userID: route.params.userObject.userID,
+                          topic: item,
+                        });
+                      }}>
                       <View
                         style={
                           MyTopicsManagerScreenStyle.topicProfileContainer
@@ -179,7 +185,6 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
             />
           </View>
         )}
-
         <AwesomeAlert
           show={isLoading}
           closeOnTouchOutside={false}
