@@ -70,6 +70,13 @@ export default StyleSheet.create({
       height: 3,
     },
     shadowOpacity: 0.5,
-    marginRight: screenWidth * 0.025
+    marginRight: screenWidth * 0.025,
   },
+  renderEarlierStyle: {
+    width: screenWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: screenHeight * 0.01
+  }
 });
+

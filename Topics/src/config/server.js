@@ -2,6 +2,8 @@
 import auth, {firebase} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import functions from '@react-native-firebase/functions';
+import messaging from '@react-native-firebase/messaging';
 import imageToBase64 from 'react-native-image-base64';
 
 // This function is going to take in some information about a user and is going to send their information
@@ -208,6 +210,48 @@ const getTopicByID = async (topicID) => {
   }
 };
 
+// This method is going to send a message by adding it to the database of messages. It will then also deliver the message
+// to everyone subscribed to that topic
+const sendMessage = async (topicName, topicID, message) => {
+  // Combines into one promise to make sure it is efficient
+  await Promise.all([
+    await functions().httpsCallable('sendMessage')({
+      topicName,
+      topicID,
+      message,
+    }),
+    await firestore()
+      .collection('Topics')
+      .doc(topicID)
+      .collection('Messages')
+      .add(message),
+  ]);
+  return 0;
+};
+
+// This method is going to order topic 20 messages (limit) given a starting timestamp. The idea is to save loading time and
+// reads by loading batched and loading messages as the user scrolls up
+const loadTopicMessages = async (topicID, startTimestamp) => {
+  // Creates the query
+  const query = firestore()
+    .collection('Topics')
+    .doc(topicID)
+    .collection('Messages')
+    .where('createdAt', '<', startTimestamp)
+    .orderBy('createdAt', 'desc')
+    .limit(20);
+
+  // Retrieves the query
+  const queryResults = await query.get();
+
+  // Maps the query to documents
+  const finalArray = queryResults.docs
+    .map((eachDoc) => eachDoc.data()) // Fetches the firestore data
+    .map((eachDoc) => ({...eachDoc, createdAt: eachDoc.createdAt.toDate()})); // Maps firestore timestamp to JS date object
+
+  return finalArray;
+};
+
 // This method is going to sign the current user out
 const signOut = async () => {
   await auth().signOut();
@@ -223,6 +267,8 @@ export {
   resetPassword,
   getUserByID,
   createTopic,
+  loadTopicMessages,
   getTopicByID,
+  sendMessage,
   signOut,
 };

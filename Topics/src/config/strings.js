@@ -57,6 +57,7 @@ export default {
     CreateNewTopic: 'Create\nNew Topic',
     Subscriber: 'Subscriber',
     Subscribers: 'Subscribers',
-    SendYourTopicAMessage: 'Send your topic a message...'
+    SendYourTopicAMessage: 'Send your topic a message...',
+    LoadEarlier: 'Load Earlier'
 
 }

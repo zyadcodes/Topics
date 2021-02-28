@@ -10,6 +10,7 @@ import analytics from '@react-native-firebase/analytics';
 import Spinner from 'react-native-spinkit';
 import colors from './src/config/colors';
 import {sleep} from './src/config/sleep';
+import messaging from '@react-native-firebase/messaging';
 
 // Creates the functional component
 const App = (props) => {
@@ -28,14 +29,14 @@ const App = (props) => {
   // Checks if a user is logged in
   const fetchInitialValues = async () => {
     const isFirstAppLaunch = await AsyncStorage.getItem('isFirstAppLaunch');
-    
+    await messaging().requestPermission();
     if (isFirstAppLaunch === 'false') {
       setIsFirstAppLaunch(false);
     } else {
       setIsFirstAppLaunch(true);
       await AsyncStorage.setItem('isFirstAppLaunch', 'false');
     }
-   
+
     await sleep(1500);
     setIsLoading(false);
   };
@@ -79,9 +80,7 @@ const App = (props) => {
             });
           }
         }}>
-        <MainStackNavigator
-          isFirstAppLaunch={isFirstAppLaunch}
-        />
+        <MainStackNavigator isFirstAppLaunch={isFirstAppLaunch} />
       </NavigationContainer>
     </SafeAreaProvider>
   );
