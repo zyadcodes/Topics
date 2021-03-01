@@ -16,7 +16,7 @@ import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueBut
 // Creates the component
 const TopicManagerMessagesScreen = ({navigation, route}) => {
   // Fetches the route params
-  const {userID, topic} = route.params;
+  const {userID, topic, userObject} = route.params;
 
   // Contains the current state of the messages
   const [messages, setMessages] = useState([]);
@@ -86,7 +86,17 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={TopicManagerMessagesScreenStyle.iconContainer}
-          onPress={() => navigation.goBack()}>
+          onPress={() =>
+            navigation.push('CreateTopicScreen', {
+              userObject: userObject,
+              isEditing: true,
+              topic: {
+                ...topic,
+                coverImage: 'data:image/png;base64,' + topic.coverImage,
+                profileImage: 'data:image/png;base64,' + topic.profileImage,
+              },
+            })
+          }>
           <Icon
             type={'font-awesome'}
             name={'gears'}

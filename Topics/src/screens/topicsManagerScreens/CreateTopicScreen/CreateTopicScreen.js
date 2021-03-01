@@ -20,19 +20,26 @@ import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueBut
 import ImagePicker from 'react-native-image-crop-picker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
-import {createTopic, getUserByID} from '../../../config/server';
+import {createTopic, getUserByID, saveTopic} from '../../../config/server';
 import {sleep} from '../../../config/sleep';
 
 // Creates the functional component
 const CreateTopicScreen = ({navigation, route}) => {
+  const {userObject, isEditing, topic} = route.params;
+
   // Stores the state variables for all of the inputs
-  const [userID, setUserObject] = useState(route.params.userObject.userID);
-  const [coverImage, setCoverImage] = useState('');
-  const [profileImage, setProfileImage] = useState('');
-  const [topicName, setTopicName] = useState('');
-  const [tags, setTags] = useState(['topic']);
+  const [coverImage, setCoverImage] = useState(
+    isEditing ? topic.coverImage : '',
+  );
+  const [profileImage, setProfileImage] = useState(
+    isEditing ? topic.profileImage : '',
+  );
+  const [topicName, setTopicName] = useState(isEditing ? topic.topicName : '');
+  const [tags, setTags] = useState(isEditing ? topic.tags : ['topic']);
   const [newTag, setNewTag] = useState('');
-  const [topicDescription, setTopicDescription] = useState('');
+  const [topicDescription, setTopicDescription] = useState(
+    isEditing ? topic.topicDescription : '',
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [updateScreen, setUpdateScreen] = useState(false);
   const [errorVisible, setErrorVisible] = useState(false);
@@ -50,15 +57,28 @@ const CreateTopicScreen = ({navigation, route}) => {
       setErrorVisible(true);
     } else {
       setIsLoading(true);
-      await createTopic(
-        topicName,
-        topicDescription,
-        coverImage,
-        profileImage,
-        tags,
-        userID,
-      );
-      const newUserObject = await getUserByID(userID);
+
+      if (isEditing) {
+        await saveTopic(
+          topicName,
+          topicDescription,
+          coverImage === topic.coverImage ? '' : coverImage,
+          profileImage === topic.profileImage ? '' : profileImage,
+          tags,
+          topic.topicID
+        );
+      } else {
+        await createTopic(
+          topicName,
+          topicDescription,
+          coverImage,
+          profileImage,
+          tags,
+          userObject.userID,
+        );
+      }
+
+      const newUserObject = await getUserByID(userObject.userID);
       await sleep(500);
       setIsLoading(false);
       await sleep(500);
@@ -163,6 +183,17 @@ const CreateTopicScreen = ({navigation, route}) => {
               ]}
             />
           </View>
+          {isEditing ? (
+            <View style={CreateTopicScreenStyle.subscribersTextContainer}>
+              <Text style={[fontStyles.black, fontStyles.bigFontStyle]}>
+                {topic.subscribers === 1
+                  ? topic.subscribers + ' ' + strings.Subscriber
+                  : topic.subscribers + ' ' + strings.Subscribers}
+              </Text>
+            </View>
+          ) : (
+            <View />
+          )}
           <View style={CreateTopicScreenStyle.tagsContainer}>
             {tags.map((eachTag) => (
               <View key={eachTag} style={CreateTopicScreenStyle.tag}>
@@ -220,7 +251,7 @@ const CreateTopicScreen = ({navigation, route}) => {
           />
           <View style={CreateTopicScreenStyle.blueButtonContainer}>
             <TopicsBlueButton
-              text={strings.CreateTopic}
+              text={isEditing ? strings.Save : strings.CreateTopic}
               onPress={() => {
                 createTopicMethod();
               }}

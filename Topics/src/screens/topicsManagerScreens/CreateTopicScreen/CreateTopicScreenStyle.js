@@ -110,4 +110,8 @@ export default StyleSheet.create({
   blueButtonContainer: {
     marginTop: screenHeight * 0.15,
   },
+  subscribersTextContainer: {
+    textAlign: 'center',
+    marginTop: screenHeight * 0.025,
+  },
 });

@@ -166,6 +166,54 @@ const createTopic = async (
   return 0;
 };
 
+// This method is going to update a topic's information in the database
+// This method is going to take in topic information and upload it to both Firestore
+// and Storage. It will use the topicID to link the storage with the Firestore together
+const saveTopic = async (
+  topicName,
+  topicDescription,
+  topicCoverImage,
+  topicProfileImage,
+  tags,
+  topicID,
+) => {
+  const promises = [];
+  // Creates the document topic
+  const topicPromise = firebase
+    .firestore()
+    .collection('Topics')
+    .doc(topicID)
+    .update({
+      topicName,
+      topicDescription,
+      tags,
+    });
+
+  promises.push(topicPromise);
+
+  if (topicCoverImage !== '') {
+    const storagePromiseCover = storage()
+      .ref()
+      .child('topicsCoverImages/' + topicID)
+      .putFile(topicCoverImage);
+
+    promises.push(storagePromiseCover);
+  }
+
+  if (topicProfileImage !== '') {
+    const storagePromiseProfile = storage()
+      .ref()
+      .child('topicsProfileImages/' + topicID)
+      .putFile(topicProfileImage);
+
+    promises.push(storagePromiseProfile);
+  }
+
+  await Promise.all(promises);
+
+  return 0;
+};
+
 // This is going to fetch a topic by ID by getting the document as well as the profile images for the topic, combining
 // them into one object, and returning it. If the topic doesn't exist, returns -1
 const getTopicByID = async (topicID) => {
@@ -264,6 +312,7 @@ export {
   createUser,
   updateUserInfo,
   logIn,
+  saveTopic,
   resetPassword,
   getUserByID,
   createTopic,

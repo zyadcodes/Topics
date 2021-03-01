@@ -70,6 +70,7 @@ const TopicsManagerOnboard = ({navigation, route}) => {
             onPress={() => {
               navigation.push('CreateTopicScreen', {
                 userObject: route.params.userObject,
+                isEditing: false
               });
             }}
             height={screenHeight * 0.065}

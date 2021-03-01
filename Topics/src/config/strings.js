@@ -58,6 +58,7 @@ export default {
     Subscriber: 'Subscriber',
     Subscribers: 'Subscribers',
     SendYourTopicAMessage: 'Send your topic a message...',
-    LoadEarlier: 'Load Earlier'
+    LoadEarlier: 'Load Earlier',
+    Save: 'Save'
 
 }

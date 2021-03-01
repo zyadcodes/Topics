@@ -56,6 +56,7 @@ const MyTopicsScreen = ({navigation}) => {
     setIsLoading(false);
   };
 
+  // Renders the loadingUI
   if (isLoading === true) {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -78,6 +79,8 @@ const MyTopicsScreen = ({navigation}) => {
       </TouchableWithoutFeedback>
     );
   }
+
+  
 
   // Renders the screen
   return (

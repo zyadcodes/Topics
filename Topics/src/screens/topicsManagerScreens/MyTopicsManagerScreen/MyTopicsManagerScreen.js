@@ -153,6 +153,7 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
                       onPress={() => {
                         navigation.push('TopicManagerMessagesScreen', {
                           userID: route.params.userObject.userID,
+                          userObject,
                           topic: item,
                         });
                       }}>
