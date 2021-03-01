@@ -7,7 +7,7 @@ import colors from '../../../config/colors';
 import {screenHeight, screenWidth} from '../../../config/dimensions';
 import strings from '../../../config/strings';
 import fontStyles from '../../../config/fontStyles';
-import {GiftedChat} from 'react-native-gifted-chat';
+import {GiftedChat, Bubble, Message} from 'react-native-gifted-chat';
 import {sendMessage, loadTopicMessages} from '../../../config/server';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
@@ -122,6 +122,43 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
         messages={messages}
         infiniteScroll={true}
         loadEarlier={true}
+        showUserAvatar={true}
+        renderAvatar={(props) => (
+          <View style={TopicManagerMessagesScreenStyle.profPictureContainer}>
+            <Image
+              source={{uri: 'data:image/png;base64,' + topic.profileImage}}
+              style={TopicManagerMessagesScreenStyle.profPicture}
+              resizeMode={'contain'}
+            />
+          </View>
+        )}
+        renderTime={(props) => <View />}
+        renderMessage={(props) => (
+          <Message
+            {...props}
+            containerStyle={{
+              right: {
+                marginTop: screenHeight * 0.025,
+                alignItems: 'center',
+              },
+            }}
+          />
+        )}
+        showAvatarForEveryMessage={true}
+        renderBubble={(props) => (
+          <Bubble
+            {...props}
+            textStyle={{
+              right: {
+                ...fontStyles.white,
+                ...fontStyles.midFontStyle,
+              },
+            }}
+            wrapperStyle={{
+              right: TopicManagerMessagesScreenStyle.messageContainer,
+            }}
+          />
+        )}
         renderLoadEarlier={(props) =>
           messages.length === 0 || allMessagesLoaded === true ? (
             <View />

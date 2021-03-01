@@ -76,7 +76,35 @@ export default StyleSheet.create({
     width: screenWidth,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: screenHeight * 0.01
-  }
+    paddingVertical: screenHeight * 0.01,
+  },
+  messageContainer: {
+    width: screenWidth * 0.54,
+    minHeight: screenHeight * 0.06,
+    borderTopLeftRadius: screenHeight * 0.05,
+    borderBottomLeftRadius: screenHeight * 0.05,
+    borderTopRightRadius: screenHeight * 0.05,
+    borderBottomRightRadius: screenHeight * 0.05,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    backgroundColor: colors.darkBlue,
+    alignSelf: 'center',
+  },
+  profPictureContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: screenHeight * 0.09,
+    borderRadius: screenHeight * 0.045,
+    height: screenHeight * 0.09,
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: 3,
+    },
+    shadowOpacity: 0.5,
+  },
+  profPicture: {
+    width: screenHeight * 0.09,
+    borderRadius: screenHeight * 0.045,
+    height: screenHeight * 0.09,
+  },
 });
-
