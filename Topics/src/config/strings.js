@@ -59,6 +59,9 @@ export default {
     Subscribers: 'Subscribers',
     SendYourTopicAMessage: 'Send your topic a message...',
     LoadEarlier: 'Load Earlier',
-    Save: 'Save'
+    Save: 'Save',
+    JoinATopic: 'Join a Topic',
+    TopTrendingTopics: 'Top trending topics',
+    OurTopTopicsForYou: 'Our top topics for you'
 
 }

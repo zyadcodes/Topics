@@ -300,6 +300,20 @@ const loadTopicMessages = async (topicID, startTimestamp) => {
   return finalArray;
 };
 
+// This method is going to get all of the topics in the collection
+const getAllTopics = async () => {
+  const allTopics = await firestore().collection('Topics').get();
+
+  const promises = allTopics.docs.map((eachTopic) =>
+    getTopicByID(eachTopic.id),
+  );
+  const results = await Promise.all(promises);
+
+  return results;
+};
+
+
+
 // This method is going to sign the current user out
 const signOut = async () => {
   await auth().signOut();
@@ -317,6 +331,7 @@ export {
   getUserByID,
   createTopic,
   loadTopicMessages,
+  getAllTopics,
   getTopicByID,
   sendMessage,
   signOut,

@@ -74,7 +74,7 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
           <View style={MyTopicsManagerScreenStyle.blueSectionRow}>
             <TouchableOpacity
               style={MyTopicsManagerScreenStyle.backButtonContainer}
-              onPress={() => navigation.goBack()}>
+              onPress={() => navigation.replace('TopicsScreens')}>
               <Icon
                 type={'font-awesome'}
                 name={'angle-left'}
@@ -144,6 +144,7 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
               data={userTopics}
               keyExtractor={(eachItem) => eachItem.topicID}
               numColumns={2}
+              showsVerticalScrollIndicator={false}
               renderItem={({item}) => {
                 return (
                   <Animatable.View

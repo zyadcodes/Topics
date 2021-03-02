@@ -20,6 +20,16 @@ export default StyleSheet.create({
     marginTop: screenHeight * 0.05,
     width: screenWidth * 0.9,
   },
+  bigLogoStyle: {
+    height: screenHeight * 0.25,
+  },
+  joinTopicContainer: {
+    width: screenWidth,
+    height: screenHeight * 0.65,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    backgroundColor: colors.white,
+  },
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -52,5 +62,30 @@ export default StyleSheet.create({
   },
   textInputStyle: {
       width: screenWidth * 0.7
-  }
+  },
+  topicContainer: {
+    width: '50%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    textAlign: 'center',
+    marginTop: screenHeight * 0.035,
+  },
+  verticalSpacer: {
+    height: screenHeight * 0.025
+  },
+  topicProfileContainer: {
+    width: screenHeight * 0.15,
+    borderRadius: screenHeight * 0.075,
+    height: screenHeight * 0.15,
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: 3,
+    },
+    shadowOpacity: 0.5,
+  },
+  topicProfile: {
+    width: screenHeight * 0.15,
+    borderRadius: screenHeight * 0.075,
+    height: screenHeight * 0.15,
+  },
 });

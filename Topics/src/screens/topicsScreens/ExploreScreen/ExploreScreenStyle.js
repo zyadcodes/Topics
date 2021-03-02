@@ -53,4 +53,34 @@ export default StyleSheet.create({
   textInputStyle: {
     width: screenWidth * 0.7,
   },
+  topicsContainer: {
+    marginTop: screenHeight * 0.035
+  },
+  leftPadding: {
+    paddingLeft: screenWidth * 0.05
+  },
+  topicContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    textAlign: 'center',
+    marginRight: screenWidth * 0.075,
+  },
+  topicProfileContainer: {
+    width: screenHeight * 0.15,
+    borderRadius: screenHeight * 0.075,
+    height: screenHeight * 0.15,
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: 3,
+    },
+    shadowOpacity: 0.5,
+  },
+  topicProfile: {
+    width: screenHeight * 0.15,
+    borderRadius: screenHeight * 0.075,
+    height: screenHeight * 0.15,
+  },
+  verticalSpacer: {
+    height: screenHeight * 0.025,
+  },
 });

@@ -17,7 +17,7 @@ const Tab = createBottomTabNavigator();
 const TopicsScreensNav = () => {
   return (
     <Tab.Navigator
-      initialRouteName={strings.MyTopics}
+      initialRouteName={'Explore'}
       tabBarOptions={{
         activeTintColor: colors.darkBlue,
         inactiveTintColor: colors.gray,

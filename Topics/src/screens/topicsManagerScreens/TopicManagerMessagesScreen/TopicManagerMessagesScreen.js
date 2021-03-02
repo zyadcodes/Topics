@@ -87,7 +87,7 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
         <TouchableOpacity
           style={TopicManagerMessagesScreenStyle.iconContainer}
           onPress={() =>
-            navigation.push('CreateTopicScreen', {
+            navigation.replace('CreateTopicScreen', {
               userObject: userObject,
               isEditing: true,
               topic: {

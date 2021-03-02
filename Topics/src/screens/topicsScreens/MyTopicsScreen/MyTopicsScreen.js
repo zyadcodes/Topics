@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  FlatList,
 } from 'react-native';
 import MyTopicsScreenStyle from './MyTopicsScreenStyle';
 import colors from '../../../config/colors';
@@ -16,13 +17,15 @@ import Logo from '../../../assets/Logo.png';
 import strings from '../../../config/strings';
 import {Icon} from 'react-native-elements';
 import fontStyles from '../../../config/fontStyles';
-import {screenHeight} from '../../../config/dimensions';
+import {screenHeight, screenWidth} from '../../../config/dimensions';
 import auth from '@react-native-firebase/auth';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
-import {getUserByID} from '../../../config/server';
+import {getUserByID, getTopicByID} from '../../../config/server';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {sleep} from '../../../config/sleep';
+import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueButton';
+import * as Animatable from 'react-native-animatable';
 
 // Creates the functional component
 const MyTopicsScreen = ({navigation}) => {
@@ -30,6 +33,7 @@ const MyTopicsScreen = ({navigation}) => {
   const [searchInput, setSearchInput] = useState('');
   const [userObject, setUserObject] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [subscribedTopics, setSubscribedTopics] = useState([]);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -51,7 +55,13 @@ const MyTopicsScreen = ({navigation}) => {
   const fetchUser = async (userID) => {
     const newUserObject = await getUserByID(userID);
     setUserObject(newUserObject);
-
+    // One line solution to fetch all promises
+    const allUserTopicObjects = await Promise.all(
+      newUserObject.subscribedTopics.map((eachTopicID) =>
+        getTopicByID(eachTopicID),
+      ),
+    );
+    setSubscribedTopics(allUserTopicObjects);
     await sleep(500);
     setIsLoading(false);
   };
@@ -80,7 +90,97 @@ const MyTopicsScreen = ({navigation}) => {
     );
   }
 
-  
+  // Renders the UI when the user doesn't have any subscribed topics
+  if (userObject.subscribedTopics.length === 0) {
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={MyTopicsScreenStyle.container}>
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={[colors.darkBlue, colors.lightBlue]}
+            style={MyTopicsScreenStyle.blueSection}>
+            <View style={MyTopicsScreenStyle.blueSectionRow}>
+              <View style={MyTopicsScreenStyle.logoContainer}>
+                <Image
+                  resizeMode={'contain'}
+                  style={MyTopicsScreenStyle.logoStyle}
+                  source={Logo}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={async () => {
+                  if (userObject === '') {
+                    navigation.navigate('Profile');
+                  } else {
+                    const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
+                      'isTopicManagerFirstLaunch',
+                    );
+
+                    if (isTopicManagerFirstLaunch === 'false') {
+                      navigation.push('MyTopicsManagerScreen', {
+                        userObject: userObject,
+                      });
+                    } else {
+                      navigation.push('TopicsManageOnboard', {
+                        userObject: userObject,
+                      });
+                    }
+                  }
+                }}>
+                <Text
+                  style={[
+                    fontStyles.mainFontStyle,
+                    fontStyles.bold,
+                    fontStyles.white,
+                    MyTopicsScreenStyle.topicsManagerStyle,
+                  ]}>
+                  {strings.TopicsManager}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={MyTopicsScreenStyle.searchContainer}>
+              <View style={MyTopicsScreenStyle.searchIcon}>
+                <Icon
+                  name={'search'}
+                  type={'font-awesome'}
+                  color={colors.white}
+                  size={screenHeight * 0.045}
+                />
+              </View>
+              <TextInput
+                value={searchInput}
+                onChangeText={async (text) => {
+                  setSearchInput(text);
+                }}
+                placeholder={strings.SearchMyTopics}
+                placeholderTextColor={colors.white}
+                style={[
+                  fontStyles.white,
+                  fontStyles.mainFontStyle,
+                  MyTopicsScreenStyle.textInputStyle,
+                ]}
+              />
+            </View>
+          </LinearGradient>
+          <View style={MyTopicsScreenStyle.joinTopicContainer}>
+            <Image
+              source={Logo}
+              resizeMode={'contain'}
+              style={MyTopicsScreenStyle.bigLogoStyle}
+            />
+            <TopicsBlueButton
+              text={strings.JoinATopic}
+              onPress={() => navigation.navigate('Explore')}
+              height={screenHeight * 0.065}
+              width={screenWidth * 0.75}
+              fontSize={fontStyles.bigFontStyle}
+            />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
 
   // Renders the screen
   return (
@@ -154,6 +254,40 @@ const MyTopicsScreen = ({navigation}) => {
             />
           </View>
         </LinearGradient>
+        <FlatList
+          data={subscribedTopics}
+          keyExtractor={(eachItem) => eachItem.topicID}
+          numColumns={2}
+          renderItem={({item}) => {
+            return (
+              <Animatable.View
+                style={MyTopicsScreenStyle.topicContainer}
+                animation={'bounceInUp'}>
+                <TouchableOpacity onPress={() => {}}>
+                  <View style={MyTopicsScreenStyle.topicProfileContainer}>
+                    <Image
+                      source={{
+                        uri: 'data:image/png;base64,' + item.profileImage,
+                      }}
+                      resizeMode={'contain'}
+                      style={MyTopicsScreenStyle.topicProfile}
+                    />
+                  </View>
+                  <View style={MyTopicsScreenStyle.verticalSpacer} />
+                  <Text
+                    style={[
+                      fontStyles.black,
+                      fontStyles.bold,
+                      fontStyles.mainFontStyle,
+                      {textAlign: 'center'},
+                    ]}>
+                    {item.topicName}
+                  </Text>
+                </TouchableOpacity>
+              </Animatable.View>
+            );
+          }}
+        />
       </View>
     </TouchableWithoutFeedback>
   );
