@@ -20,7 +20,7 @@ import strings from '../../../config/strings';
 import colors from '../../../config/colors';
 import LinearGradient from 'react-native-linear-gradient';
 import Logo from '../../../assets/Logo.png';
-import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueButton';
+import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhiteButton';
 import Spinner from 'react-native-spinkit';
 import {sleep} from '../../../config/sleep';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -130,7 +130,7 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
               resizeMode={'contain'}
               style={MyTopicsManagerScreenStyle.logoStyle}
             />
-            <TopicsBlueButton
+            <TopicsWhiteButton
               text={strings.CreateTopic}
               onPress={() => navigation.push('CreateTopicScreen', {userObject})}
               height={screenHeight * 0.065}
@@ -163,9 +163,7 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
                           MyTopicsManagerScreenStyle.topicProfileContainer
                         }>
                         <Image
-                          source={{
-                            uri: 'data:image/png;base64,' + item.profileImage,
-                          }}
+                          source={item.profileImage}
                           resizeMode={'contain'}
                           style={MyTopicsManagerScreenStyle.topicProfile}
                         />

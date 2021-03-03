@@ -26,9 +26,7 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.5,
   },
-  coverPictureContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  topBlueSection: {
     width: screenWidth,
     height: screenHeight * 0.26,
     shadowColor: colors.black,
@@ -36,10 +34,7 @@ export default StyleSheet.create({
       height: 3,
     },
     shadowOpacity: 0.5,
-  },
-  coverPicture: {
-    width: screenWidth,
-    height: screenHeight * 0.26,
+    backgroundColor: colors.lightBlue,
   },
   grayBackground: {
     backgroundColor: colors.lightGray,
@@ -110,7 +105,7 @@ export default StyleSheet.create({
   blueButtonContainer: {
     marginTop: screenHeight * 0.15,
   },
-  subscribersTextContainer: {
+  followersTextContainer: {
     textAlign: 'center',
     marginTop: screenHeight * 0.025,
   },

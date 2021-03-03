@@ -11,7 +11,7 @@ import {GiftedChat, Bubble, Message} from 'react-native-gifted-chat';
 import {sendMessage, loadTopicMessages} from '../../../config/server';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
-import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueButton';
+import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhiteButton';
 
 // Creates the component
 const TopicManagerMessagesScreen = ({navigation, route}) => {
@@ -92,8 +92,6 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
               isEditing: true,
               topic: {
                 ...topic,
-                coverImage: 'data:image/png;base64,' + topic.coverImage,
-                profileImage: 'data:image/png;base64,' + topic.profileImage,
               },
             })
           }>
@@ -105,13 +103,7 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
           />
         </TouchableOpacity>
       </View>
-      <View style={TopicManagerMessagesScreenStyle.coverPictureContainer}>
-        <Image
-          source={{uri: 'data:image/png;base64,' + topic.coverImage}}
-          style={TopicManagerMessagesScreenStyle.coverPicture}
-          resizeMode={'cover'}
-        />
-      </View>
+      <View style={TopicManagerMessagesScreenStyle.blueSection}></View>
       <View style={TopicManagerMessagesScreenStyle.topicInfo}>
         <Text
           style={[
@@ -123,25 +115,16 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
         </Text>
         <Text
           style={[fontStyles.white, fontStyles.bold, fontStyles.bigFontStyle]}>
-          {topic.subscribers === 1
-            ? topic.subscribers + ' ' + strings.Subscriber
-            : topic.subscribers + ' ' + strings.Subscribers}
+          {topic.followers === 1
+            ? topic.followers + ' ' + strings.Subscriber
+            : topic.followers + ' ' + strings.Subscribers}
         </Text>
       </View>
       <GiftedChat
         messages={messages}
         infiniteScroll={true}
         loadEarlier={true}
-        showUserAvatar={true}
-        renderAvatar={(props) => (
-          <View style={TopicManagerMessagesScreenStyle.profPictureContainer}>
-            <Image
-              source={{uri: 'data:image/png;base64,' + topic.profileImage}}
-              style={TopicManagerMessagesScreenStyle.profPicture}
-              resizeMode={'contain'}
-            />
-          </View>
-        )}
+        showUserAvatar={false}
         renderTime={(props) => <View />}
         renderMessage={(props) => (
           <Message
@@ -182,7 +165,7 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
                   color={colors.lightBlue}
                 />
               ) : (
-                <TopicsBlueButton
+                <TopicsWhiteButton
                   text={strings.LoadEarlier}
                   onPress={() => {
                     setIsMessagesLoading(true);

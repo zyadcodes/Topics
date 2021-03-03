@@ -6,7 +6,7 @@ import {screenHeight, screenWidth} from '../../../config/dimensions';
 import fontStyles from '../../../config/fontStyles';
 import LaunchScreenStyle from './LaunchScreenStyle';
 import Logo from '../../../assets/Logo.png';
-import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueButton';
+import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhiteButton';
 
 // Creates the functional component
 const LaunchScreen = ({navigation}) => {
@@ -71,7 +71,7 @@ const LaunchScreen = ({navigation}) => {
       </Animated.Text>
       <Animated.View
         style={[LaunchScreenStyle.buttonContainer, {opacity: currentOpacity}]}>
-        <TopicsBlueButton
+        <TopicsWhiteButton
           text={strings.LetsGo}
           onPress={() => {
             navigation.push('IntroScreen');

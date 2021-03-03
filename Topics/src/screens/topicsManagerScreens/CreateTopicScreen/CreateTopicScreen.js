@@ -16,7 +16,7 @@ import fontStyles from '../../../config/fontStyles';
 import {Icon} from 'react-native-elements';
 import CreateTopicScreenStyle from './CreateTopicScreenStyle';
 import {screenHeight, screenWidth} from '../../../config/dimensions';
-import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueButton';
+import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhiteButton';
 import ImagePicker from 'react-native-image-crop-picker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
@@ -28,18 +28,7 @@ const CreateTopicScreen = ({navigation, route}) => {
   const {userObject, isEditing, topic} = route.params;
 
   // Stores the state variables for all of the inputs
-  const [coverImage, setCoverImage] = useState(
-    isEditing ? topic.coverImage : '',
-  );
-  const [profileImage, setProfileImage] = useState(
-    isEditing ? topic.profileImage : '',
-  );
   const [topicName, setTopicName] = useState(isEditing ? topic.topicName : '');
-  const [tags, setTags] = useState(isEditing ? topic.tags : ['topic']);
-  const [newTag, setNewTag] = useState('');
-  const [topicDescription, setTopicDescription] = useState(
-    isEditing ? topic.topicDescription : '',
-  );
   const [isLoading, setIsLoading] = useState(false);
   const [updateScreen, setUpdateScreen] = useState(false);
   const [errorVisible, setErrorVisible] = useState(false);
@@ -49,33 +38,16 @@ const CreateTopicScreen = ({navigation, route}) => {
   // have been filled out
   const createTopicMethod = async () => {
     // Tests to check all fields have been filled out
-    if (coverImage === '' || profileImage === '') {
-      setErrorMessage(strings.PleaseEnterTopicImages);
-      setErrorVisible(true);
-    } else if (topicName.trim() === '' || topicDescription.trim() === '') {
+    if (topicName.trim() === '') {
       setErrorMessage(strings.PleaseEnterTopicInfo);
       setErrorVisible(true);
     } else {
       setIsLoading(true);
 
       if (isEditing) {
-        await saveTopic(
-          topicName,
-          topicDescription,
-          coverImage === topic.coverImage ? '' : coverImage,
-          profileImage === topic.profileImage ? '' : profileImage,
-          tags,
-          topic.topicID
-        );
+        await saveTopic(topicName, topic.topicID);
       } else {
-        await createTopic(
-          topicName,
-          topicDescription,
-          coverImage,
-          profileImage,
-          tags,
-          userObject.userID,
-        );
+        await createTopic(topicName, userObject.userID);
       }
 
       const newUserObject = await getUserByID(userObject.userID);
@@ -105,71 +77,8 @@ const CreateTopicScreen = ({navigation, route}) => {
               color={colors.white}
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              CreateTopicScreenStyle.coverPictureContainer,
-              CreateTopicScreenStyle.grayBackground,
-            ]}
-            onPress={async () => {
-              try {
-                const image = await ImagePicker.openPicker({
-                  cropping: true,
-                  width: 828,
-                  height: 464,
-                });
-                setCoverImage(image.path);
-              } catch (error) {}
-            }}>
-            {coverImage === '' ? (
-              <Icon
-                size={screenHeight * 0.13}
-                color={colors.black}
-                type={'font-awesome'}
-                name={'camera'}
-                style={{
-                  marginTop: screenHeight * 0.05,
-                }}
-              />
-            ) : (
-              <Image
-                source={{uri: coverImage}}
-                style={CreateTopicScreenStyle.coverPicture}
-                resizeMode={'contain'}
-              />
-            )}
-          </TouchableOpacity>
+          <View style={CreateTopicScreenStyle.topBlueSection}></View>
           <View style={CreateTopicScreenStyle.rowContainer}>
-            <TouchableOpacity
-              style={[
-                CreateTopicScreenStyle.profPictureContainer,
-                CreateTopicScreenStyle.grayBackground,
-              ]}
-              onPress={async () => {
-                try {
-                  const image = await ImagePicker.openPicker({
-                    cropping: true,
-                    height: 215,
-                    width: 215,
-                    cropperCircleOverlay: true,
-                  });
-                  setProfileImage(image.path);
-                } catch (error) {}
-              }}>
-              {profileImage === '' ? (
-                <Icon
-                  size={screenHeight * 0.06}
-                  color={colors.black}
-                  type={'font-awesome'}
-                  name={'camera'}
-                />
-              ) : (
-                <Image
-                  source={{uri: profileImage}}
-                  style={CreateTopicScreenStyle.profPicture}
-                  resizeMode={'contain'}
-                />
-              )}
-            </TouchableOpacity>
             <TextInput
               value={topicName}
               maxLength={13}
@@ -184,73 +93,18 @@ const CreateTopicScreen = ({navigation, route}) => {
             />
           </View>
           {isEditing ? (
-            <View style={CreateTopicScreenStyle.subscribersTextContainer}>
+            <View style={CreateTopicScreenStyle.followersTextContainer}>
               <Text style={[fontStyles.black, fontStyles.bigFontStyle]}>
-                {topic.subscribers === 1
-                  ? topic.subscribers + ' ' + strings.Subscriber
-                  : topic.subscribers + ' ' + strings.Subscribers}
+                {topic.followers === 1
+                  ? topic.followers + ' ' + strings.Subscriber
+                  : topic.followers + ' ' + strings.Subscribers}
               </Text>
             </View>
           ) : (
             <View />
           )}
-          <View style={CreateTopicScreenStyle.tagsContainer}>
-            {tags.map((eachTag) => (
-              <View key={eachTag} style={CreateTopicScreenStyle.tag}>
-                <Text style={[fontStyles.white, fontStyles.midFontStyle]}>
-                  #{eachTag}
-                </Text>
-                <View style={CreateTopicScreenStyle.horizontalSpacer} />
-                <TouchableOpacity
-                  onPress={() => {
-                    const newArray = tags;
-                    newArray.splice(newArray.indexOf(eachTag), 1);
-                    setTags(newArray);
-                    setUpdateScreen(!updateScreen);
-                  }}>
-                  <Icon
-                    color={colors.white}
-                    size={screenHeight * 0.0225}
-                    type={'font-awesome'}
-                    name={'trash'}
-                  />
-                </TouchableOpacity>
-              </View>
-            ))}
-            <TextInput
-              style={[
-                CreateTopicScreenStyle.tag,
-                fontStyles.white,
-                fontStyles.midFontStyle,
-              ]}
-              value={newTag}
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={(newText) => setNewTag(newText)}
-              placeholder={strings.AddTag}
-              placeholderTextColor={colors.white}
-              onEndEditing={() => {
-                const newArray = tags;
-                newArray.push(newTag);
-                setTags(newArray);
-                setNewTag('');
-              }}
-            />
-          </View>
-          <TextInput
-            value={topicDescription}
-            onChangeText={(newText) => setTopicDescription(newText)}
-            placeholder={strings.TopicDescription}
-            maxLength={42}
-            placeholderTextColor={colors.gray}
-            style={[
-              fontStyles.black,
-              fontStyles.midFontStyle,
-              CreateTopicScreenStyle.topicDescriptionInput,
-            ]}
-          />
           <View style={CreateTopicScreenStyle.blueButtonContainer}>
-            <TopicsBlueButton
+            <TopicsWhiteButton
               text={isEditing ? strings.Save : strings.CreateTopic}
               onPress={() => {
                 createTopicMethod();

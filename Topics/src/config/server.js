@@ -1,10 +1,11 @@
 // This is going to export all named functions that are going to interact with the Cloud
 import auth, {firebase} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
 import functions from '@react-native-firebase/functions';
-import messaging from '@react-native-firebase/messaging';
-import imageToBase64 from 'react-native-image-base64';
+
+// Maps out the images of the topics to the
+// correct topic
+const profileImages = {};
 
 // This function is going to take in some information about a user and is going to send their information
 // up to Firebase Auth and store it in Firestore
@@ -27,7 +28,7 @@ const createUser = async (
       phoneNumber,
       countryCode,
       createdTopics: [],
-      subscribedTopics: [],
+      followingTopics: [],
     });
 
     await auth().signInWithEmailAndPassword(email, password);
@@ -118,21 +119,12 @@ const getUserByID = async (id) => {
 
 // This method is going to take in topic information and upload it to both Firestore
 // and Storage. It will use the topicID to link the storage with the Firestore together
-const createTopic = async (
-  topicName,
-  topicDescription,
-  topicCoverImage,
-  topicProfileImage,
-  tags,
-  userID,
-) => {
+const createTopic = async (topicName, userID) => {
   // Creates the document topic
   const topic = await firestore().collection('Topics').add({
     topicName,
-    topicDescription,
     userID,
-    tags,
-    subscribers: 0,
+    followers: 0,
   });
 
   // Creates promises to speed up the process
@@ -147,21 +139,7 @@ const createTopic = async (
     topicID: topic.id,
   });
 
-  const storagePromiseCover = storage()
-    .ref()
-    .child('topicsCoverImages/' + topic.id)
-    .putFile(topicCoverImage);
-  const storagePromiseProfile = storage()
-    .ref()
-    .child('topicsProfileImages/' + topic.id)
-    .putFile(topicProfileImage);
-
-  await Promise.all([
-    firestorePromise,
-    topicIDPromise,
-    storagePromiseCover,
-    storagePromiseProfile,
-  ]);
+  await Promise.all([firestorePromise, topicIDPromise]);
 
   return 0;
 };
@@ -169,93 +147,36 @@ const createTopic = async (
 // This method is going to update a topic's information in the database
 // This method is going to take in topic information and upload it to both Firestore
 // and Storage. It will use the topicID to link the storage with the Firestore together
-const saveTopic = async (
-  topicName,
-  topicDescription,
-  topicCoverImage,
-  topicProfileImage,
-  tags,
-  topicID,
-) => {
-  const promises = [];
+const saveTopic = async (topicName, topicID) => {
   // Creates the document topic
-  const topicPromise = firebase
+  const topicPromise = await firebase
     .firestore()
     .collection('Topics')
     .doc(topicID)
     .update({
       topicName,
-      topicDescription,
-      tags,
     });
-
-  promises.push(topicPromise);
-
-  if (topicCoverImage !== '') {
-    const storagePromiseCover = storage()
-      .ref()
-      .child('topicsCoverImages/' + topicID)
-      .putFile(topicCoverImage);
-
-    promises.push(storagePromiseCover);
-  }
-
-  if (topicProfileImage !== '') {
-    const storagePromiseProfile = storage()
-      .ref()
-      .child('topicsProfileImages/' + topicID)
-      .putFile(topicProfileImage);
-
-    promises.push(storagePromiseProfile);
-  }
-
-  await Promise.all(promises);
 
   return 0;
 };
 
-// This is going to fetch a topic by ID by getting the document as well as the profile images for the topic, combining
-// them into one object, and returning it. If the topic doesn't exist, returns -1
+// This is going to fetch a topic by ID by getting the document
 const getTopicByID = async (topicID) => {
   // Constructs the promises
-  const firestorePromise = firestore().collection('Topics').doc(topicID).get();
-  const storageProfilePromise = storage()
-    .ref()
-    .child('topicsProfileImages/' + topicID)
-    .getDownloadURL();
-  const storageCoverPromise = storage()
-    .ref()
-    .child('topicsCoverImages/' + topicID)
-    .getDownloadURL();
+  const firestorePromise = await firestore()
+    .collection('Topics')
+    .doc(topicID)
+    .get();
 
-  try {
-    const results = await Promise.all([
-      firestorePromise,
-      storageProfilePromise,
-      storageCoverPromise,
-    ]);
-
-    // Converts the images to base64 for simpler front end processing
-    const images = await Promise.all([
-      imageToBase64.getBase64String(results[1]),
-      imageToBase64.getBase64String(results[2]),
-    ]);
-
-    return {
-      ...results[0].data(),
-      profileImage: images[0],
-      coverImage: images[1],
-    };
-  } catch (error) {
-    if (
-      error.message.includes(
-        '[storage/object-not-found] No object exists at the desired reference.',
-      )
-    ) {
-      return -1;
-    } else {
-    }
+  if (!firestorePromise.exists) {
+    return -1;
   }
+
+  // Fetches the image for the topic as well
+  return {
+    ...firestorePromise.data(),
+    profileImage: profileImages[firestorePromise.data().topicID],
+  };
 };
 
 // This method is going to send a message by adding it to the database of messages. It will then also deliver the message
@@ -304,15 +225,13 @@ const loadTopicMessages = async (topicID, startTimestamp) => {
 const getAllTopics = async () => {
   const allTopics = await firestore().collection('Topics').get();
 
-  const promises = allTopics.docs.map((eachTopic) =>
-    getTopicByID(eachTopic.id),
-  );
-  const results = await Promise.all(promises);
-
-  return results;
+  return allTopics.docs.map((eachTopic) => {
+    return {
+      ...eachTopic.data(),
+      profileImage: profileImages[firestorePromise.data().topicID],
+    };
+  });
 };
-
-
 
 // This method is going to sign the current user out
 const signOut = async () => {

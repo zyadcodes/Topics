@@ -16,7 +16,7 @@ import {Icon} from 'react-native-elements';
 import Spinner from 'react-native-spinkit';
 import {sleep} from '../../../config/sleep';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueButton';
+import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhiteButton';
 import {screenHeight, screenWidth} from '../../../config/dimensions';
 import LogInScreenStyle from './LogInScreenStyle';
 import colors from '../../../config/colors';
@@ -149,7 +149,7 @@ const LogInScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
           <View style={LogInScreenStyle.buttonContainer}>
-            <TopicsBlueButton
+            <TopicsWhiteButton
               text={strings.LogIn}
               onPress={() => {
                 validateInput();

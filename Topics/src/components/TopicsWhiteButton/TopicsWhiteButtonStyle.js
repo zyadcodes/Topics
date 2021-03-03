@@ -5,7 +5,7 @@ import colors from '../../config/colors';
 
 export default StyleSheet.create({
   outerView: {
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.white,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: colors.black,
@@ -15,11 +15,4 @@ export default StyleSheet.create({
     shadowOpacity: 0.5,
     paddingVertical: screenHeight * 0.01,
   },
-  innerView: {
-    backgroundColor: colors.white,
-    paddingHorizontal: screenWidth * 0.025,
-    paddingVertical: screenHeight * 0.01,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
 });

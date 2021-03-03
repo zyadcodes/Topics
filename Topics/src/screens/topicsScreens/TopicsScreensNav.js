@@ -1,13 +1,13 @@
 // This is going to be the navigator for the topics screens which are the main parts of the app
 import React from 'react';
+import {View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import MyTopicsScreen from './MyTopicsScreen/MyTopicsScreen';
 import ExploreScreen from './ExploreScreen/ExploreScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
 import colors from '../../config/colors';
 import fontStyles from '../../config/fontStyles';
-import strings from '../../config/strings';
 import {Icon} from 'react-native-elements';
+import TopicsScreensNavStyle from './TopicScreensNavStyle';
 import {screenHeight} from '../../config/dimensions';
 
 // Creates the tab navigator
@@ -18,42 +18,74 @@ const TopicsScreensNav = () => {
   return (
     <Tab.Navigator
       initialRouteName={'Explore'}
-      tabBarOptions={{
-        activeTintColor: colors.darkBlue,
-        inactiveTintColor: colors.gray,
-        labelStyle: {
-          ...fontStyles.subFontStyle,
-        },
-        style: {
-          height: screenHeight * 0.125,
-          shadowColor: colors.black,
-          shadowOffset: {
-            height: -1.5,
-          },
-          shadowOpacity: 0.5,
-        },
+      tabBar={({state, descriptors, navigation}) => {
+        const focusedOptions =
+          descriptors[state.routes[state.index].key].options;
+
+        if (focusedOptions.tabBarVisible === false) {
+          return null;
+        }
+
+        return (
+          <View style={TopicsScreensNavStyle.tabBarStyle}>
+            {state.routes.map((route, index) => {
+              const {options} = descriptors[route.key];
+              const label =
+                options.tabBarLabel !== undefined
+                  ? options.tabBarLabel
+                  : options.title !== undefined
+                  ? options.title
+                  : route.name;
+
+              const isFocused = state.index === index;
+
+              const onPress = () => {
+                const event = navigation.emit({
+                  type: 'tabPress',
+                  target: route.key,
+                  canPreventDefault: true,
+                });
+
+                if (!isFocused && !event.defaultPrevented) {
+                  navigation.navigate(route.name);
+                }
+              };
+
+              const onLongPress = () => {
+                navigation.emit({
+                  type: 'tabLongPress',
+                  target: route.key,
+                });
+              };
+
+              return (
+                <TouchableOpacity
+                  key={index}
+                  accessibilityRole="button"
+                  accessibilityState={isFocused ? {selected: true} : {}}
+                  accessibilityLabel={options.tabBarAccessibilityLabel}
+                  testID={options.tabBarTestID}
+                  onPress={onPress}
+                  onLongPress={onLongPress}
+                  style={{flex: 1}}>
+                  {options.tabBarIcon({
+                    focused: isFocused,
+                    color: isFocused ? colors.white : colors.lightGray,
+                    size: screenHeight * 0.1,
+                  })}
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        );
       }}>
-      <Tab.Screen
-        name={'My Topics'}
-        options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon
-              name="comments"
-              size={size * 1.5}
-              type="font-awesome"
-              color={color}
-            />
-          ),
-        }}
-        component={MyTopicsScreen}
-      />
       <Tab.Screen
         name={'Explore'}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon
               name="database"
-              size={size * 1.5}
+              size={size * 0.6}
               type="font-awesome"
               color={color}
             />
@@ -67,7 +99,7 @@ const TopicsScreensNav = () => {
           tabBarIcon: ({color, size}) => (
             <Icon
               name="user"
-              size={size * 1.5}
+              size={size * 0.6}
               type="font-awesome"
               color={color}
             />

@@ -15,7 +15,7 @@ import {sleep} from '../../../config/sleep';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import strings from '../../../config/strings';
 import fontStyles from '../../../config/fontStyles';
-import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueButton';
+import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhiteButton';
 import {screenHeight, screenWidth} from '../../../config/dimensions';
 import ForgotPasswordScreenStyle from './ForgotPasswordScreenStyle';
 import colors from '../../../config/colors';
@@ -96,7 +96,7 @@ const ForgotPasswordScreen = ({navigation}) => {
             />
           </View>
           <View style={ForgotPasswordScreenStyle.buttonContainer}>
-            <TopicsBlueButton
+            <TopicsWhiteButton
               text={strings.SendResetEmail}
               onPress={() => {
                 resetPassword(email);

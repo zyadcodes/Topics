@@ -14,15 +14,9 @@ const TopicsWhiteButton = ({text, onPress, height, width, fontSize}) => {
         TopicsWhiteButtonStyle.outerView,
         {height, width, borderRadius: height / 2},
       ]}>
-      <View
-        style={[
-          TopicsWhiteButtonStyle.innerView,
-          {height, width: width - 50, borderRadius: height / 2},
-        ]}>
-        <Text style={[fontSize, fontStyles.lightBlue, fontStyles.bold]}>
-          {text}
-        </Text>
-      </View>
+      <Text style={[fontSize, fontStyles.darkBlue, fontStyles.bold]}>
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };

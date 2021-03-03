@@ -42,9 +42,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
   },
-  coverPictureContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  blueSection: {
     width: screenWidth,
     height: screenHeight * 0.3,
     shadowColor: colors.black,
@@ -52,10 +50,7 @@ export default StyleSheet.create({
       height: 3,
     },
     shadowOpacity: 0.5,
-  },
-  coverPicture: {
-    width: screenWidth,
-    height: screenHeight * 0.3,
+    backgroundColor: colors.lightBlue
   },
   sendContainer: {
     alignSelf: 'flex-start',

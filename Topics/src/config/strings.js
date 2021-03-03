@@ -8,7 +8,6 @@ export default {
     Next: 'Next',
     Go: 'Go',
     Skip: 'Skip',
-    MyTopics: 'My Topics',
     Explore: 'Explore',
     Profile: 'My Profile',
     SearchMyTopics: 'Search my topics...',

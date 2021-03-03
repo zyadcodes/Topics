@@ -12,7 +12,7 @@ import {
   Image,
 } from 'react-native';
 import ProfileScreenStyle from './ProfileScreenStyle';
-import TopicsBlueButton from '../../../components/TopicsBlueButton/TopicsBlueButton';
+import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhiteButton';
 import {Icon} from 'react-native-elements';
 import fontStyles from '../../../config/fontStyles';
 import colors from '../../../config/colors';
@@ -384,7 +384,7 @@ const ProfileScreen = ({navigation}) => {
                 secureTextEntry={true}
               />
             </View>
-            <TopicsBlueButton
+            <TopicsWhiteButton
               text={strings.SaveInfo}
               onPress={() => {
                 validateSaveInput();
@@ -420,7 +420,7 @@ const ProfileScreen = ({navigation}) => {
               </View>
             </TouchableOpacity>
             <View style={ProfileScreenStyle.signOutButton}>
-              <TopicsBlueButton
+              <TopicsWhiteButton
                 text={strings.SignOut}
                 onPress={async () => {
                   setIsLoading(true);
@@ -642,7 +642,7 @@ const ProfileScreen = ({navigation}) => {
               />
             </View>
             <View style={ProfileScreenStyle.buttonContainer}>
-              <TopicsBlueButton
+              <TopicsWhiteButton
                 text={strings.Create}
                 onPress={() => {
                   validateSignUpInput();

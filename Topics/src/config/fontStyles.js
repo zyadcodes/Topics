@@ -52,6 +52,9 @@ export default StyleSheet.create({
   darkBlue: {
     color: colors.darkBlue,
   },
+  mediumBlue: {
+    color: colors.mediumBlue
+  },  
   lightBlue: {
     color: colors.lightBlue,
   },
