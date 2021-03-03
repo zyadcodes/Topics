@@ -1,12 +1,14 @@
 // This screen will be the initial screen that is accessed when the app is launched for the first time
 import React, {useEffect} from 'react';
-import {View, Text, Image, Animated} from 'react-native';
+import {View, Text, Image, Animated, ImageBackground} from 'react-native';
 import strings from '../../../config/strings';
 import {screenHeight, screenWidth} from '../../../config/dimensions';
 import fontStyles from '../../../config/fontStyles';
 import LaunchScreenStyle from './LaunchScreenStyle';
 import Logo from '../../../assets/Logo.png';
 import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhiteButton';
+import Lines from '../../../assets/Lines.svg';
+import SVGBackground from '../../../components/SVGBackground/SVGBackground';
 
 // Creates the functional component
 const LaunchScreen = ({navigation}) => {
@@ -52,6 +54,7 @@ const LaunchScreen = ({navigation}) => {
   // Renders the component
   return (
     <View style={LaunchScreenStyle.container}>
+      <SVGBackground SVG={Lines} />
       <Animated.View style={currentImagePos.getLayout()}>
         <Animated.Image
           source={Logo}
@@ -63,7 +66,7 @@ const LaunchScreen = ({navigation}) => {
         style={[
           fontStyles.darkBlue,
           fontStyles.hugeFontStyle,
-          fontStyles.bold,
+          fontStyles.white,
           LaunchScreenStyle.textContainer,
           {opacity: currentOpacity},
         ]}>

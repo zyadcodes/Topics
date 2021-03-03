@@ -43,6 +43,8 @@
     "react-native-screens": "^2.17.1",
     "react-native-simple-animations": "^0.2.3",
     "react-native-spinkit": "^1.5.1",
+    "react-native-svg": "^12.1.0",
+    "react-native-svg-transformer": "^0.14.3",
     "react-native-vector-icons": "^8.0.0"
   },
   "devDependencies": {
