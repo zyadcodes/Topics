@@ -30,7 +30,6 @@ const CreateTopicScreen = ({navigation, route}) => {
   // Stores the state variables for all of the inputs
   const [topicName, setTopicName] = useState(isEditing ? topic.topicName : '');
   const [isLoading, setIsLoading] = useState(false);
-  const [updateScreen, setUpdateScreen] = useState(false);
   const [errorVisible, setErrorVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -81,7 +80,6 @@ const CreateTopicScreen = ({navigation, route}) => {
           <View style={CreateTopicScreenStyle.rowContainer}>
             <TextInput
               value={topicName}
-              maxLength={13}
               onChangeText={(newText) => setTopicName(newText)}
               placeholder={strings.TopicNameDotDotDot}
               placeholderTextColor={colors.gray}

@@ -5,12 +5,15 @@ import colors from '../../../config/colors';
 
 export default StyleSheet.create({
   container: {
-    flex: 1,
+    width: screenWidth,
+    height: screenHeight,
   },
   onboardingContainer: {
     alignItems: 'center',
     height: screenHeight,
     width: screenWidth,
+    maxWidth: screenWidth,
+    zIndex: 2,
     paddingHorizontal: screenWidth * 0.025,
     backgroundColor: colors.darkBlue,
   },
@@ -55,7 +58,6 @@ export default StyleSheet.create({
     height: screenHeight * 0.02,
     width: screenHeight * 0.02,
     borderRadius: screenHeight * 0.02,
-    backgroundColor: colors.darkBlue,
     borderColor: colors.white,
     borderWidth: 1,
   },

@@ -2,10 +2,13 @@
 import auth, {firebase} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import functions from '@react-native-firebase/functions';
+import Motivation from '../assets/topicPics/Motivation.png';
 
 // Maps out the images of the topics to the
 // correct topic
-const profileImages = {};
+const profileImages = {
+  's09Q8VmrmtM1v84YfgJ8': Motivation
+};
 
 // This function is going to take in some information about a user and is going to send their information
 // up to Firebase Auth and store it in Firestore
@@ -228,7 +231,7 @@ const getAllTopics = async () => {
   return allTopics.docs.map((eachTopic) => {
     return {
       ...eachTopic.data(),
-      profileImage: profileImages[firestorePromise.data().topicID],
+      profileImage: profileImages[eachTopic.data().topicID],
     };
   });
 };

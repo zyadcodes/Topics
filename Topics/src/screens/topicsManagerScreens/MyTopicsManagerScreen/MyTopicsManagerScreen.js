@@ -47,6 +47,7 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
     const newUserObject = await getUserByID(route.params.userObject.userID);
     if (newUserObject.createdTopics.length === 0) {
       await sleep(500);
+      setUserObject(newUserObject);
       setIsLoading(false);
     } else {
       // One line solution to fetch all promises
@@ -158,26 +159,11 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
                           topic: item,
                         });
                       }}>
-                      <View
-                        style={
-                          MyTopicsManagerScreenStyle.topicProfileContainer
-                        }>
-                        <Image
-                          source={item.profileImage}
-                          resizeMode={'contain'}
-                          style={MyTopicsManagerScreenStyle.topicProfile}
-                        />
-                      </View>
-                      <View style={MyTopicsManagerScreenStyle.verticalSpacer} />
-                      <Text
-                        style={[
-                          fontStyles.black,
-                          fontStyles.bold,
-                          fontStyles.mainFontStyle,
-                          {textAlign: 'center'},
-                        ]}>
-                        {item.topicName}
-                      </Text>
+                      <Image
+                        source={item.profileImage}
+                        resizeMode={'contain'}
+                        style={MyTopicsManagerScreenStyle.topicProfile}
+                      />
                     </TouchableOpacity>
                   </Animatable.View>
                 );

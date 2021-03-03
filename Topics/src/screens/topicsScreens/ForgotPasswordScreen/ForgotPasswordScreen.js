@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  ImageBackground,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import {sleep} from '../../../config/sleep';
@@ -21,6 +22,7 @@ import ForgotPasswordScreenStyle from './ForgotPasswordScreenStyle';
 import colors from '../../../config/colors';
 import Logo from '../../../assets/Logo.png';
 import {resetPassword} from '../../../config/server';
+import Lines from '../../../assets/Lines.png';
 
 // Creates the functional component
 const ForgotPasswordScreen = ({navigation}) => {
@@ -34,7 +36,9 @@ const ForgotPasswordScreen = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={ForgotPasswordScreenStyle.container}>
+        <ImageBackground
+          style={ForgotPasswordScreenStyle.container}
+          source={Lines}>
           <TouchableOpacity
             style={ForgotPasswordScreenStyle.backButtonContainer}
             onPress={() => navigation.goBack()}>
@@ -42,7 +46,7 @@ const ForgotPasswordScreen = ({navigation}) => {
               type={'font-awesome'}
               name={'angle-left'}
               size={screenHeight * 0.05}
-              color={colors.white}
+              color={colors.lightBlue}
             />
           </TouchableOpacity>
           <View style={ForgotPasswordScreenStyle.logoTitleContainer}>
@@ -53,7 +57,7 @@ const ForgotPasswordScreen = ({navigation}) => {
             />
             <Text
               style={[
-                fontStyles.darkBlue,
+                fontStyles.white,
                 fontStyles.bigFontStyle,
                 fontStyles.bold,
                 ForgotPasswordScreenStyle.textContainer,
@@ -62,7 +66,7 @@ const ForgotPasswordScreen = ({navigation}) => {
             </Text>
             <Text
               style={[
-                fontStyles.darkBlue,
+                fontStyles.white,
                 fontStyles.mainFontStyle,
                 fontStyles.bold,
                 ForgotPasswordScreenStyle.subTextContainer,
@@ -71,12 +75,6 @@ const ForgotPasswordScreen = ({navigation}) => {
             </Text>
           </View>
           <View style={ForgotPasswordScreenStyle.inputContainer}>
-            <Icon
-              color={colors.gray}
-              type={'font-awesome'}
-              name={'user'}
-              size={screenHeight * 0.05}
-            />
             <TextInput
               value={email}
               autoCapitalize={'none'}
@@ -87,10 +85,11 @@ const ForgotPasswordScreen = ({navigation}) => {
               returnKeyType={'done'}
               onChangeText={(newText) => setEmail(newText)}
               placeholder={strings.EmailDotDotDot}
-              placeholderTextColor={colors.gray}
+              placeholderTextColor={colors.white}
               style={[
-                fontStyles.gray,
-                fontStyles.subFontStyle,
+                fontStyles.white,
+                fontStyles.midFontStyle,
+                fontStyles.bold,
                 ForgotPasswordScreenStyle.textInput,
               ]}
             />
@@ -137,7 +136,7 @@ const ForgotPasswordScreen = ({navigation}) => {
               navigation.goBack();
             }}
           />
-        </View>
+        </ImageBackground>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

@@ -36,33 +36,11 @@ export default StyleSheet.create({
     shadowOpacity: 0.5,
     backgroundColor: colors.lightBlue,
   },
-  grayBackground: {
-    backgroundColor: colors.lightGray,
-  },
   rowContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     alignSelf: 'center',
     width: screenWidth * 0.85,
-    marginTop: screenHeight * 0.03,
-  },
-  profPictureContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: screenHeight * 0.12,
-    borderRadius: screenHeight * 0.06,
-    height: screenHeight * 0.12,
-    shadowColor: colors.black,
-    shadowOffset: {
-      height: 3,
-    },
-    shadowOpacity: 0.5,
-  },
-  profPicture: {
-    width: screenHeight * 0.12,
-    borderRadius: screenHeight * 0.06,
-    height: screenHeight * 0.12,
+    marginTop: screenHeight * 0.075,
   },
   topicNameInput: {
     width: screenWidth * 0.5,

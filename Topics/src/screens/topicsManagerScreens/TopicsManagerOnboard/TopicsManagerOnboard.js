@@ -68,9 +68,8 @@ const TopicsManagerOnboard = ({navigation, route}) => {
         <View style={TopicsManagerOnboardStyle.buttonContainer}>
           <TopicsWhiteButton
             onPress={() => {
-              navigation.push('CreateTopicScreen', {
+              navigation.push('MyTopicsManagerScreen', {
                 userObject: route.params.userObject,
-                isEditing: false
               });
             }}
             height={screenHeight * 0.065}

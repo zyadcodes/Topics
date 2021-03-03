@@ -67,7 +67,11 @@ const TopicsScreensNav = () => {
                   testID={options.tabBarTestID}
                   onPress={onPress}
                   onLongPress={onLongPress}
-                  style={{flex: 1}}>
+                  style={
+                    isFocused
+                      ? TopicsScreensNavStyle.touchableCircleSelected
+                      : TopicsScreensNavStyle.touchableCircleUnselected
+                  }>
                   {options.tabBarIcon({
                     focused: isFocused,
                     color: isFocused ? colors.white : colors.lightGray,

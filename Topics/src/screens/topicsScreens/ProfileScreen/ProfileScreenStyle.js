@@ -9,6 +9,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.white,
   },
+
   logoStyle: {
     shadowColor: colors.black,
     shadowOffset: {
@@ -28,7 +29,14 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.5,
     textAlign: 'center',
-    marginTop: screenHeight * -0.025,
+    marginTop: screenHeight * -0.045,
+  },
+  myAccountTextStyle: {
+    textAlign: 'left',
+    marginTop: screenHeight * 0.075,
+    marginLeft: screenWidth * 0.05,
+    alignSelf: 'flex-start',
+    marginBottom: screenHeight * 0.075
   },
   inputViewContainer: {
     width: screenWidth,
@@ -36,10 +44,9 @@ export default StyleSheet.create({
   },
   inputContainer: {
     width: screenWidth * 0.8,
-    paddingHorizontal: screenWidth * 0.025,
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomColor: colors.gray,
+    borderBottomColor: colors.white,
     borderBottomWidth: 2,
     paddingBottom: screenHeight * 0.01,
     marginBottom: screenHeight * 0.035,
@@ -47,18 +54,18 @@ export default StyleSheet.create({
   textInput: {
     width: screenWidth * 0.65,
     alignItems: 'center',
-    marginLeft: screenWidth * 0.05,
   },
   phoneNumberInput: {
     width: screenWidth * 0.8,
     alignItems: 'center',
-    marginLeft: screenWidth * -0.05,
+    backgroundColor: colors.white,
   },
   termsAndConditionsRow: {
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
     width: screenWidth * 0.8,
+    marginTop: screenHeight * 0.025,
   },
   buttonContainer: {
     marginVertical: screenHeight * 0.025,
@@ -67,59 +74,26 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  blueSection: {
-    width: screenWidth,
-    height: screenHeight * 0.245,
-    marginBottom: screenHeight * 0.025,
-  },
-  blueSectionRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    marginTop: screenHeight * 0.05,
-    width: screenWidth * 0.9,
-  },
-  logoContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: screenHeight * 0.075,
-    height: screenHeight * 0.075,
-    borderRadius: screenHeight * 0.0375,
-    backgroundColor: colors.white,
-  },
-  myAccountLogoStyle: {
-    width: screenHeight * 0.05,
-    height: screenHeight * 0.05,
-  },
-  topicsManagerStyle: {
-    textAlign: 'right',
-  },
-  myAccountStyle: {
-    textAlign: 'left',
-    marginLeft: screenWidth * 0.05,
-    marginTop: screenHeight * 0.015,
-  },
   linkRow: {
     flexDirection: 'row',
     width: screenWidth * 0.9,
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: screenHeight * 0.025,
-    height: screenHeight * 0.05
+    height: screenHeight * 0.05,
   },
   iconStyle: {
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.white,
     height: screenHeight * 0.05,
     width: screenHeight * 0.05,
     borderRadius: screenHeight * 0.025,
     paddingLeft: screenHeight * 0.005,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   signOutButton: {
     alignSelf: 'flex-end',
     marginRight: screenWidth * 0.05,
-    marginTop: screenHeight * 0.02
-  }
+    marginTop: screenHeight * 0.0625,
+  },
 });

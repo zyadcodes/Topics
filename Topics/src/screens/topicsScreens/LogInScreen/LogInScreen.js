@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  ImageBackground,
 } from 'react-native';
 import strings from '../../../config/strings';
 import fontStyles from '../../../config/fontStyles';
@@ -22,6 +23,7 @@ import LogInScreenStyle from './LogInScreenStyle';
 import colors from '../../../config/colors';
 import Logo from '../../../assets/Logo.png';
 import {logIn} from '../../../config/server';
+import Lines from '../../../assets/Lines.png';
 
 // Creates the functional component
 const LogInScreen = ({navigation}) => {
@@ -59,7 +61,7 @@ const LogInScreen = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={LogInScreenStyle.container}>
+        <ImageBackground style={LogInScreenStyle.container} source={Lines}>
           <TouchableOpacity
             style={LogInScreenStyle.backButtonContainer}
             onPress={() => navigation.goBack()}>
@@ -67,7 +69,7 @@ const LogInScreen = ({navigation}) => {
               type={'font-awesome'}
               name={'angle-left'}
               size={screenHeight * 0.05}
-              color={colors.white}
+              color={colors.lightBlue}
             />
           </TouchableOpacity>
           <View style={LogInScreenStyle.logoTitleContainer}>
@@ -78,7 +80,7 @@ const LogInScreen = ({navigation}) => {
             />
             <Text
               style={[
-                fontStyles.darkBlue,
+                fontStyles.white,
                 fontStyles.biggerFontStyle,
                 fontStyles.bold,
                 LogInScreenStyle.textContainer,
@@ -87,12 +89,6 @@ const LogInScreen = ({navigation}) => {
             </Text>
           </View>
           <View style={LogInScreenStyle.inputContainer}>
-            <Icon
-              color={colors.gray}
-              type={'font-awesome'}
-              name={'user'}
-              size={screenHeight * 0.05}
-            />
             <TextInput
               value={email}
               autoCapitalize={'none'}
@@ -103,21 +99,16 @@ const LogInScreen = ({navigation}) => {
               returnKeyType={'done'}
               onChangeText={(newText) => setEmail(newText)}
               placeholder={strings.EmailDotDotDot}
-              placeholderTextColor={colors.gray}
+              placeholderTextColor={colors.white}
               style={[
-                fontStyles.gray,
-                fontStyles.subFontStyle,
+                fontStyles.white,
+                fontStyles.midFontStyle,
+                fontStyles.bold,
                 LogInScreenStyle.textInput,
               ]}
             />
           </View>
           <View style={LogInScreenStyle.inputContainer}>
-            <Icon
-              color={colors.gray}
-              type={'font-awesome'}
-              name={'lock'}
-              size={screenHeight * 0.05}
-            />
             <TextInput
               value={password}
               autoCapitalize={'none'}
@@ -127,10 +118,11 @@ const LogInScreen = ({navigation}) => {
               returnKeyType={'done'}
               onChangeText={(newText) => setPassword(newText)}
               placeholder={strings.PasswordDotDotDot}
-              placeholderTextColor={colors.gray}
+              placeholderTextColor={colors.white}
               style={[
-                fontStyles.gray,
-                fontStyles.subFontStyle,
+                fontStyles.white,
+                fontStyles.midFontStyle,
+                fontStyles.bold,
                 LogInScreenStyle.textInput,
               ]}
               secureTextEntry={true}
@@ -141,7 +133,7 @@ const LogInScreen = ({navigation}) => {
             onPress={() => navigation.push('ForgotPasswordScreen')}>
             <Text
               style={[
-                fontStyles.lightBlue,
+                fontStyles.white,
                 fontStyles.mainFontStyle,
                 fontStyles.bold,
               ]}>
@@ -201,7 +193,7 @@ const LogInScreen = ({navigation}) => {
               setIsErrorVisible(false);
             }}
           />
-        </View>
+        </ImageBackground>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

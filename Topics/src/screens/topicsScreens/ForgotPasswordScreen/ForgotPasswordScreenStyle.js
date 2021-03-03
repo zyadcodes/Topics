@@ -13,7 +13,7 @@ export default StyleSheet.create({
     alignSelf: 'flex-start',
     marginTop: screenHeight * 0.075,
     marginLeft: screenWidth * 0.05,
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.white,
     height: screenHeight * 0.05,
     width: screenHeight * 0.05,
     borderRadius: screenHeight * 0.025,
@@ -45,15 +45,14 @@ export default StyleSheet.create({
   logoTitleContainer: {
     width: screenWidth,
     alignItems: 'center',
-    marginBottom: screenHeight * 0.05,
+    marginBottom: screenHeight * 0.1,
     marginTop: screenHeight * -0.075,
   },
   inputContainer: {
     width: screenWidth * 0.8,
-    paddingHorizontal: screenWidth * 0.025,
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomColor: colors.gray,
+    borderBottomColor: colors.white,
     borderBottomWidth: 2,
     paddingBottom: screenHeight * 0.01,
     marginBottom: screenHeight * 0.075,
@@ -61,7 +60,6 @@ export default StyleSheet.create({
   textInput: {
     width: screenWidth * 0.65,
     alignItems: 'center',
-    marginLeft: screenWidth * 0.05,
   },
   subTextContainer: {
     shadowColor: colors.black,
@@ -73,6 +71,6 @@ export default StyleSheet.create({
     marginTop: screenHeight * 0.025,
   },
   buttonContainer: {
-      marginTop: screenHeight * 0.025
-  }
+    marginTop: screenHeight * 0.15,
+  },
 });

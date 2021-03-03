@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
-  Image,
+  ImageBackground,
 } from 'react-native';
 import ProfileScreenStyle from './ProfileScreenStyle';
 import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhiteButton';
@@ -26,10 +26,9 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
 import {sleep} from '../../../config/sleep';
 import {createUser, updateUserInfo, signOut} from '../../../config/server';
-import LinearGradient from 'react-native-linear-gradient';
 import {getUserByID} from '../../../config/server';
 import auth from '@react-native-firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Lines from '../../../assets/Lines.png';
 
 // Creates the functional component
 const ProfileScreen = ({navigation}) => {
@@ -112,7 +111,7 @@ const ProfileScreen = ({navigation}) => {
 
     // Starts the animation for the image zoom
     Animated.timing(currentImageWidth, {
-      toValue: screenWidth * 0.35,
+      toValue: screenWidth * 0.25,
       duration: 1200,
       delay: 500,
       useNativeDriver: false,
@@ -234,7 +233,9 @@ const ProfileScreen = ({navigation}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={[ProfileScreenStyle.container]}>
+          <ImageBackground
+            style={[ProfileScreenStyle.container]}
+            source={Lines}>
             <AwesomeAlert
               show={true}
               closeOnTouchOutside={false}
@@ -249,7 +250,7 @@ const ProfileScreen = ({navigation}) => {
                 />
               }
             />
-          </View>
+          </ImageBackground>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     );
@@ -263,64 +264,20 @@ const ProfileScreen = ({navigation}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={[ProfileScreenStyle.container]}>
-            <LinearGradient
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 0}}
-              colors={[colors.darkBlue, colors.lightBlue]}
-              style={ProfileScreenStyle.blueSection}>
-              <View style={ProfileScreenStyle.blueSectionRow}>
-                <View style={ProfileScreenStyle.logoContainer}>
-                  <Image
-                    resizeMode={'contain'}
-                    style={ProfileScreenStyle.myAccountLogoStyle}
-                    source={Logo}
-                  />
-                </View>
-                <TouchableOpacity
-                  onPress={async () => {
-                    const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
-                      'isTopicManagerFirstLaunch',
-                    );
-
-                    if (isTopicManagerFirstLaunch === 'false') {
-                      navigation.push('MyTopicsManagerScreen', {
-                        userObject: userObject,
-                      });
-                    } else {
-                      navigation.push('TopicsManageOnboard', {
-                        userObject: userObject,
-                      });
-                    }
-                  }}>
-                  <Text
-                    style={[
-                      fontStyles.mainFontStyle,
-                      fontStyles.bold,
-                      fontStyles.white,
-                      ProfileScreenStyle.topicsManagerStyle,
-                    ]}>
-                    {strings.TopicsManager}
-                  </Text>
-                </TouchableOpacity>
-              </View>
+          <ImageBackground
+            style={[ProfileScreenStyle.container]}
+            source={Lines}>
+            <View style={ProfileScreenStyle.myAccountTextStyle}>
               <Text
                 style={[
                   fontStyles.bigFontStyle,
-                  fontStyles.bold,
                   fontStyles.white,
-                  ProfileScreenStyle.myAccountStyle,
+                  fontStyles.bold,
                 ]}>
                 {strings.MyAccount}
               </Text>
-            </LinearGradient>
+            </View>
             <View style={ProfileScreenStyle.inputContainer}>
-              <Icon
-                color={colors.gray}
-                type={'font-awesome'}
-                name={'user'}
-                size={screenHeight * 0.05}
-              />
               <TextInput
                 value={email}
                 autoCapitalize={'none'}
@@ -331,10 +288,11 @@ const ProfileScreen = ({navigation}) => {
                 returnKeyType={'done'}
                 onChangeText={(newText) => setEmail(newText)}
                 placeholder={strings.EmailDotDotDot}
-                placeholderTextColor={colors.gray}
+                placeholderTextColor={colors.white}
                 style={[
-                  fontStyles.gray,
-                  fontStyles.subFontStyle,
+                  fontStyles.white,
+                  fontStyles.midFontStyle,
+                  fontStyles.bold,
                   ProfileScreenStyle.textInput,
                 ]}
               />
@@ -360,12 +318,6 @@ const ProfileScreen = ({navigation}) => {
               />
             </View>
             <View style={ProfileScreenStyle.inputContainer}>
-              <Icon
-                color={colors.gray}
-                type={'font-awesome'}
-                name={'lock'}
-                size={screenHeight * 0.05}
-              />
               <TextInput
                 value={password}
                 autoCapitalize={'none'}
@@ -375,10 +327,11 @@ const ProfileScreen = ({navigation}) => {
                 returnKeyType={'done'}
                 onChangeText={(newText) => setPassword(newText)}
                 placeholder={strings.PasswordDotDotDot}
-                placeholderTextColor={colors.gray}
+                placeholderTextColor={colors.white}
                 style={[
-                  fontStyles.gray,
-                  fontStyles.subFontStyle,
+                  fontStyles.white,
+                  fontStyles.midFontStyle,
+                  fontStyles.bold,
                   ProfileScreenStyle.textInput,
                 ]}
                 secureTextEntry={true}
@@ -394,7 +347,7 @@ const ProfileScreen = ({navigation}) => {
               fontSize={fontStyles.bigFontStyle}
             />
             <TouchableOpacity style={[ProfileScreenStyle.linkRow]}>
-              <Text style={[fontStyles.black, fontStyles.mainFontStyle]}>
+              <Text style={[fontStyles.white, fontStyles.mainFontStyle]}>
                 {strings.TermsAndConditions}
               </Text>
               <View style={ProfileScreenStyle.iconStyle}>
@@ -402,12 +355,12 @@ const ProfileScreen = ({navigation}) => {
                   type={'font-awesome'}
                   name={'angle-right'}
                   size={screenHeight * 0.05}
-                  color={colors.white}
+                  color={colors.lightBlue}
                 />
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={[ProfileScreenStyle.linkRow]}>
-              <Text style={[fontStyles.black, fontStyles.mainFontStyle]}>
+              <Text style={[fontStyles.white, fontStyles.mainFontStyle]}>
                 {strings.PrivacyPolicy}
               </Text>
               <View style={ProfileScreenStyle.iconStyle}>
@@ -415,7 +368,7 @@ const ProfileScreen = ({navigation}) => {
                   type={'font-awesome'}
                   name={'angle-right'}
                   size={screenHeight * 0.05}
-                  color={colors.white}
+                  color={colors.lightBlue}
                 />
               </View>
             </TouchableOpacity>
@@ -506,7 +459,7 @@ const ProfileScreen = ({navigation}) => {
                 setUserInfoSavedSuccess(false);
               }}
             />
-          </View>
+          </ImageBackground>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     );
@@ -519,7 +472,7 @@ const ProfileScreen = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={ProfileScreenStyle.container}>
+        <ImageBackground style={ProfileScreenStyle.container} source={Lines}>
           <Animated.View
             style={[
               currentPos.getLayout(),
@@ -532,7 +485,7 @@ const ProfileScreen = ({navigation}) => {
             />
             <Animated.Text
               style={[
-                fontStyles.darkBlue,
+                fontStyles.white,
                 fontStyles.biggerFontStyle,
                 fontStyles.bold,
                 ProfileScreenStyle.textContainer,
@@ -540,7 +493,7 @@ const ProfileScreen = ({navigation}) => {
                   fontSize: currentTextSize,
                 },
               ]}>
-              {strings.WelcomeToTopics}
+              {strings.SignUp}
             </Animated.Text>
           </Animated.View>
           <Animated.View
@@ -549,12 +502,6 @@ const ProfileScreen = ({navigation}) => {
               {opacity: viewOpacity},
             ]}>
             <View style={ProfileScreenStyle.inputContainer}>
-              <Icon
-                color={colors.gray}
-                type={'font-awesome'}
-                name={'user'}
-                size={screenHeight * 0.05}
-              />
               <TextInput
                 value={email}
                 autoCapitalize={'none'}
@@ -565,10 +512,11 @@ const ProfileScreen = ({navigation}) => {
                 returnKeyType={'done'}
                 onChangeText={(newText) => setEmail(newText)}
                 placeholder={strings.EmailDotDotDot}
-                placeholderTextColor={colors.gray}
+                placeholderTextColor={colors.white}
                 style={[
-                  fontStyles.gray,
-                  fontStyles.subFontStyle,
+                  fontStyles.white,
+                  fontStyles.midFontStyle,
+                  fontStyles.bold,
                   ProfileScreenStyle.textInput,
                 ]}
               />
@@ -580,6 +528,9 @@ const ProfileScreen = ({navigation}) => {
                 textInputProps={{
                   placeholder: strings.PhoneNumberDotDotDot,
                   placeholderColor: colors.gray,
+                }}
+                textContainerStyle={{
+                  backgroundColor: colors.white,
                 }}
                 containerStyle={ProfileScreenStyle.phoneNumberInput}
                 defaultCode={'US'}
@@ -593,12 +544,6 @@ const ProfileScreen = ({navigation}) => {
               />
             </View>
             <View style={ProfileScreenStyle.inputContainer}>
-              <Icon
-                color={colors.gray}
-                type={'font-awesome'}
-                name={'lock'}
-                size={screenHeight * 0.05}
-              />
               <TextInput
                 value={password}
                 autoCapitalize={'none'}
@@ -608,10 +553,11 @@ const ProfileScreen = ({navigation}) => {
                 returnKeyType={'done'}
                 onChangeText={(newText) => setPassword(newText)}
                 placeholder={strings.PasswordDotDotDot}
-                placeholderTextColor={colors.gray}
+                placeholderTextColor={colors.white}
                 style={[
-                  fontStyles.gray,
-                  fontStyles.subFontStyle,
+                  fontStyles.white,
+                  fontStyles.midFontStyle,
+                  fontStyles.bold,
                   ProfileScreenStyle.textInput,
                 ]}
                 secureTextEntry={true}
@@ -621,7 +567,12 @@ const ProfileScreen = ({navigation}) => {
               <Text style={[fontStyles.midFontStyle, fontStyles.black]}>
                 {strings.IHaveReadAndAcceptedThe}
                 <TouchableOpacity onPress={() => {}}>
-                  <Text style={[fontStyles.midFontStyle, fontStyles.lightBlue]}>
+                  <Text
+                    style={[
+                      fontStyles.midFontStyle,
+                      fontStyles.white,
+                      fontStyles.bold,
+                    ]}>
                     {strings.TermsAndConditions}
                   </Text>
                 </TouchableOpacity>
@@ -631,13 +582,13 @@ const ProfileScreen = ({navigation}) => {
                 value={isChecked}
                 onValueChange={(newValue) => setIsChecked(newValue)}
                 tintColors={{
-                  true: colors.lightBlue,
+                  true: colors.white,
                   false: colors.gray,
                 }}
-                tintColor={colors.lightBlue}
-                onCheckColor={colors.white}
-                onFillColor={colors.lightBlue}
-                onTintColor={colors.lightBlue}
+                tintColor={colors.white}
+                onCheckColor={colors.lightBlue}
+                onFillColor={colors.white}
+                onTintColor={colors.white}
                 boxType={'square'}
               />
             </View>
@@ -660,7 +611,12 @@ const ProfileScreen = ({navigation}) => {
                 onPress={() => {
                   navigation.push('LogInScreen');
                 }}>
-                <Text style={[fontStyles.midFontStyle, fontStyles.lightBlue]}>
+                <Text
+                  style={[
+                    fontStyles.midFontStyle,
+                    fontStyles.white,
+                    fontStyles.bold,
+                  ]}>
                   {strings.LogIn}
                 </Text>
               </TouchableOpacity>
@@ -708,7 +664,7 @@ const ProfileScreen = ({navigation}) => {
               />
             }
           />
-        </View>
+        </ImageBackground>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

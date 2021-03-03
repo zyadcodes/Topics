@@ -69,31 +69,23 @@ export default StyleSheet.create({
     width: screenWidth,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    height: screenHeight * 0.755
+    height: screenHeight * 0.755,
   },
   topicContainer: {
-    width: '50%',
     justifyContent: 'space-between',
     alignItems: 'center',
     textAlign: 'center',
     marginTop: screenHeight * 0.035,
-  },
-  verticalSpacer: {
-    height: screenHeight * 0.025
-  },
-  topicProfileContainer: {
-    width: screenHeight * 0.15,
-    borderRadius: screenHeight * 0.075,
-    height: screenHeight * 0.15,
     shadowColor: colors.black,
     shadowOffset: {
       height: 3,
     },
     shadowOpacity: 0.5,
+    marginLeft: screenWidth * 0.0666
   },
   topicProfile: {
-    width: screenHeight * 0.15,
-    borderRadius: screenHeight * 0.075,
-    height: screenHeight * 0.15,
+    width: screenWidth * 0.4,
+    height: screenWidth * 0.4,
+    borderRadius: screenWidth * 0.08,
   },
 });

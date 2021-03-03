@@ -13,7 +13,7 @@ export default StyleSheet.create({
     alignSelf: 'flex-start',
     marginTop: screenHeight * 0.075,
     marginLeft: screenWidth * 0.05,
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.white,
     height: screenHeight * 0.05,
     width: screenHeight * 0.05,
     borderRadius: screenHeight * 0.025,
@@ -50,10 +50,9 @@ export default StyleSheet.create({
   },
   inputContainer: {
     width: screenWidth * 0.8,
-    paddingHorizontal: screenWidth * 0.025,
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomColor: colors.gray,
+    borderBottomColor: colors.white,
     borderBottomWidth: 2,
     paddingBottom: screenHeight * 0.01,
     marginBottom: screenHeight * 0.075,
@@ -61,7 +60,6 @@ export default StyleSheet.create({
   textInput: {
     width: screenWidth * 0.65,
     alignItems: 'center',
-    marginLeft: screenWidth * 0.05,
   },
   forgotPasswordStyle: {
     textAlign: 'center',

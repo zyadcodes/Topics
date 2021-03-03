@@ -21,4 +21,18 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  touchableCircleSelected: {
+    backgroundColor: colors.lightBlue,
+    height: screenHeight * 0.085,
+    width: screenHeight * 0.085,
+    borderRadius: screenHeight * 0.0425,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  touchableCircleUnselected: {
+    height: screenHeight * 0.085,
+    width: screenHeight * 0.085,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });

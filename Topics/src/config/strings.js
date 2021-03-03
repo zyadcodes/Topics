@@ -1,6 +1,6 @@
 // This file is going to store all of the strings that will be used throughout the app
 export default {
-    Topics: 'Topics',
+    OfTheDay: 'Of the Day',
     LetsGo: 'Let\'s go',
     ExploreTopicsYouLove: 'Explore\nTopics you love',
     SubscribeToYourFavorites: 'Subscribe\nTo your favorites',
@@ -11,9 +11,9 @@ export default {
     Explore: 'Explore',
     Profile: 'My Profile',
     SearchMyTopics: 'Search my topics...',
-    TopicsManager: 'Topics\nManager',
+    OTDManager: 'OTD\nManager',
     SearchAllTopics: 'Search all topics...',
-    WelcomeToTopics: 'Welcome to\nTopics!',
+    SignUp: 'Sign Up',
     EmailDotDotDot: 'Email...',
     PhoneNumberDotDotDot: 'Phone Number...',
     PasswordDotDotDot: 'Password...',

@@ -125,33 +125,6 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
         infiniteScroll={true}
         loadEarlier={true}
         showUserAvatar={false}
-        renderTime={(props) => <View />}
-        renderMessage={(props) => (
-          <Message
-            {...props}
-            containerStyle={{
-              right: {
-                marginTop: screenHeight * 0.025,
-                alignItems: 'center',
-              },
-            }}
-          />
-        )}
-        showAvatarForEveryMessage={true}
-        renderBubble={(props) => (
-          <Bubble
-            {...props}
-            textStyle={{
-              right: {
-                ...fontStyles.white,
-                ...fontStyles.midFontStyle,
-              },
-            }}
-            wrapperStyle={{
-              right: TopicManagerMessagesScreenStyle.messageContainer,
-            }}
-          />
-        )}
         renderLoadEarlier={(props) =>
           messages.length === 0 || allMessagesLoaded === true ? (
             <View />

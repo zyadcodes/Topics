@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   Keyboard,
+  ImageBackground,
 } from 'react-native';
 import ExploreScreenStyle from './ExploreScreenStyle';
 import colors from '../../../config/colors';
@@ -26,6 +27,7 @@ import Spinner from 'react-native-spinkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {sleep} from '../../../config/sleep';
 import * as Animatable from 'react-native-animatable';
+import Lines from '../../../assets/Lines.png';
 
 // Creates the functional component
 const ExploreScreen = ({navigation}) => {
@@ -33,7 +35,7 @@ const ExploreScreen = ({navigation}) => {
   const [searchInput, setSearchInput] = useState('');
   const [userObject, setUserObject] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [trendingTopics, setAllTrendingTopics] = useState([]);
+  const [topics, setAllTopics] = useState([]);
 
   // This is going to perform the logic for whether or not to show the intro onboarding screens
   useEffect(() => {
@@ -44,8 +46,7 @@ const ExploreScreen = ({navigation}) => {
   // Checks if a user is logged in
   const onAuthStateChanged = async (user) => {
     const allTopicsArray = await getAllTopics();
-    setAllTrendingTopics(allTopicsArray);
-
+    setAllTopics(allTopicsArray);
     if (!user) {
       setUserObject('');
       await sleep(500);
@@ -68,7 +69,7 @@ const ExploreScreen = ({navigation}) => {
   if (isLoading === true) {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={ExploreScreenStyle.container}>
+        <ImageBackground style={ExploreScreenStyle.container} source={Lines}>
           <AwesomeAlert
             show={isLoading}
             closeOnTouchOutside={false}
@@ -83,7 +84,7 @@ const ExploreScreen = ({navigation}) => {
               />
             }
           />
-        </View>
+        </ImageBackground>
       </TouchableWithoutFeedback>
     );
   }
@@ -91,7 +92,47 @@ const ExploreScreen = ({navigation}) => {
   // Renders the screen
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={ExploreScreenStyle.container}></View>
+      <ImageBackground style={ExploreScreenStyle.container} source={Lines}>
+        <View style={ExploreScreenStyle.topRow}>
+          <TouchableOpacity
+            onPress={async () => {
+              if (userObject !== '') {
+                const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
+                  'isTopicManagerFirstLaunch',
+                );
+                if (isTopicManagerFirstLaunch === 'false') {
+                  navigation.push('MyTopicsManagerScreen', {
+                    userObject,
+                  });
+                } else {
+                  navigation.push('TopicsManageOnboard', {
+                    userObject,
+                  });
+                }
+              } else {
+                navigation.navigate('Profile');
+              }
+            }}>
+            <Text
+              style={[
+                fontStyles.bigFontStyle,
+                fontStyles.white,
+                fontStyles.bold,
+                {textAlign: 'left'},
+              ]}>
+              {strings.OTDManager}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Icon
+              type={'font-awesome'}
+              size={screenHeight * 0.05}
+              name={'search'}
+              color={colors.white}
+            />
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };
