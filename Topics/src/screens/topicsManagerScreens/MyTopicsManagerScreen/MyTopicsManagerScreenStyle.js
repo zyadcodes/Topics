@@ -69,19 +69,20 @@ export default StyleSheet.create({
     width: screenWidth,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    height: screenHeight * 0.755,
+    minHeight: screenHeight * 0.755,
   },
   topicContainer: {
     justifyContent: 'space-between',
     alignItems: 'center',
     textAlign: 'center',
-    marginTop: screenHeight * 0.035,
+    marginTop: screenHeight * 0.015,
     shadowColor: colors.black,
     shadowOffset: {
       height: 3,
     },
     shadowOpacity: 0.5,
-    marginLeft: screenWidth * 0.0666
+    marginLeft: screenWidth * 0.0666,
+    paddingVertical: screenHeight * 0.01,
   },
   topicProfile: {
     width: screenWidth * 0.4,

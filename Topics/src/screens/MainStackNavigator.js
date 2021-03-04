@@ -9,6 +9,7 @@ import TopicsManagerOnboard from './topicsManagerScreens/TopicsManagerOnboard/To
 import CreateTopicScreen from './topicsManagerScreens/CreateTopicScreen/CreateTopicScreen';
 import MyTopicsManagerScreen from './topicsManagerScreens/MyTopicsManagerScreen/MyTopicsManagerScreen';
 import TopicManagerMessagesScreen from './topicsManagerScreens/TopicManagerMessagesScreen/TopicManagerMessagesScreen';
+import TopicScreen from './topicsScreens/TopicScreen.js/TopicScreen';
 
 // Creates the navigator
 const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ const MainStackNavigator = ({isFirstAppLaunch}) => {
       <Stack.Screen name={'OnboardingScreens'} component={OnboardingStackNav} />
       <Stack.Screen name={'TopicsScreens'} component={TopicsScreensNav} />
       <Stack.Screen name={'LogInScreen'} component={LogInScreen} />
+      <Stack.Screen name={'TopicScreen'} component={TopicScreen} />
       <Stack.Screen
         name={'ForgotPasswordScreen'}
         component={ForgotPasswordScreen}

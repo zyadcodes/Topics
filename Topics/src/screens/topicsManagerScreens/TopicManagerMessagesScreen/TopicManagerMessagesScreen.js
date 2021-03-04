@@ -31,7 +31,7 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
 
   // Fetches messages by date and sets them to the state
   const fetchMostRecentMessages = async (date) => {
-    const messagesFetched = await loadTopicMessages(topic.topicID, date);
+    const messagesFetched = await loadTopicMessages(topic.topicID, date, 20);
     let newMessages = messages.concat(messagesFetched);
     if (messagesFetched.length === 0) {
       setAllMessagesLoaded(true);

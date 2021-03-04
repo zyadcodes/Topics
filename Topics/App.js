@@ -2,7 +2,7 @@
 import 'react-native-gesture-handler';
 import React, {useRef, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {View} from 'react-native';
+import {ImageBackground} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import MainStackNavigator from './src/screens/MainStackNavigator';
@@ -11,6 +11,7 @@ import Spinner from 'react-native-spinkit';
 import colors from './src/config/colors';
 import {sleep} from './src/config/sleep';
 import messaging from '@react-native-firebase/messaging';
+import Lines from './src/assets/Lines.png';
 
 // Creates the functional component
 const App = (props) => {
@@ -28,7 +29,6 @@ const App = (props) => {
 
   // Checks if a user is logged in
   const fetchInitialValues = async () => {
-    await AsyncStorage.clear();
     const isFirstAppLaunch = await AsyncStorage.getItem('isFirstAppLaunch');
     await messaging().requestPermission();
     if (isFirstAppLaunch === 'false') {
@@ -45,20 +45,21 @@ const App = (props) => {
   // Renders the loading component
   if (isLoading === true) {
     return (
-      <View
+      <ImageBackground
         style={{
           flex: 1,
           backgroundColor: colors.white,
           justifyContent: 'center',
           alignItems: 'center',
-        }}>
+        }}
+        source={Lines}>
         <Spinner
           isVisible={true}
           size={100}
           type={'Bounce'}
-          color={colors.lightBlue}
+          color={colors.white}
         />
-      </View>
+      </ImageBackground>
     );
   }
 

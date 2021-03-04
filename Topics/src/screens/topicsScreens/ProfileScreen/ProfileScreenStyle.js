@@ -36,7 +36,7 @@ export default StyleSheet.create({
     marginTop: screenHeight * 0.075,
     marginLeft: screenWidth * 0.05,
     alignSelf: 'flex-start',
-    marginBottom: screenHeight * 0.075
+    marginBottom: screenHeight * 0.075,
   },
   inputViewContainer: {
     width: screenWidth,
@@ -49,7 +49,8 @@ export default StyleSheet.create({
     borderBottomColor: colors.white,
     borderBottomWidth: 2,
     paddingBottom: screenHeight * 0.01,
-    marginBottom: screenHeight * 0.035,
+    zIndex: 1,
+    position: 'absolute'
   },
   textInput: {
     width: screenWidth * 0.65,

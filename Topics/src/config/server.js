@@ -7,7 +7,7 @@ import Motivation from '../assets/topicPics/Motivation.png';
 // Maps out the images of the topics to the
 // correct topic
 const profileImages = {
-  's09Q8VmrmtM1v84YfgJ8': Motivation
+  s09Q8VmrmtM1v84YfgJ8: Motivation,
 };
 
 // This function is going to take in some information about a user and is going to send their information
@@ -128,6 +128,7 @@ const createTopic = async (topicName, userID) => {
     topicName,
     userID,
     followers: 0,
+    mostRecentMessage: '',
   });
 
   // Creates promises to speed up the process
@@ -197,13 +198,18 @@ const sendMessage = async (topicName, topicID, message) => {
       .doc(topicID)
       .collection('Messages')
       .add(message),
+    await firestore()
+      .collection('Topics')
+      .doc(topicID)
+      .update({mostRecentMessage: message}),
   ]);
   return 0;
 };
 
-// This method is going to order topic 20 messages (limit) given a starting timestamp. The idea is to save loading time and
+// This method is going to order topic 20 messages (or a custome limit) given a starting timestamp. The idea is to save loading time and
 // reads by loading batched and loading messages as the user scrolls up
-const loadTopicMessages = async (topicID, startTimestamp) => {
+const loadTopicMessages = async (topicID, startTimestamp, limit) => {
+
   // Creates the query
   const query = firestore()
     .collection('Topics')
@@ -211,7 +217,7 @@ const loadTopicMessages = async (topicID, startTimestamp) => {
     .collection('Messages')
     .where('createdAt', '<', startTimestamp)
     .orderBy('createdAt', 'desc')
-    .limit(20);
+    .limit(limit);
 
   // Retrieves the query
   const queryResults = await query.get();
