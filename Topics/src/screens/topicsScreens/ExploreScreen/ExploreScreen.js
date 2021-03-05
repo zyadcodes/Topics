@@ -20,7 +20,11 @@ import {Icon} from 'react-native-elements';
 import fontStyles from '../../../config/fontStyles';
 import {screenHeight, screenWidth} from '../../../config/dimensions';
 import auth from '@react-native-firebase/auth';
-import {getUserByID, getAllTopics} from '../../../config/server';
+import {
+  getUserByID,
+  getAllTopics,
+  addUserDocListener,
+} from '../../../config/server';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -35,6 +39,7 @@ const ExploreScreen = ({navigation}) => {
   // Stores the state of the searched item
   const [userObject, setUserObject] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isReloading, setIsReloading] = useState(false);
   const [topics, setAllTopics] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -45,6 +50,7 @@ const ExploreScreen = ({navigation}) => {
     return subscriber;
   }, []);
 
+  // The reference for the searchBarRef
   const searchBarRef = useRef();
 
   // Checks if a user is logged in
@@ -64,7 +70,11 @@ const ExploreScreen = ({navigation}) => {
   const fetchUser = async (userID) => {
     const newUserObject = await getUserByID(userID);
     setUserObject(newUserObject);
-
+    addUserDocListener(newUserObject.userID, async (docSnapshot) => {
+      const allTopics = await getAllTopics();
+      setAllTopics(allTopics);
+      setUserObject(docSnapshot.docs[0]._data);
+    });
     await sleep(500);
     setIsLoading(false);
   };
@@ -178,10 +188,14 @@ const ExploreScreen = ({navigation}) => {
                     animation={'bounceInUp'}>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.push('TopicScreen', {
-                          topic: item,
-                          userID: userObject.userID,
-                        });
+                        if (userObject !== '') {
+                          navigation.push('TopicScreen', {
+                            topic: item,
+                            userObject: userObject,
+                          });
+                        } else {
+                          navigation.navigate('Profile');
+                        }
                       }}>
                       <Image
                         source={item.profileImage}
@@ -194,6 +208,20 @@ const ExploreScreen = ({navigation}) => {
               }}
             />
           </View>
+          <AwesomeAlert
+            show={isReloading}
+            closeOnTouchOutside={false}
+            showCancelButton={false}
+            showConfirmButton={false}
+            customView={
+              <Spinner
+                isVisible={true}
+                size={100}
+                type={'Bounce'}
+                color={colors.lightBlue}
+              />
+            }
+          />
         </ImageBackground>
       </View>
     </TouchableWithoutFeedback>

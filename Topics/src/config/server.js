@@ -2,6 +2,7 @@
 import auth, {firebase} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import functions from '@react-native-firebase/functions';
+import messaging from '@react-native-firebase/messaging';
 import Motivation from '../assets/topicPics/Motivation.png';
 
 // Maps out the images of the topics to the
@@ -122,10 +123,11 @@ const getUserByID = async (id) => {
 
 // This method is going to take in topic information and upload it to both Firestore
 // and Storage. It will use the topicID to link the storage with the Firestore together
-const createTopic = async (topicName, userID) => {
+const createTopic = async (topicName, topicSubname, userID) => {
   // Creates the document topic
   const topic = await firestore().collection('Topics').add({
     topicName,
+    topicSubname,
     userID,
     followers: 0,
     mostRecentMessage: '',
@@ -151,7 +153,7 @@ const createTopic = async (topicName, userID) => {
 // This method is going to update a topic's information in the database
 // This method is going to take in topic information and upload it to both Firestore
 // and Storage. It will use the topicID to link the storage with the Firestore together
-const saveTopic = async (topicName, topicID) => {
+const saveTopic = async (topicName, topicSubname, topicID) => {
   // Creates the document topic
   const topicPromise = await firebase
     .firestore()
@@ -159,6 +161,7 @@ const saveTopic = async (topicName, topicID) => {
     .doc(topicID)
     .update({
       topicName,
+      topicSubname,
     });
 
   return 0;
@@ -181,6 +184,52 @@ const getTopicByID = async (topicID) => {
     ...firestorePromise.data(),
     profileImage: profileImages[firestorePromise.data().topicID],
   };
+};
+
+// This method is going to make a user follow a specific topic by updating firestore as well as subscribing the user
+// to the topic's Cloud Messaging Topic
+const followTopic = async (userID, topicID) => {
+  // Constructs an array of promises and executes them all
+  await Promise.all([
+    firestore()
+      .collection('Users')
+      .doc(userID)
+      .update({
+        followingTopics: firestore.FieldValue.arrayUnion(topicID),
+      }),
+    firestore()
+      .collection('Topics')
+      .doc(topicID)
+      .update({
+        followers: firestore.FieldValue.increment(1),
+      }),
+    messaging().subscribeToTopic(topicID),
+  ]);
+
+  return 0;
+};
+
+// This method is going to make a user unfollow a specific topic by updating firestore as well as unsubscribing the user
+// to the topic's Cloud Messaging Topic
+const unfollowTopic = async (userID, topicID) => {
+  // Constructs an array of promises and executes them all
+  await Promise.all([
+    firestore()
+      .collection('Users')
+      .doc(userID)
+      .update({
+        followingTopics: firestore.FieldValue.arrayRemove(topicID),
+      }),
+    firestore()
+      .collection('Topics')
+      .doc(topicID)
+      .update({
+        followers: firestore.FieldValue.increment(-1),
+      }),
+    messaging().unsubscribeFromTopic(topicID),
+  ]);
+
+  return 0;
 };
 
 // This method is going to send a message by adding it to the database of messages. It will then also deliver the message
@@ -206,10 +255,20 @@ const sendMessage = async (topicName, topicID, message) => {
   return 0;
 };
 
+// Adds a listener to a specific user document to detect changes
+const addUserDocListener = async (userID, functionToExec) => {
+  const listener = firestore()
+    .collection('Users')
+    .onSnapshot((docSnapshot) => {
+      functionToExec(docSnapshot);
+    });
+
+  return listener;
+};
+
 // This method is going to order topic 20 messages (or a custome limit) given a starting timestamp. The idea is to save loading time and
 // reads by loading batched and loading messages as the user scrolls up
 const loadTopicMessages = async (topicID, startTimestamp, limit) => {
-
   // Creates the query
   const query = firestore()
     .collection('Topics')
@@ -258,6 +317,9 @@ export {
   resetPassword,
   getUserByID,
   createTopic,
+  followTopic,
+  unfollowTopic,
+  addUserDocListener,
   loadTopicMessages,
   getAllTopics,
   getTopicByID,

@@ -116,8 +116,8 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
         <Text
           style={[fontStyles.white, fontStyles.bold, fontStyles.bigFontStyle]}>
           {topic.followers === 1
-            ? topic.followers + ' ' + strings.Subscriber
-            : topic.followers + ' ' + strings.Subscribers}
+            ? topic.followers + ' ' + strings.Follower
+            : topic.followers + ' ' + strings.Followers}
         </Text>
       </View>
       <GiftedChat

@@ -29,6 +29,9 @@ const CreateTopicScreen = ({navigation, route}) => {
 
   // Stores the state variables for all of the inputs
   const [topicName, setTopicName] = useState(isEditing ? topic.topicName : '');
+  const [topicSubname, setTopicSubname] = useState(
+    isEditing ? topic.topicSubname : '',
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [errorVisible, setErrorVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -44,9 +47,13 @@ const CreateTopicScreen = ({navigation, route}) => {
       setIsLoading(true);
 
       if (isEditing) {
-        await saveTopic(topicName, topic.topicID);
+        await saveTopic(topicName.trim(), topicSubname.trim(), topic.topicID);
       } else {
-        await createTopic(topicName, userObject.userID);
+        await createTopic(
+          topicName.trim(),
+          topicSubname.trim(),
+          userObject.userID,
+        );
       }
 
       const newUserObject = await getUserByID(userObject.userID);
@@ -90,12 +97,25 @@ const CreateTopicScreen = ({navigation, route}) => {
               ]}
             />
           </View>
+          <View style={CreateTopicScreenStyle.rowContainer}>
+            <TextInput
+              value={topicSubname}
+              onChangeText={(newText) => setTopicSubname(newText)}
+              placeholder={strings.TopicSubname}
+              placeholderTextColor={colors.gray}
+              style={[
+                fontStyles.black,
+                fontStyles.midFontStyle,
+                CreateTopicScreenStyle.topicDescriptionInput,
+              ]}
+            />
+          </View>
           {isEditing ? (
             <View style={CreateTopicScreenStyle.followersTextContainer}>
               <Text style={[fontStyles.black, fontStyles.bigFontStyle]}>
                 {topic.followers === 1
-                  ? topic.followers + ' ' + strings.Subscriber
-                  : topic.followers + ' ' + strings.Subscribers}
+                  ? topic.followers + ' ' + strings.Follower
+                  : topic.followers + ' ' + strings.Followers}
               </Text>
             </View>
           ) : (

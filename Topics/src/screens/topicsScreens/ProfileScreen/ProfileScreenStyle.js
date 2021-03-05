@@ -9,7 +9,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.white,
   },
-
   logoStyle: {
     shadowColor: colors.black,
     shadowOffset: {
@@ -49,8 +48,7 @@ export default StyleSheet.create({
     borderBottomColor: colors.white,
     borderBottomWidth: 2,
     paddingBottom: screenHeight * 0.01,
-    zIndex: 1,
-    position: 'absolute'
+    marginBottom: screenHeight * 0.035
   },
   textInput: {
     width: screenWidth * 0.65,
@@ -91,6 +89,11 @@ export default StyleSheet.create({
     paddingLeft: screenHeight * 0.005,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: 3,
+    },
+    shadowOpacity: 0.5,
   },
   signOutButton: {
     alignSelf: 'flex-end',

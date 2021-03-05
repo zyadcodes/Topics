@@ -35,4 +35,27 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.5,
   },
+  bottomFollowSection: {
+    position: 'absolute',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: screenHeight * 0.2,
+    width: screenWidth * 0.58,
+    bottom: screenHeight * 0.06,
+    alignSelf: 'center',
+  },
+  followButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    height: screenHeight * 0.075,
+    width: screenHeight * 0.075,
+    borderRadius: screenHeight * 0.0375,
+    zIndex: 1,
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: 3,
+    },
+    shadowOpacity: 0.5,
+  },
 });
