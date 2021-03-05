@@ -18,6 +18,9 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		888AE31937CF359A3C9940F8 /* libPods-Topics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 337B0A0D27110CE312420CF1 /* libPods-Topics.a */; };
 		9BC41F6525E0D17C001205F6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9BC41F6425E0D17C001205F6 /* GoogleService-Info.plist */; };
+		9BC7D79025F2F66B0032A718 /* libswiftWebKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC7D78E25F2F66B0032A718 /* libswiftWebKit.tbd */; };
+		9BC7D79125F2F66B0032A718 /* libswiftCoreMIDI.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC7D78F25F2F66B0032A718 /* libswiftCoreMIDI.tbd */; };
+		9BC7D79725F2F6760032A718 /* libswiftUniformTypeIdentifiers.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC7D79625F2F6760032A718 /* libswiftUniformTypeIdentifiers.tbd */; };
 		A46B19FBBB37B8314DEFA09D /* libPods-Topics-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6064B3F1EE4F20B79820ECD3 /* libPods-Topics-tvOS.a */; };
 		C0AADF9808AD77C70202CC75 /* libPods-Topics-TopicsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 588FC61F9CF12B3BC572694F /* libPods-Topics-TopicsTests.a */; };
 		EB5CCC428119255C8EE1D36F /* libPods-Topics-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BFC972100F5CCBDF4750E45 /* libPods-Topics-tvOSTests.a */; };
@@ -62,6 +65,9 @@
 		84E09E03EEB49D55E250F35A /* Pods-Topics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Topics.debug.xcconfig"; path = "Target Support Files/Pods-Topics/Pods-Topics.debug.xcconfig"; sourceTree = "<group>"; };
 		9A3B433BDA7A65BB39985BD6 /* Pods-Topics-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Topics-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Topics-tvOSTests/Pods-Topics-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		9BC41F6425E0D17C001205F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9BC7D78E25F2F66B0032A718 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
+		9BC7D78F25F2F66B0032A718 /* libswiftCoreMIDI.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftCoreMIDI.tbd; path = usr/lib/swift/libswiftCoreMIDI.tbd; sourceTree = SDKROOT; };
+		9BC7D79625F2F6760032A718 /* libswiftUniformTypeIdentifiers.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftUniformTypeIdentifiers.tbd; path = usr/lib/swift/libswiftUniformTypeIdentifiers.tbd; sourceTree = SDKROOT; };
 		9BFC972100F5CCBDF4750E45 /* libPods-Topics-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Topics-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACF5DE163B336C02E16C3A4E /* Pods-Topics-TopicsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Topics-TopicsTests.debug.xcconfig"; path = "Target Support Files/Pods-Topics-TopicsTests/Pods-Topics-TopicsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AF8D247A9BAD5868A886BC05 /* Pods-Topics-TopicsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Topics-TopicsTests.release.xcconfig"; path = "Target Support Files/Pods-Topics-TopicsTests/Pods-Topics-TopicsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -84,6 +90,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BC7D79725F2F6760032A718 /* libswiftUniformTypeIdentifiers.tbd in Frameworks */,
+				9BC7D79025F2F66B0032A718 /* libswiftWebKit.tbd in Frameworks */,
+				9BC7D79125F2F66B0032A718 /* libswiftCoreMIDI.tbd in Frameworks */,
 				888AE31937CF359A3C9940F8 /* libPods-Topics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,6 +150,9 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9BC7D79625F2F6760032A718 /* libswiftUniformTypeIdentifiers.tbd */,
+				9BC7D78F25F2F66B0032A718 /* libswiftCoreMIDI.tbd */,
+				9BC7D78E25F2F66B0032A718 /* libswiftWebKit.tbd */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				337B0A0D27110CE312420CF1 /* libPods-Topics.a */,
@@ -374,6 +386,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Topics-TopicsTests/Pods-Topics-TopicsTests-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -397,6 +410,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
@@ -512,6 +526,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Topics/Pods-Topics-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -535,6 +550,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
@@ -749,6 +765,10 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Topics/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -771,6 +791,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Topics/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

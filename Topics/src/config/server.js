@@ -2,8 +2,10 @@
 import auth, {firebase} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import functions from '@react-native-firebase/functions';
+import analytics from '@react-native-firebase/analytics';
 import messaging from '@react-native-firebase/messaging';
 import Motivation from '../assets/topicPics/Motivation.png';
+import {AppEventsLogger} from 'react-native-fbsdk';
 
 // Maps out the images of the topics to the
 // correct topic
@@ -21,6 +23,7 @@ const createUser = async (
   password,
 ) => {
   try {
+    logEvent('UserCreateInitiated', {});
     // Creates the auth user
     const user = await auth().createUserWithEmailAndPassword(email, password);
     // Adds the user data (without password) to Firestore
@@ -36,7 +39,7 @@ const createUser = async (
     });
 
     await auth().signInWithEmailAndPassword(email, password);
-
+    logEvent('UserCreateSuccess', {});
     return 0;
   } catch (error) {
     if (
@@ -64,6 +67,7 @@ const updateUserInfo = async (
   password,
 ) => {
   try {
+    logEvent('UserUpdateInitiated', {});
     await auth().signInWithEmailAndPassword(oldEmail, password);
     await auth().currentUser.updateEmail(newEmail);
     await firestore()
@@ -74,6 +78,7 @@ const updateUserInfo = async (
     const userObject = (
       await firestore().collection('Users').doc(userID).get()
     ).data();
+    logEvent('UserUpdateSuccess', {});
     return userObject;
   } catch (error) {
     if (
@@ -95,8 +100,12 @@ const updateUserInfo = async (
 // This method is going to attempt to log the user into their account and return an error if incorrect info
 const logIn = async (email, password) => {
   try {
+    logEvent('UserLoginInitiated', {});
     const user = await auth().signInWithEmailAndPassword(email, password);
-
+    AppEventsLogger.setUserData({
+      email,
+    });
+    logEvent('UserLoginFailed', {});
     return user.user.uid;
   } catch (error) {
     return -1;
@@ -105,8 +114,8 @@ const logIn = async (email, password) => {
 
 // This method is going to send a user password reset email for users that forgot their passwords
 const resetPassword = async (email) => {
+  logEvent('UserResetPassword', {});
   await auth().sendPasswordResetEmail(email);
-
   return 0;
 };
 
@@ -124,6 +133,8 @@ const getUserByID = async (id) => {
 // This method is going to take in topic information and upload it to both Firestore
 // and Storage. It will use the topicID to link the storage with the Firestore together
 const createTopic = async (topicName, topicSubname, userID) => {
+  logEvent('CreateTopicInitiated', {});
+
   // Creates the document topic
   const topic = await firestore().collection('Topics').add({
     topicName,
@@ -147,6 +158,7 @@ const createTopic = async (topicName, topicSubname, userID) => {
 
   await Promise.all([firestorePromise, topicIDPromise]);
 
+  logEvent('CreateTopicSuccess', {});
   return 0;
 };
 
@@ -154,6 +166,7 @@ const createTopic = async (topicName, topicSubname, userID) => {
 // This method is going to take in topic information and upload it to both Firestore
 // and Storage. It will use the topicID to link the storage with the Firestore together
 const saveTopic = async (topicName, topicSubname, topicID) => {
+  logEvent('SaveTopicInitiated', {});
   // Creates the document topic
   const topicPromise = await firebase
     .firestore()
@@ -163,7 +176,7 @@ const saveTopic = async (topicName, topicSubname, topicID) => {
       topicName,
       topicSubname,
     });
-
+  logEvent('SaveTopicSuccess', {});
   return 0;
 };
 
@@ -189,6 +202,7 @@ const getTopicByID = async (topicID) => {
 // This method is going to make a user follow a specific topic by updating firestore as well as subscribing the user
 // to the topic's Cloud Messaging Topic
 const followTopic = async (userID, topicID) => {
+  logEvent('FollowTopicInitiated', {});
   // Constructs an array of promises and executes them all
   await Promise.all([
     firestore()
@@ -205,13 +219,14 @@ const followTopic = async (userID, topicID) => {
       }),
     messaging().subscribeToTopic(topicID),
   ]);
-
+  logEvent('FollowTopicSuccess', {});
   return 0;
 };
 
 // This method is going to make a user unfollow a specific topic by updating firestore as well as unsubscribing the user
 // to the topic's Cloud Messaging Topic
 const unfollowTopic = async (userID, topicID) => {
+  logEvent('UnfollowTopicInitiated', {});
   // Constructs an array of promises and executes them all
   await Promise.all([
     firestore()
@@ -228,13 +243,14 @@ const unfollowTopic = async (userID, topicID) => {
       }),
     messaging().unsubscribeFromTopic(topicID),
   ]);
-
+  logEvent('UnfollowTopicSuccess', {});
   return 0;
 };
 
 // This method is going to send a message by adding it to the database of messages. It will then also deliver the message
 // to everyone subscribed to that topic
 const sendMessage = async (topicName, topicID, message) => {
+  logEvent('SendMessageInitiated', {});
   // Combines into one promise to make sure it is efficient
   await Promise.all([
     await functions().httpsCallable('sendMessage')({
@@ -252,6 +268,7 @@ const sendMessage = async (topicName, topicID, message) => {
       .doc(topicID)
       .update({mostRecentMessage: message}),
   ]);
+  logEvent('SendMessageSuccess', {});
   return 0;
 };
 
@@ -303,9 +320,16 @@ const getAllTopics = async () => {
 
 // This method is going to sign the current user out
 const signOut = async () => {
+  logEvent('UserSignOut', {});
   await auth().signOut();
 
   return 0;
+};
+
+// this method will log a custom event to Firebase Analytics as well as Facebook Analytics
+const logEvent = (eventName, params) => {
+  analytics().logEvent(eventName, params);
+  AppEventsLogger.logEvent(eventName, params);
 };
 
 // Exports all of the functions
@@ -322,6 +346,7 @@ export {
   addUserDocListener,
   loadTopicMessages,
   getAllTopics,
+  logEvent,
   getTopicByID,
   sendMessage,
   signOut,

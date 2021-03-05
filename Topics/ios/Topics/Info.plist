@@ -4,6 +4,15 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb235072988294614</string>
+			</array>
+		</dict>
+	</array>
 	<key>UIAppFonts</key>
 <array>
   <string>AntDesign.ttf</string>

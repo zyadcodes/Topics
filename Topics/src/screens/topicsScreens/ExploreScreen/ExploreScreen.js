@@ -24,6 +24,7 @@ import {
   getUserByID,
   getAllTopics,
   addUserDocListener,
+  logEvent,
 } from '../../../config/server';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
@@ -43,6 +44,7 @@ const ExploreScreen = ({navigation}) => {
   const [topics, setAllTopics] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [searchedInput, setSearchedInput] = useState('');
 
   // This is going to perform the logic for whether or not to show the intro onboarding screens
   useEffect(() => {
@@ -62,6 +64,7 @@ const ExploreScreen = ({navigation}) => {
       await sleep(500);
       setIsLoading(false);
     } else {
+      logEvent('LoggedInAppOpen', {});
       fetchUser(user.uid);
     }
   };
@@ -115,6 +118,7 @@ const ExploreScreen = ({navigation}) => {
                 setSearchResults([]);
                 setShowSearchResults(false);
               } else {
+                setSearchedInput(input);
                 const searchedTopics = topics.filter((eachTopic) =>
                   eachTopic.topicName.includes(input),
                 );
@@ -131,11 +135,15 @@ const ExploreScreen = ({navigation}) => {
             hideBack={true}
             hideX={true}
             heightAdjust={screenHeight * 0.09}
-            onBlur={() => searchBarRef.current.hide()}
+            onBlur={() => {
+              logEvent('SearchCompleted', {searchedTerm: searchedInput});
+              searchBarRef.current.hide();
+            }}
           />
           <View style={ExploreScreenStyle.topRow}>
             <TouchableOpacity
               onPress={async () => {
+                logEvent('OTDManagerClicked', {});
                 if (userObject !== '') {
                   const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
                     'isTopicManagerFirstLaunch',
@@ -163,7 +171,11 @@ const ExploreScreen = ({navigation}) => {
                 {strings.OTDManager}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => searchBarRef.current.show()}>
+            <TouchableOpacity
+              onPress={() => {
+                logEvent('SearchClicked', {});
+                searchBarRef.current.show();
+              }}>
               <Icon
                 type={'font-awesome'}
                 size={screenHeight * 0.05}
@@ -189,11 +201,13 @@ const ExploreScreen = ({navigation}) => {
                     <TouchableOpacity
                       onPress={() => {
                         if (userObject !== '') {
+                          logEvent('TopicClicked', {loggedIn: true});
                           navigation.push('TopicScreen', {
                             topic: item,
                             userObject: userObject,
                           });
                         } else {
+                          logEvent('TopicClicked', {loggedIn: false});
                           navigation.navigate('Profile');
                         }
                       }}>

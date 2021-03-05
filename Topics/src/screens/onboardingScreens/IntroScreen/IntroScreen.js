@@ -18,6 +18,7 @@ import {screenHeight, screenWidth} from '../../../config/dimensions';
 import fontStyles from '../../../config/fontStyles';
 import IntroScreenStyle from './IntroScreenStyle';
 import Lines from '../../../assets/Lines.png';
+import {logEvent} from '../../../config/server';
 
 // Creates the functional component
 const IntroScreen = ({navigation}) => {
@@ -62,6 +63,7 @@ const IntroScreen = ({navigation}) => {
             <TopicsWhiteButton
               onPress={() => {
                 if (currentIndex === 2) {
+                  logEvent('onboardingCompleted', {})
                   navigation.push('TopicsScreens');
                 } else {
                   scrollViewRef.current.scrollTo({
@@ -117,7 +119,10 @@ const IntroScreen = ({navigation}) => {
             </View>
             {currentIndex < 2 ? (
               <TouchableOpacity
-                onPress={() => navigation.push('TopicsScreens')}>
+                onPress={() => {
+                  logEvent('onboardingSkipped', {})
+                  navigation.push('TopicsScreens');
+                }}>
                 <Text
                   style={[
                     fontStyles.white,
