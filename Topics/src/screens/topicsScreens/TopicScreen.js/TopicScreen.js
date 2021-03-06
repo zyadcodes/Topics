@@ -93,6 +93,7 @@ const TopicScreen = ({navigation, route}) => {
                   fontStyles.white,
                   fontStyles.biggerFontStyle,
                   fontStyles.bold,
+                  {textAlign: 'center'},
                 ]}>
                 {eachMessage.text}
               </Text>

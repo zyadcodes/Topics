@@ -1,0 +1,5 @@
+To release on iOS:
+appcenter codepush release-react -a zyad-professional/Of-the-Day-iOS -d Production
+
+To release on Android:
+appcenter codepush release-react -a zyad-professional/Of-the-Day-Android -d Production

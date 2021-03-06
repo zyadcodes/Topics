@@ -39,31 +39,17 @@ const IntroScreen = ({navigation}) => {
             ]}>
             {text}
           </Text>
-          {
-            // Insert screenshot here
-            <View
-              style={{
-                height: screenHeight * 0.55,
-                textAlign: 'center',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={[
-                  fontStyles.white,
-                  fontStyles.bigFontStyle,
-                  fontStyles.bold,
-                ]}>
-                Insert SS here
-              </Text>
-            </View>
-          }
+          <Image
+            source={screenshot}
+            style={IntroScreenStyle.imageStyle}
+            resizeMode={'cover'}
+          />
 
           <View style={IntroScreenStyle.buttonContainer}>
             <TopicsWhiteButton
               onPress={() => {
                 if (currentIndex === 2) {
-                  logEvent('onboardingCompleted', {})
+                  logEvent('onboardingCompleted', {});
                   navigation.push('TopicsScreens');
                 } else {
                   scrollViewRef.current.scrollTo({
@@ -120,7 +106,7 @@ const IntroScreen = ({navigation}) => {
             {currentIndex < 2 ? (
               <TouchableOpacity
                 onPress={() => {
-                  logEvent('onboardingSkipped', {})
+                  logEvent('onboardingSkipped', {});
                   navigation.push('TopicsScreens');
                 }}>
                 <Text

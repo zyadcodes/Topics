@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Topics</string>
+    <string name="app_name">Of the Day</string>
     <string name="facebook_app_id">235072988294614</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">wLyyIC6nfV3HY-rKeVKdVf-2dnKy4kfZF2lKK</string>
 </resources>

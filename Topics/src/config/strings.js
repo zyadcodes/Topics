@@ -4,7 +4,7 @@ export default {
     LetsGo: 'Let\'s go',
     ExploreTopicsYouLove: 'Explore\nTopics you love',
     SubscribeToYourFavorites: 'Subscribe\nTo your favorites',
-    GetDailyMessages: 'Get\nDaily messages',
+    GetDailyMessages: 'Get\nDaily Messages',
     Next: 'Next',
     Go: 'Go',
     Skip: 'Skip',

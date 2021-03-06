@@ -141,36 +141,40 @@ const ExploreScreen = ({navigation}) => {
             }}
           />
           <View style={ExploreScreenStyle.topRow}>
-            <TouchableOpacity
-              onPress={async () => {
-                logEvent('OTDManagerClicked', {});
-                if (userObject !== '') {
-                  const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
-                    'isTopicManagerFirstLaunch',
-                  );
-                  if (isTopicManagerFirstLaunch === 'false') {
-                    navigation.push('MyTopicsManagerScreen', {
-                      userObject,
-                    });
+            {userObject.userID === 'ObXHfZoWaIZRrbwp5mu9SeCgTvf1' ? (
+              <TouchableOpacity
+                onPress={async () => {
+                  logEvent('OTDManagerClicked', {});
+                  if (userObject !== '') {
+                    const isTopicManagerFirstLaunch = await AsyncStorage.getItem(
+                      'isTopicManagerFirstLaunch',
+                    );
+                    if (isTopicManagerFirstLaunch === 'false') {
+                      navigation.push('MyTopicsManagerScreen', {
+                        userObject,
+                      });
+                    } else {
+                      navigation.push('TopicsManageOnboard', {
+                        userObject,
+                      });
+                    }
                   } else {
-                    navigation.push('TopicsManageOnboard', {
-                      userObject,
-                    });
+                    navigation.navigate('Profile');
                   }
-                } else {
-                  navigation.navigate('Profile');
-                }
-              }}>
-              <Text
-                style={[
-                  fontStyles.bigFontStyle,
-                  fontStyles.white,
-                  fontStyles.bold,
-                  {textAlign: 'left'},
-                ]}>
-                {strings.OTDManager}
-              </Text>
-            </TouchableOpacity>
+                }}>
+                <Text
+                  style={[
+                    fontStyles.bigFontStyle,
+                    fontStyles.white,
+                    fontStyles.bold,
+                    {textAlign: 'left'},
+                  ]}>
+                  {strings.OTDManager}
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <View />
+            )}
             <TouchableOpacity
               onPress={() => {
                 logEvent('SearchClicked', {});

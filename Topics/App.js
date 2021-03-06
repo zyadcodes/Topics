@@ -12,9 +12,10 @@ import colors from './src/config/colors';
 import {sleep} from './src/config/sleep';
 import messaging from '@react-native-firebase/messaging';
 import Lines from './src/assets/Lines.png';
+import codePush from 'react-native-code-push';
 
 // Creates the functional component
-const App = (props) => {
+let App = (props) => {
   // Creates references for analytics
   const navigationRef = useRef();
   const routeNameRef = useRef();
@@ -89,4 +90,5 @@ const App = (props) => {
 };
 
 // Exports the app
+App = codePush(App);
 export default App;

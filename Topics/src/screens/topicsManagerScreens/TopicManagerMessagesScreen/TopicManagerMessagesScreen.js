@@ -46,7 +46,7 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, message),
     );
-    await sendMessage(topic.topicName, topic.topicID, message[0]);
+    await sendMessage(topic.topicSubname, topic.topicID, message[0]);
   };
 
   if (isLoading === true) {
