@@ -33,7 +33,6 @@ let App = (props) => {
 
   // Checks if a user is logged in
   const fetchInitialValues = async () => {
-    AsyncStorage.clear()
     const isFirstAppLaunch = await AsyncStorage.getItem('isFirstAppLaunch');
     await messaging().requestPermission();
     if (isFirstAppLaunch === 'false') {

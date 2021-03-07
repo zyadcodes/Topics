@@ -5,12 +5,7 @@ import functions from '@react-native-firebase/functions';
 import analytics from '@react-native-firebase/analytics';
 import messaging from '@react-native-firebase/messaging';
 import Motivation from '../assets/topicPics/Motivation.png';
-import Business from '../assets/topicPics/Business.png';
 import ComputerScience from '../assets/topicPics/ComputerScience.png';
-import FunFact from '../assets/topicPics/FunFact.png';
-import History from '../assets/topicPics/History.png';
-import Science from '../assets/topicPics/Science.png';
-import Skincare from '../assets/topicPics/Skincare.png';
 import Stocks from '../assets/topicPics/Stocks.png';
 import {AppEventsLogger} from 'react-native-fbsdk';
 
@@ -18,12 +13,7 @@ import {AppEventsLogger} from 'react-native-fbsdk';
 // correct topic
 const profileImages = {
   s09Q8VmrmtM1v84YfgJ8: Motivation,
-  '6Gx1rHtPjHeCRg0g7cFw': History,
-  '6xTlFqgG76xvfPKaHQKl': FunFact,
-  Gf6Ql5k7pz1FxopPg17M: Business,
-  XnMvFqYtZ7YiWbmVitow: Science,
   qEZ9fppuKtMsVzR1R6VK: Stocks,
-  sqwEgFJwJ3tnv9sBbGSM: Skincare,
   zAknYCoJbWIpVwbhoC5B: ComputerScience,
 };
 
