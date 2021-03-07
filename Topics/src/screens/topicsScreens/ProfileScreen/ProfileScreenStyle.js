@@ -50,6 +50,9 @@ export default StyleSheet.create({
     paddingBottom: screenHeight * 0.01,
     marginBottom: screenHeight * 0.035
   },
+  verticalSpacer: {
+    height: screenHeight * 0.025,
+  },
   textInput: {
     width: screenWidth * 0.65,
     alignItems: 'center',

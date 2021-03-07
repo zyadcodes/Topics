@@ -53,7 +53,6 @@ const ProfileScreen = ({navigation}) => {
     y: screenHeight * 0.35,
   });
   let currentImageWidth = new Animated.Value(screenWidth * 0.5);
-  let currentTextSize = new Animated.Value(fontStyles.biggerFontStyle.fontSize);
   let viewOpacity = new Animated.Value(0);
 
   // A ref variable for the phone number
@@ -112,14 +111,6 @@ const ProfileScreen = ({navigation}) => {
     // Starts the animation for the image zoom
     Animated.timing(currentImageWidth, {
       toValue: screenWidth * 0.25,
-      duration: 1200,
-      delay: 500,
-      useNativeDriver: false,
-    }).start();
-
-    // Starts the animation for the font size
-    Animated.timing(currentTextSize, {
-      toValue: fontStyles.bigFontStyle.fontSize,
       duration: 1200,
       delay: 500,
       useNativeDriver: false,
@@ -229,7 +220,7 @@ const ProfileScreen = ({navigation}) => {
   if (isScreenLoading === true) {
     return (
       <KeyboardAvoidingView
-        key={currentTextSize}
+        key={currentImageWidth}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -260,7 +251,7 @@ const ProfileScreen = ({navigation}) => {
   if (isLoggedIn) {
     return (
       <KeyboardAvoidingView
-        key={currentTextSize}
+        key={currentImageWidth}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -468,7 +459,7 @@ const ProfileScreen = ({navigation}) => {
   // Renders the screen if there is no user logged in
   return (
     <KeyboardAvoidingView
-      key={currentTextSize}
+      key={currentImageWidth}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -483,24 +474,22 @@ const ProfileScreen = ({navigation}) => {
               style={[{width: currentImageWidth}, ProfileScreenStyle.logoStyle]}
               resizeMode={'contain'}
             />
-            <Animated.Text
-              style={[
-                fontStyles.white,
-                fontStyles.biggerFontStyle,
-                fontStyles.bold,
-                ProfileScreenStyle.textContainer,
-                {
-                  fontSize: currentTextSize,
-                },
-              ]}>
-              {strings.SignUp}
-            </Animated.Text>
           </Animated.View>
           <Animated.View
             style={[
               ProfileScreenStyle.inputViewContainer,
               {opacity: viewOpacity},
             ]}>
+            <Text
+              style={[
+                fontStyles.white,
+                fontStyles.bigFontStyle,
+                fontStyles.bold,
+                ProfileScreenStyle.textContainer,
+              ]}>
+              {strings.SignUp}
+            </Text>
+            <View style={ProfileScreenStyle.verticalSpacer}></View>
             <View style={ProfileScreenStyle.inputContainer}>
               <TextInput
                 value={email}

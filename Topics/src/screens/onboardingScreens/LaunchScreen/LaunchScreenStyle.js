@@ -22,7 +22,7 @@ export default StyleSheet.create({
       height: 3,
     },
     shadowOpacity: 0.5,
-    marginTop: screenHeight * 0.1,
+    marginTop: screenHeight * 0.125,
   },
   buttonContainer: {
     marginTop: screenHeight * 0.35,
