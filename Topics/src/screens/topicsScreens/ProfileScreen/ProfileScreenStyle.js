@@ -1,5 +1,5 @@
 // This is going to be the StyleSheet for the profile screen
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import colors from '../../../config/colors';
 import {screenHeight, screenWidth} from '../../../config/dimensions';
 
@@ -9,17 +9,10 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.white,
   },
-  logoStyle: {
-    shadowColor: colors.black,
-    shadowOffset: {
-      height: 3,
-    },
-    shadowOpacity: 0.5,
-  },
   logoTitleContainer: {
     width: screenWidth,
     alignItems: 'center',
-    marginBottom: screenHeight * 0.05,
+    marginVertical: screenHeight * 0.05,
   },
   textContainer: {
     shadowColor: colors.black,
@@ -28,14 +21,14 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.5,
     textAlign: 'center',
-    marginTop: screenHeight * -0.045,
+    marginTop: screenHeight * 0.045,
   },
   myAccountTextStyle: {
     textAlign: 'left',
     marginTop: screenHeight * 0.075,
     marginLeft: screenWidth * 0.05,
     alignSelf: 'flex-start',
-    marginBottom: screenHeight * 0.075,
+    marginBottom: screenHeight * 0.075 ,
   },
   inputViewContainer: {
     width: screenWidth,
@@ -48,7 +41,7 @@ export default StyleSheet.create({
     borderBottomColor: colors.white,
     borderBottomWidth: 2,
     paddingBottom: screenHeight * 0.01,
-    marginBottom: screenHeight * 0.035
+    marginBottom: screenHeight * 0.035,
   },
   verticalSpacer: {
     height: screenHeight * 0.025,
