@@ -20,11 +20,11 @@ const profileImages = {
   s09Q8VmrmtM1v84YfgJ8: Motivation,
   '6Gx1rHtPjHeCRg0g7cFw': History,
   '6xTlFqgG76xvfPKaHQKl': FunFact,
-  'Gf6Ql5k7pz1FxopPg17M': Business,
-  'XnMvFqYtZ7YiWbmVitow': Science,
-  'qEZ9fppuKtMsVzR1R6VK': Stocks,
-  'sqwEgFJwJ3tnv9sBbGSM': Skincare,
-  'zAknYCoJbWIpVwbhoC5B': ComputerScience
+  Gf6Ql5k7pz1FxopPg17M: Business,
+  XnMvFqYtZ7YiWbmVitow: Science,
+  qEZ9fppuKtMsVzR1R6VK: Stocks,
+  sqwEgFJwJ3tnv9sBbGSM: Skincare,
+  zAknYCoJbWIpVwbhoC5B: ComputerScience,
 };
 
 // This function is going to take in some information about a user and is going to send their information
@@ -290,6 +290,7 @@ const sendMessage = async (topicName, topicID, message) => {
 const addUserDocListener = async (userID, functionToExec) => {
   const listener = firestore()
     .collection('Users')
+    .doc(userID)
     .onSnapshot((docSnapshot) => {
       functionToExec(docSnapshot);
     });

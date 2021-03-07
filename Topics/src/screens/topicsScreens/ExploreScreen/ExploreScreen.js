@@ -76,7 +76,7 @@ const ExploreScreen = ({navigation}) => {
     addUserDocListener(newUserObject.userID, async (docSnapshot) => {
       const allTopics = await getAllTopics();
       setAllTopics(allTopics);
-      setUserObject(docSnapshot.docs[0]._data);
+      setUserObject(docSnapshot._data);
     });
     await sleep(500);
     setIsLoading(false);

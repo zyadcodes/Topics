@@ -13,6 +13,5 @@ export default StyleSheet.create({
       height: 3,
     },
     shadowOpacity: 0.5,
-    paddingVertical: screenHeight * 0.01,
   },
 });
