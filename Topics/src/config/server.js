@@ -253,7 +253,7 @@ const unfollowTopic = async (userID, topicID) => {
 
 // This method is going to send a message by adding it to the database of messages. It will then also deliver the message
 // to everyone subscribed to that topic
-const sendMessage = async (topicName, topicID, message) => {
+const sendMessage = async (topicSubname, topicID, message) => {
   logEvent('SendMessageInitiated', {});
   // Combines into one promise to make sure it is efficient
   await Promise.all([
