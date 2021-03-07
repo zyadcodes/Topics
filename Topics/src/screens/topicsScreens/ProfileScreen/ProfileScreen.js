@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
+  Linking,
   ImageBackground,
 } from 'react-native';
 import ProfileScreenStyle from './ProfileScreenStyle';
@@ -258,359 +259,154 @@ const ProfileScreen = ({navigation}) => {
           <ImageBackground
             style={[ProfileScreenStyle.container]}
             source={Lines}>
-              <View style={ProfileScreenStyle.myAccountTextStyle}>
-                <Text
-                  style={[
-                    fontStyles.bigFontStyle,
-                    fontStyles.white,
-                    fontStyles.bold,
-                  ]}>
-                  {strings.MyAccount}
-                </Text>
-              </View>
-              <View style={ProfileScreenStyle.inputContainer}>
-                <TextInput
-                  value={email}
-                  autoCapitalize={'none'}
-                  autoCompleteType={'email'}
-                  autoCorrect={false}
-                  textContentType={'emailAddress'}
-                  keyboardType={'email-address'}
-                  returnKeyType={'done'}
-                  onChangeText={(newText) => setEmail(newText)}
-                  placeholder={strings.EmailDotDotDot}
-                  placeholderTextColor={colors.white}
-                  style={[
-                    fontStyles.white,
-                    fontStyles.midFontStyle,
-                    fontStyles.bold,
-                    ProfileScreenStyle.textInput,
-                  ]}
-                />
-              </View>
-              <View style={ProfileScreenStyle.inputContainer}>
-                <PhoneInput
-                  ref={phoneRef}
-                  value={phoneNumber}
-                  textInputStyle={[fontStyles.gray, fontStyles.subFontStyle]}
-                  textInputProps={{
-                    placeholder: strings.PhoneNumberDotDotDot,
-                    placeholderColor: colors.gray,
-                  }}
-                  containerStyle={ProfileScreenStyle.phoneNumberInput}
-                  defaultCode={'US'}
-                  onChangeFormattedText={(text) => {
-                    setCountryCode(phoneRef.current?.getCountryCode() || '');
-                    setFormattedPhoneNumber(text);
-                  }}
-                  onChangeText={(text) => {
-                    setPhoneNumber(text);
-                  }}
-                />
-              </View>
-              <View style={ProfileScreenStyle.inputContainer}>
-                <TextInput
-                  value={password}
-                  autoCapitalize={'none'}
-                  autoCompleteType={'password'}
-                  autoCorrect={false}
-                  textContentType={'password'}
-                  returnKeyType={'done'}
-                  onChangeText={(newText) => setPassword(newText)}
-                  placeholder={strings.PasswordDotDotDot}
-                  placeholderTextColor={colors.white}
-                  style={[
-                    fontStyles.white,
-                    fontStyles.midFontStyle,
-                    fontStyles.bold,
-                    ProfileScreenStyle.textInput,
-                  ]}
-                  secureTextEntry={true}
-                />
-              </View>
-              <TopicsWhiteButton
-                text={strings.SaveInfo}
-                onPress={() => {
-                  validateSaveInput();
-                }}
-                height={screenHeight * 0.065}
-                width={screenWidth * 0.75}
-                fontSize={fontStyles.bigFontStyle}
-              />
-              <TouchableOpacity style={[ProfileScreenStyle.linkRow]}>
-                <Text style={[fontStyles.white, fontStyles.mainFontStyle]}>
-                  {strings.TermsAndConditions}
-                </Text>
-                <View style={ProfileScreenStyle.iconStyle}>
-                  <Icon
-                    type={'font-awesome'}
-                    name={'angle-right'}
-                    size={screenHeight * 0.05}
-                    color={colors.lightBlue}
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity style={[ProfileScreenStyle.linkRow]}>
-                <Text style={[fontStyles.white, fontStyles.mainFontStyle]}>
-                  {strings.PrivacyPolicy}
-                </Text>
-                <View style={ProfileScreenStyle.iconStyle}>
-                  <Icon
-                    type={'font-awesome'}
-                    name={'angle-right'}
-                    size={screenHeight * 0.05}
-                    color={colors.lightBlue}
-                  />
-                </View>
-              </TouchableOpacity>
-              <View style={ProfileScreenStyle.signOutButton}>
-                <TopicsWhiteButton
-                  text={strings.SignOut}
-                  onPress={async () => {
-                    setIsLoading(true);
-                    setEmail('');
-                    setFormattedPhoneNumber('');
-                    setPhoneNumber('');
-                    await sleep(1500);
-                    signOut();
-                    setIsLoading(false);
-                  }}
-                  height={screenHeight * 0.05}
-                  width={screenWidth * 0.32}
-                  fontSize={fontStyles.midFontStyle}
-                />
-              </View>
-              <AwesomeAlert
-                show={isLoading}
-                closeOnTouchOutside={false}
-                showCancelButton={false}
-                showConfirmButton={false}
-                customView={
-                  <Spinner
-                    isVisible={true}
-                    size={100}
-                    type={'Bounce'}
-                    color={colors.lightBlue}
-                  />
-                }
-              />
-              <AwesomeAlert
-                show={errorVisible}
-                title={strings.Whoops}
-                message={errorMessage}
-                closeOnTouchOutside={true}
-                showCancelButton={false}
-                showConfirmButton={true}
-                titleStyle={[
-                  fontStyles.mainFontStyle,
-                  fontStyles.gray,
-                  {textAlign: 'center'},
-                ]}
-                messageStyle={[
-                  fontStyles.subFontStyle,
-                  fontStyles.gray,
-                  {textAlign: 'center'},
-                ]}
-                confirmButtonTextStyle={[
-                  fontStyles.subFontStyle,
-                  fontStyles.white,
-                  {textAlign: 'center'},
-                ]}
-                confirmText={strings.Ok}
-                confirmButtonColor={colors.darkBlue}
-                onConfirmPressed={() => {
-                  setErrorVisible(false);
-                }}
-              />
-              <AwesomeAlert
-                show={userInfoSavedSuccess}
-                title={strings.Success}
-                message={strings.YourInfoHasBeenSaved}
-                closeOnTouchOutside={true}
-                showCancelButton={false}
-                showConfirmButton={true}
-                titleStyle={[
-                  fontStyles.mainFontStyle,
-                  fontStyles.gray,
-                  {textAlign: 'center'},
-                ]}
-                messageStyle={[
-                  fontStyles.subFontStyle,
-                  fontStyles.gray,
-                  {textAlign: 'center'},
-                ]}
-                confirmButtonTextStyle={[
-                  fontStyles.subFontStyle,
-                  fontStyles.white,
-                  {textAlign: 'center'},
-                ]}
-                confirmText={strings.Ok}
-                confirmButtonColor={colors.darkBlue}
-                onConfirmPressed={() => {
-                  setUserInfoSavedSuccess(false);
-                }}
-              />
-          </ImageBackground>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    );
-  }
-
-  // Renders the screen if there is no user logged in
-  return (
-    <KeyboardAvoidingView
-      key={currentImageHeight}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ImageBackground style={ProfileScreenStyle.container} source={Lines}>
-            <Animated.View
-              style={[
-                currentPos.getLayout(),
-                ProfileScreenStyle.logoTitleContainer,
-              ]}>
-              <Animated.Image
-                source={Logo}
-                style={[{height: currentImageHeight}]}
-                resizeMode={'contain'}
-              />
-            </Animated.View>
-            <Animated.View
-              style={[
-                ProfileScreenStyle.inputViewContainer,
-                {opacity: viewOpacity},
-              ]}>
+            <View style={ProfileScreenStyle.myAccountTextStyle}>
               <Text
                 style={[
-                  fontStyles.white,
                   fontStyles.bigFontStyle,
+                  fontStyles.white,
                   fontStyles.bold,
-                  ProfileScreenStyle.textContainer,
                 ]}>
-                {strings.SignUp}
+                {strings.MyAccount}
               </Text>
-              <View style={ProfileScreenStyle.verticalSpacer}></View>
-              <View style={ProfileScreenStyle.inputContainer}>
-                <TextInput
-                  value={email}
-                  autoCapitalize={'none'}
-                  autoCompleteType={'email'}
-                  autoCorrect={false}
-                  textContentType={'emailAddress'}
-                  keyboardType={'email-address'}
-                  returnKeyType={'done'}
-                  onChangeText={(newText) => setEmail(newText)}
-                  placeholder={strings.EmailDotDotDot}
-                  placeholderTextColor={colors.white}
-                  style={[
-                    fontStyles.white,
-                    fontStyles.midFontStyle,
-                    fontStyles.bold,
-                    ProfileScreenStyle.textInput,
-                  ]}
+            </View>
+            <View style={ProfileScreenStyle.inputContainer}>
+              <TextInput
+                value={email}
+                autoCapitalize={'none'}
+                autoCompleteType={'email'}
+                autoCorrect={false}
+                textContentType={'emailAddress'}
+                keyboardType={'email-address'}
+                returnKeyType={'done'}
+                onChangeText={(newText) => setEmail(newText)}
+                placeholder={strings.EmailDotDotDot}
+                placeholderTextColor={colors.white}
+                style={[
+                  fontStyles.white,
+                  fontStyles.midFontStyle,
+                  fontStyles.bold,
+                  ProfileScreenStyle.textInput,
+                ]}
+              />
+            </View>
+            <View style={ProfileScreenStyle.inputContainer}>
+              <PhoneInput
+                ref={phoneRef}
+                value={phoneNumber}
+                textInputStyle={[fontStyles.gray, fontStyles.subFontStyle]}
+                textInputProps={{
+                  placeholder: strings.PhoneNumberDotDotDot,
+                  placeholderColor: colors.gray,
+                }}
+                containerStyle={ProfileScreenStyle.phoneNumberInput}
+                defaultCode={'US'}
+                onChangeFormattedText={(text) => {
+                  setCountryCode(phoneRef.current?.getCountryCode() || '');
+                  setFormattedPhoneNumber(text);
+                }}
+                onChangeText={(text) => {
+                  setPhoneNumber(text);
+                }}
+              />
+            </View>
+            <View style={ProfileScreenStyle.inputContainer}>
+              <TextInput
+                value={password}
+                autoCapitalize={'none'}
+                autoCompleteType={'password'}
+                autoCorrect={false}
+                textContentType={'password'}
+                returnKeyType={'done'}
+                onChangeText={(newText) => setPassword(newText)}
+                placeholder={strings.PasswordDotDotDot}
+                placeholderTextColor={colors.white}
+                style={[
+                  fontStyles.white,
+                  fontStyles.midFontStyle,
+                  fontStyles.bold,
+                  ProfileScreenStyle.textInput,
+                ]}
+                secureTextEntry={true}
+              />
+            </View>
+            <TopicsWhiteButton
+              text={strings.SaveInfo}
+              onPress={() => {
+                validateSaveInput();
+              }}
+              height={screenHeight * 0.065}
+              width={screenWidth * 0.75}
+              fontSize={fontStyles.bigFontStyle}
+            />
+            <TouchableOpacity
+              style={[ProfileScreenStyle.linkRow]}
+              onPress={() =>
+                Linking.openURL(
+                  'https://github.com/zyadcodes/Topics/blob/main/TermsAndConditions.md',
+                )
+              }>
+              <Text style={[fontStyles.white, fontStyles.mainFontStyle]}>
+                {strings.TermsAndConditions}
+              </Text>
+              <View style={ProfileScreenStyle.iconStyle}>
+                <Icon
+                  type={'font-awesome'}
+                  name={'angle-right'}
+                  size={screenHeight * 0.05}
+                  color={colors.lightBlue}
                 />
               </View>
-              <View style={ProfileScreenStyle.inputContainer}>
-                <PhoneInput
-                  ref={phoneRef}
-                  textInputStyle={[fontStyles.gray, fontStyles.subFontStyle]}
-                  textInputProps={{
-                    placeholder: strings.PhoneNumberDotDotDot,
-                    placeholderColor: colors.gray,
-                  }}
-                  textContainerStyle={{
-                    backgroundColor: colors.white,
-                  }}
-                  containerStyle={ProfileScreenStyle.phoneNumberInput}
-                  defaultCode={'US'}
-                  onChangeFormattedText={(text) => {
-                    setCountryCode(phoneRef.current?.getCountryCode() || '');
-                    setFormattedPhoneNumber(text);
-                  }}
-                  onChangeText={(text) => {
-                    setPhoneNumber(text);
-                  }}
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[ProfileScreenStyle.linkRow]}
+              onPress={() =>
+                Linking.openURL(
+                  'https://github.com/zyadcodes/Topics/blob/main/PrivacyPolicy.md',
+                )
+              }>
+              <Text style={[fontStyles.white, fontStyles.mainFontStyle]}>
+                {strings.PrivacyPolicy}
+              </Text>
+              <View style={ProfileScreenStyle.iconStyle}>
+                <Icon
+                  type={'font-awesome'}
+                  name={'angle-right'}
+                  size={screenHeight * 0.05}
+                  color={colors.lightBlue}
                 />
               </View>
-              <View style={ProfileScreenStyle.inputContainer}>
-                <TextInput
-                  value={password}
-                  autoCapitalize={'none'}
-                  autoCompleteType={'password'}
-                  autoCorrect={false}
-                  textContentType={'password'}
-                  returnKeyType={'done'}
-                  onChangeText={(newText) => setPassword(newText)}
-                  placeholder={strings.PasswordDotDotDot}
-                  placeholderTextColor={colors.white}
-                  style={[
-                    fontStyles.white,
-                    fontStyles.midFontStyle,
-                    fontStyles.bold,
-                    ProfileScreenStyle.textInput,
-                  ]}
-                  secureTextEntry={true}
+            </TouchableOpacity>
+            <View style={ProfileScreenStyle.signOutButton}>
+              <TopicsWhiteButton
+                text={strings.SignOut}
+                onPress={async () => {
+                  setIsLoading(true);
+                  setEmail('');
+                  setFormattedPhoneNumber('');
+                  setPhoneNumber('');
+                  await sleep(1500);
+                  signOut();
+                  setIsLoading(false);
+                }}
+                height={screenHeight * 0.05}
+                width={screenWidth * 0.32}
+                fontSize={fontStyles.midFontStyle}
+              />
+            </View>
+            <AwesomeAlert
+              show={isLoading}
+              closeOnTouchOutside={false}
+              showCancelButton={false}
+              showConfirmButton={false}
+              customView={
+                <Spinner
+                  isVisible={true}
+                  size={100}
+                  type={'Bounce'}
+                  color={colors.lightBlue}
                 />
-              </View>
-              <View style={ProfileScreenStyle.termsAndConditionsRow}>
-                <Text style={[fontStyles.midFontStyle, fontStyles.black]}>
-                  {strings.IHaveReadAndAcceptedThe}
-                  <TouchableOpacity onPress={() => {}}>
-                    <Text
-                      style={[
-                        fontStyles.midFontStyle,
-                        fontStyles.white,
-                        fontStyles.bold,
-                      ]}>
-                      {strings.TermsAndConditions}
-                    </Text>
-                  </TouchableOpacity>
-                </Text>
-                <CheckBox
-                  disabled={false}
-                  value={isChecked}
-                  onValueChange={(newValue) => setIsChecked(newValue)}
-                  tintColors={{
-                    true: colors.white,
-                    false: colors.gray,
-                  }}
-                  tintColor={colors.white}
-                  onCheckColor={colors.lightBlue}
-                  onFillColor={colors.white}
-                  onTintColor={colors.white}
-                  boxType={'square'}
-                />
-              </View>
-              <View style={ProfileScreenStyle.buttonContainer}>
-                <TopicsWhiteButton
-                  text={strings.Create}
-                  onPress={() => {
-                    validateSignUpInput();
-                  }}
-                  height={screenHeight * 0.065}
-                  width={screenWidth * 0.75}
-                  fontSize={fontStyles.bigFontStyle}
-                />
-              </View>
-              <View style={ProfileScreenStyle.textRow}>
-                <Text style={[fontStyles.midFontStyle, fontStyles.black]}>
-                  {strings.AlreadyHaveAnAccount}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.push('LogInScreen');
-                  }}>
-                  <Text
-                    style={[
-                      fontStyles.midFontStyle,
-                      fontStyles.white,
-                      fontStyles.bold,
-                    ]}>
-                    {strings.LogIn}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </Animated.View>
+              }
+            />
             <AwesomeAlert
               show={errorVisible}
               title={strings.Whoops}
@@ -640,20 +436,242 @@ const ProfileScreen = ({navigation}) => {
               }}
             />
             <AwesomeAlert
-              show={isLoading}
-              closeOnTouchOutside={false}
+              show={userInfoSavedSuccess}
+              title={strings.Success}
+              message={strings.YourInfoHasBeenSaved}
+              closeOnTouchOutside={true}
               showCancelButton={false}
-              showConfirmButton={false}
-              customView={
-                <Spinner
-                  isVisible={true}
-                  size={100}
-                  type={'Bounce'}
-                  color={colors.lightBlue}
-                />
-              }
+              showConfirmButton={true}
+              titleStyle={[
+                fontStyles.mainFontStyle,
+                fontStyles.gray,
+                {textAlign: 'center'},
+              ]}
+              messageStyle={[
+                fontStyles.subFontStyle,
+                fontStyles.gray,
+                {textAlign: 'center'},
+              ]}
+              confirmButtonTextStyle={[
+                fontStyles.subFontStyle,
+                fontStyles.white,
+                {textAlign: 'center'},
+              ]}
+              confirmText={strings.Ok}
+              confirmButtonColor={colors.darkBlue}
+              onConfirmPressed={() => {
+                setUserInfoSavedSuccess(false);
+              }}
             />
           </ImageBackground>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    );
+  }
+
+  // Renders the screen if there is no user logged in
+  return (
+    <KeyboardAvoidingView
+      key={currentImageHeight}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ImageBackground style={ProfileScreenStyle.container} source={Lines}>
+          <Animated.View
+            style={[
+              currentPos.getLayout(),
+              ProfileScreenStyle.logoTitleContainer,
+            ]}>
+            <Animated.Image
+              source={Logo}
+              style={[{height: currentImageHeight}]}
+              resizeMode={'contain'}
+            />
+          </Animated.View>
+          <Animated.View
+            style={[
+              ProfileScreenStyle.inputViewContainer,
+              {opacity: viewOpacity},
+            ]}>
+            <Text
+              style={[
+                fontStyles.white,
+                fontStyles.bigFontStyle,
+                fontStyles.bold,
+                ProfileScreenStyle.textContainer,
+              ]}>
+              {strings.SignUp}
+            </Text>
+            <View style={ProfileScreenStyle.verticalSpacer}></View>
+            <View style={ProfileScreenStyle.inputContainer}>
+              <TextInput
+                value={email}
+                autoCapitalize={'none'}
+                autoCompleteType={'email'}
+                autoCorrect={false}
+                textContentType={'emailAddress'}
+                keyboardType={'email-address'}
+                returnKeyType={'done'}
+                onChangeText={(newText) => setEmail(newText)}
+                placeholder={strings.EmailDotDotDot}
+                placeholderTextColor={colors.white}
+                style={[
+                  fontStyles.white,
+                  fontStyles.midFontStyle,
+                  fontStyles.bold,
+                  ProfileScreenStyle.textInput,
+                ]}
+              />
+            </View>
+            <View style={ProfileScreenStyle.inputContainer}>
+              <PhoneInput
+                ref={phoneRef}
+                textInputStyle={[fontStyles.gray, fontStyles.subFontStyle]}
+                textInputProps={{
+                  placeholder: strings.PhoneNumberDotDotDot,
+                  placeholderColor: colors.gray,
+                }}
+                textContainerStyle={{
+                  backgroundColor: colors.white,
+                }}
+                containerStyle={ProfileScreenStyle.phoneNumberInput}
+                defaultCode={'US'}
+                onChangeFormattedText={(text) => {
+                  setCountryCode(phoneRef.current?.getCountryCode() || '');
+                  setFormattedPhoneNumber(text);
+                }}
+                onChangeText={(text) => {
+                  setPhoneNumber(text);
+                }}
+              />
+            </View>
+            <View style={ProfileScreenStyle.inputContainer}>
+              <TextInput
+                value={password}
+                autoCapitalize={'none'}
+                autoCompleteType={'password'}
+                autoCorrect={false}
+                textContentType={'password'}
+                returnKeyType={'done'}
+                onChangeText={(newText) => setPassword(newText)}
+                placeholder={strings.PasswordDotDotDot}
+                placeholderTextColor={colors.white}
+                style={[
+                  fontStyles.white,
+                  fontStyles.midFontStyle,
+                  fontStyles.bold,
+                  ProfileScreenStyle.textInput,
+                ]}
+                secureTextEntry={true}
+              />
+            </View>
+            <View style={ProfileScreenStyle.termsAndConditionsRow}>
+              <Text style={[fontStyles.midFontStyle, fontStyles.black]}>
+                {strings.IHaveReadAndAcceptedThe}
+                <TouchableOpacity
+                  onPress={() =>
+                    Linking.openURL(
+                      'https://github.com/zyadcodes/Topics/blob/main/TermsAndConditions.md',
+                    )
+                  }>
+                  <Text
+                    style={[
+                      fontStyles.midFontStyle,
+                      fontStyles.white,
+                      fontStyles.bold,
+                    ]}>
+                    {strings.TermsAndConditions}
+                  </Text>
+                </TouchableOpacity>
+              </Text>
+              <CheckBox
+                disabled={false}
+                value={isChecked}
+                onValueChange={(newValue) => setIsChecked(newValue)}
+                tintColors={{
+                  true: colors.white,
+                  false: colors.gray,
+                }}
+                tintColor={colors.white}
+                onCheckColor={colors.lightBlue}
+                onFillColor={colors.white}
+                onTintColor={colors.white}
+                boxType={'square'}
+              />
+            </View>
+            <View style={ProfileScreenStyle.buttonContainer}>
+              <TopicsWhiteButton
+                text={strings.Create}
+                onPress={() => {
+                  validateSignUpInput();
+                }}
+                height={screenHeight * 0.065}
+                width={screenWidth * 0.75}
+                fontSize={fontStyles.bigFontStyle}
+              />
+            </View>
+            <View style={ProfileScreenStyle.textRow}>
+              <Text style={[fontStyles.midFontStyle, fontStyles.black]}>
+                {strings.AlreadyHaveAnAccount}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.push('LogInScreen');
+                }}>
+                <Text
+                  style={[
+                    fontStyles.midFontStyle,
+                    fontStyles.white,
+                    fontStyles.bold,
+                  ]}>
+                  {strings.LogIn}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+          <AwesomeAlert
+            show={errorVisible}
+            title={strings.Whoops}
+            message={errorMessage}
+            closeOnTouchOutside={true}
+            showCancelButton={false}
+            showConfirmButton={true}
+            titleStyle={[
+              fontStyles.mainFontStyle,
+              fontStyles.gray,
+              {textAlign: 'center'},
+            ]}
+            messageStyle={[
+              fontStyles.subFontStyle,
+              fontStyles.gray,
+              {textAlign: 'center'},
+            ]}
+            confirmButtonTextStyle={[
+              fontStyles.subFontStyle,
+              fontStyles.white,
+              {textAlign: 'center'},
+            ]}
+            confirmText={strings.Ok}
+            confirmButtonColor={colors.darkBlue}
+            onConfirmPressed={() => {
+              setErrorVisible(false);
+            }}
+          />
+          <AwesomeAlert
+            show={isLoading}
+            closeOnTouchOutside={false}
+            showCancelButton={false}
+            showConfirmButton={false}
+            customView={
+              <Spinner
+                isVisible={true}
+                size={100}
+                type={'Bounce'}
+                color={colors.lightBlue}
+              />
+            }
+          />
+        </ImageBackground>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
