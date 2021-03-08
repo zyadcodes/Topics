@@ -1,5 +1,5 @@
 # Support
-To contact me for questions about the app, please reach out at any of the following below contact methods.
+To contact me for questions about the app, please reach out at any of the following below contact methods:
 - Email: zyadprofessional@gmail.com
 - Instagram: https://www.instagram.com/zyadcodes
 
