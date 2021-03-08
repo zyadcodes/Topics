@@ -51,7 +51,7 @@ const LogInScreen = ({navigation}) => {
     } else {
       setIsLoading(false);
       await sleep(500);
-      navigation.push('TopicsScreens');
+      navigation.push('TopicsScreens', {profileScreen: false});
     }
   };
 

@@ -14,10 +14,10 @@ import {screenHeight} from '../../config/dimensions';
 const Tab = createBottomTabNavigator();
 
 // Declares the functional component
-const TopicsScreensNav = () => {
+const TopicsScreensNav = ({navigation, route}) => {
   return (
     <Tab.Navigator
-      initialRouteName={'Explore'}
+      initialRouteName={route.params && route.params.profileScreen ? 'Profile' : 'Explore'}
       tabBar={({state, descriptors, navigation}) => {
         const focusedOptions =
           descriptors[state.routes[state.index].key].options;

@@ -7,7 +7,7 @@ import TopicScreenStyle from './TopicScreenStyle';
 import {Icon} from 'react-native-elements';
 import colors from '../../../config/colors';
 import Swiper from 'react-native-swiper';
-import {loadTopicMessages} from '../../../config/server';
+import {loadTopicMessages, logEvent} from '../../../config/server';
 import fontStyles from '../../../config/fontStyles';
 import strings from '../../../config/strings';
 import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhiteButton';
@@ -23,7 +23,7 @@ const TopicScreen = ({navigation, route}) => {
   const [updateScreen, setUpdateScreen] = useState(true);
   const [numFollowers, setNumFollowers] = useState(topic.followers);
   const [isFollowing, setIsFollowing] = useState(
-    userObject.followingTopics.includes(topic.topicID),
+    userObject && userObject.followingTopics.includes(topic.topicID),
   );
 
   // Renders the last month's worth of messages
@@ -51,9 +51,15 @@ const TopicScreen = ({navigation, route}) => {
 
   // This method is going to follow this specific topic
   const followTopicFunction = async () => {
-    setNumFollowers(numFollowers + 1);
-    setIsFollowing(true);
-    await followTopic(userObject.userID, topic.topicID);
+    // If there is no user signed in, will navigate to the profile screen
+    if (userObject === '') {
+      logEvent('FollowSignedOut');
+      navigation.push('TopicsScreens', {profileScreen: true});
+    } else {
+      setNumFollowers(numFollowers + 1);
+      setIsFollowing(true);
+      await followTopic(userObject.userID, topic.topicID);
+    }
   };
 
   // This method is going to unfollow the user from this specific topic
@@ -89,12 +95,21 @@ const TopicScreen = ({navigation, route}) => {
               style={[TopicScreenStyle.messageContainer]}
               key={eachMessage._id}>
               <Text
-                style={[
-                  fontStyles.white,
-                  fontStyles.biggerFontStyle,
-                  fontStyles.bold,
-                  {textAlign: 'center'},
-                ]}>
+                style={
+                  eachMessage.text.length > 40
+                    ? [
+                        fontStyles.white,
+                        fontStyles.bigFontStyle,
+                        fontStyles.bold,
+                        {textAlign: 'center'},
+                      ]
+                    : [
+                        fontStyles.white,
+                        fontStyles.biggerFontStyle,
+                        fontStyles.bold,
+                        {textAlign: 'center'},
+                      ]
+                }>
                 {eachMessage.text}
               </Text>
             </View>

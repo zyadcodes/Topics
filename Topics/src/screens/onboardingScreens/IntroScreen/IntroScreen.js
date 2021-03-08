@@ -50,7 +50,7 @@ const IntroScreen = ({navigation}) => {
               onPress={() => {
                 if (currentIndex === 2) {
                   logEvent('onboardingCompleted', {});
-                  navigation.push('TopicsScreens');
+                  navigation.push('TopicsScreens', {profileScreen: false});
                 } else {
                   scrollViewRef.current.scrollTo({
                     x: screenWidth * (currentIndex + 1),
@@ -107,7 +107,7 @@ const IntroScreen = ({navigation}) => {
               <TouchableOpacity
                 onPress={() => {
                   logEvent('onboardingSkipped', {});
-                  navigation.push('TopicsScreens');
+                  navigation.push('TopicsScreens', {profileScreen: false});
                 }}>
                 <Text
                   style={[

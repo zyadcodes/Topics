@@ -206,14 +206,13 @@ const ExploreScreen = ({navigation}) => {
                       onPress={() => {
                         if (userObject !== '') {
                           logEvent('TopicClicked', {loggedIn: true});
-                          navigation.push('TopicScreen', {
-                            topic: item,
-                            userObject: userObject,
-                          });
                         } else {
                           logEvent('TopicClicked', {loggedIn: false});
-                          navigation.navigate('Profile');
                         }
+                        navigation.push('TopicScreen', {
+                          topic: item,
+                          userObject: userObject,
+                        });
                       }}>
                       <Image
                         source={item.profileImage}

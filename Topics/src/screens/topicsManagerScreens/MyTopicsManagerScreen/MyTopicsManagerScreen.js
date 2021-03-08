@@ -75,7 +75,7 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
           <View style={MyTopicsManagerScreenStyle.blueSectionRow}>
             <TouchableOpacity
               style={MyTopicsManagerScreenStyle.backButtonContainer}
-              onPress={() => navigation.replace('TopicsScreens')}>
+              onPress={() => navigation.replace('TopicsScreens', {profileScreen: false})}>
               <Icon
                 type={'font-awesome'}
                 name={'angle-left'}
