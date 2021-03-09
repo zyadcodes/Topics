@@ -88,6 +88,11 @@ const TopicScreen = ({navigation, route}) => {
         loop={false}
         showsPagination={false}
         bounces={true}
+        onIndexChanged={(newIndex) => {
+          logEvent('TopicScroll', {
+            scrollToIndex: newIndex,
+          });
+        }}
         loadMinimalSize={5}>
         {messages.map((eachMessage) => {
           return (

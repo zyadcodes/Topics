@@ -22,7 +22,7 @@ import {screenHeight, screenWidth} from '../../../config/dimensions';
 import LogInScreenStyle from './LogInScreenStyle';
 import colors from '../../../config/colors';
 import Logo from '../../../assets/Logo.png';
-import {logIn} from '../../../config/server';
+import {logIn, subscribeToTopics} from '../../../config/server';
 import Lines from '../../../assets/Lines.png';
 
 // Creates the functional component
@@ -49,6 +49,7 @@ const LogInScreen = ({navigation}) => {
       await sleep(500);
       setIsErrorVisible(true);
     } else {
+      subscribeToTopics(userID);
       setIsLoading(false);
       await sleep(500);
       navigation.push('TopicsScreens', {profileScreen: false});

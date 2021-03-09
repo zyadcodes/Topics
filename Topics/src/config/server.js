@@ -116,6 +116,24 @@ const logIn = async (email, password) => {
   }
 };
 
+// This method will take in an array of topicIDs & will subscribe to all of the topics associated with them
+// This method will be called when the user is logged in
+const subscribeToTopics = async (userID) => {
+  const userObject = await getUserByID(userID);
+  const promises = userObject.followingTopics.map((eachTopicID) => messaging().subscribeToTopic(eachTopicID));
+  await Promise.all(promises);
+  return 0;
+}
+
+// This method will take in an array of topicIDs & will unsubscribe to all of the topics associated with them
+// This method will be called when the user signs out
+const unsubscribeFromTopics = async (userID) => {
+  const userObject = await getUserByID(userID);
+  const promises = userObject.followingTopics.map((eachTopicID) => messaging().unsubscribeFromTopic(eachTopicID));
+  await Promise.all(promises);
+  return 0;
+}
+
 // This method is going to send a user password reset email for users that forgot their passwords
 const resetPassword = async (email) => {
   logEvent('UserResetPassword', {});
@@ -346,6 +364,8 @@ export {
   resetPassword,
   getUserByID,
   createTopic,
+  subscribeToTopics,
+  unsubscribeFromTopics,
   followTopic,
   unfollowTopic,
   addUserDocListener,

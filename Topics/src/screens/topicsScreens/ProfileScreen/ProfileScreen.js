@@ -26,7 +26,12 @@ import CheckBox from '@react-native-community/checkbox';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
 import {sleep} from '../../../config/sleep';
-import {createUser, updateUserInfo, signOut} from '../../../config/server';
+import {
+  createUser,
+  updateUserInfo,
+  signOut,
+  unsubscribeFromTopics,
+} from '../../../config/server';
 import {getUserByID} from '../../../config/server';
 import auth from '@react-native-firebase/auth';
 import Lines from '../../../assets/Lines.png';
@@ -385,6 +390,7 @@ const ProfileScreen = ({navigation}) => {
                   setFormattedPhoneNumber('');
                   setPhoneNumber('');
                   await sleep(1500);
+                  unsubscribeFromTopics(userObject.userID);
                   signOut();
                   setIsLoading(false);
                 }}

@@ -64,6 +64,7 @@
 		834DC313A96F58A6B9D6BFF1 /* Pods-Topics-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Topics-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Topics-tvOS/Pods-Topics-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		84E09E03EEB49D55E250F35A /* Pods-Topics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Topics.debug.xcconfig"; path = "Target Support Files/Pods-Topics/Pods-Topics.debug.xcconfig"; sourceTree = "<group>"; };
 		9A3B433BDA7A65BB39985BD6 /* Pods-Topics-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Topics-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Topics-tvOSTests/Pods-Topics-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		9B1F25D025F7D932006B2EF1 /* Topics.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Topics.entitlements; path = Topics/Topics.entitlements; sourceTree = "<group>"; };
 		9B72AE2925F5636500B77A7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9BC7D78E25F2F66B0032A718 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
 		9BC7D78F25F2F66B0032A718 /* libswiftCoreMIDI.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftCoreMIDI.tbd; path = usr/lib/swift/libswiftCoreMIDI.tbd; sourceTree = SDKROOT; };
@@ -136,6 +137,7 @@
 		13B07FAE1A68108700A75B9A /* Topics */ = {
 			isa = PBXGroup;
 			children = (
+				9B1F25D025F7D932006B2EF1 /* Topics.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -762,7 +764,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CODE_SIGN_ENTITLEMENTS = Topics/Topics.entitlements;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7234TKH9GH;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Topics/Info.plist;
@@ -771,6 +774,7 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -790,7 +794,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CODE_SIGN_ENTITLEMENTS = Topics/Topics.entitlements;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7234TKH9GH;
 				INFOPLIST_FILE = Topics/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -798,6 +803,7 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
