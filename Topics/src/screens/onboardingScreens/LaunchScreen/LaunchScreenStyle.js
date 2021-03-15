@@ -1,5 +1,5 @@
 // Exports the stylesheet for the launch screen
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import colors from '../../../config/colors';
 import {screenHeight, screenWidth} from '../../../config/dimensions';
 

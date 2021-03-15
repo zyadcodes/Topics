@@ -3,9 +3,7 @@ import React from 'react';
 import {View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ExploreScreen from './ExploreScreen/ExploreScreen';
-import ProfileScreen from './ProfileScreen/ProfileScreen';
 import colors from '../../config/colors';
-import fontStyles from '../../config/fontStyles';
 import {Icon} from 'react-native-elements';
 import TopicsScreensNavStyle from './TopicScreensNavStyle';
 import {screenHeight} from '../../config/dimensions';
@@ -17,7 +15,9 @@ const Tab = createBottomTabNavigator();
 const TopicsScreensNav = ({navigation, route}) => {
   return (
     <Tab.Navigator
-      initialRouteName={route.params && route.params.profileScreen ? 'Profile' : 'Explore'}
+      initialRouteName={
+        route.params && route.params.profileScreen ? 'Profile' : 'Explore'
+      }
       tabBar={({state, descriptors, navigation}) => {
         const focusedOptions =
           descriptors[state.routes[state.index].key].options;
@@ -96,20 +96,6 @@ const TopicsScreensNav = ({navigation, route}) => {
           ),
         }}
         component={ExploreScreen}
-      />
-      <Tab.Screen
-        name={'Profile'}
-        options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon
-              name="user"
-              size={size * 0.6}
-              type="font-awesome"
-              color={color}
-            />
-          ),
-        }}
-        component={ProfileScreen}
       />
     </Tab.Navigator>
   );

@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ImageBackground,
+  Platform,
 } from 'react-native';
 import strings from '../../../config/strings';
 import OnboardingSS1 from '../../../assets/OnboardingSS1.png';
@@ -42,7 +43,7 @@ const IntroScreen = ({navigation}) => {
           <Image
             source={screenshot}
             style={IntroScreenStyle.imageStyle}
-            resizeMode={'cover'}
+            resizeMode={Platform.OS === 'android' ? 'contain' : 'cover'}
           />
 
           <View style={IntroScreenStyle.buttonContainer}>

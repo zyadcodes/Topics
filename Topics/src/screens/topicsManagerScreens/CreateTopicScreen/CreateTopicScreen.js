@@ -52,11 +52,11 @@ const CreateTopicScreen = ({navigation, route}) => {
         await createTopic(
           topicName.trim(),
           topicSubname.trim(),
-          userObject.userID,
+          userObject.deviceID,
         );
       }
 
-      const newUserObject = await getUserByID(userObject.userID);
+      const newUserObject = await getUserByID(userObject.deviceID);
       await sleep(500);
       setIsLoading(false);
       await sleep(500);

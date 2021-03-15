@@ -44,7 +44,8 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
 
   // Helper method for the useEffect method
   const setInitialUserState = async () => {
-    const newUserObject = await getUserByID(route.params.userObject.userID);
+    const newUserObject = await getUserByID(route.params.userObject.deviceID);
+    console.log(newUserObject);
     if (newUserObject.createdTopics.length === 0) {
       await sleep(500);
       setUserObject(newUserObject);
@@ -154,7 +155,7 @@ const MyTopicsManagerScreen = ({navigation, route}) => {
                     <TouchableOpacity
                       onPress={() => {
                         navigation.push('TopicManagerMessagesScreen', {
-                          userID: route.params.userObject.userID,
+                          deviceID: route.params.userObject.deviceID,
                           userObject,
                           topic: item,
                         });

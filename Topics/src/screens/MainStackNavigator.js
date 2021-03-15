@@ -3,8 +3,6 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import OnboardingStackNav from './onboardingScreens/OnboardingStackNav';
 import TopicsScreensNav from './topicsScreens/TopicsScreensNav';
-import LogInScreen from './topicsScreens/LogInScreen/LogInScreen';
-import ForgotPasswordScreen from './topicsScreens/ForgotPasswordScreen/ForgotPasswordScreen';
 import TopicsManagerOnboard from './topicsManagerScreens/TopicsManagerOnboard/TopicsManagerOnboard';
 import CreateTopicScreen from './topicsManagerScreens/CreateTopicScreen/CreateTopicScreen';
 import MyTopicsManagerScreen from './topicsManagerScreens/MyTopicsManagerScreen/MyTopicsManagerScreen';
@@ -25,12 +23,7 @@ const MainStackNavigator = ({isFirstAppLaunch}) => {
       screenOptions={{gestureEnabled: false}}>
       <Stack.Screen name={'OnboardingScreens'} component={OnboardingStackNav} />
       <Stack.Screen name={'TopicsScreens'} component={TopicsScreensNav} />
-      <Stack.Screen name={'LogInScreen'} component={LogInScreen} />
       <Stack.Screen name={'TopicScreen'} component={TopicScreen} />
-      <Stack.Screen
-        name={'ForgotPasswordScreen'}
-        component={ForgotPasswordScreen}
-      />
       <Stack.Screen
         name={'TopicsManageOnboard'}
         component={TopicsManagerOnboard}

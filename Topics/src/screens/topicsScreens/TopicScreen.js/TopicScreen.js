@@ -58,7 +58,7 @@ const TopicScreen = ({navigation, route}) => {
     } else {
       setNumFollowers(numFollowers + 1);
       setIsFollowing(true);
-      await followTopic(userObject.userID, topic.topicID);
+      await followTopic(userObject.deviceID, topic.topicID);
     }
   };
 
@@ -66,7 +66,7 @@ const TopicScreen = ({navigation, route}) => {
   const unfollowTopicFunction = async () => {
     setNumFollowers(numFollowers - 1);
     setIsFollowing(false);
-    await unfollowTopic(userObject.userID, topic.topicID);
+    await unfollowTopic(userObject.deviceID, topic.topicID);
   };
 
   // Renders the UI

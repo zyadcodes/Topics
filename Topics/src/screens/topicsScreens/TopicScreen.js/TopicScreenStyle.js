@@ -48,9 +48,9 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.white,
-    height: screenHeight * 0.075,
-    width: screenHeight * 0.075,
-    borderRadius: screenHeight * 0.0375,
+    height: screenHeight * 0.065,
+    width: screenHeight * 0.065,
+    borderRadius: screenHeight * 0.0325,
     zIndex: 1,
     shadowColor: colors.black,
     shadowOffset: {

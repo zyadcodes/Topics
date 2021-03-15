@@ -262,6 +262,9 @@ PODS:
     - FirebaseAnalytics (= 7.6.0)
   - Firebase/CoreOnly (7.6.0):
     - FirebaseCore (= 7.6.0)
+  - Firebase/DynamicLinks (7.6.0):
+    - Firebase/CoreOnly
+    - FirebaseDynamicLinks (~> 7.6.0)
   - Firebase/Firestore (7.6.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 7.6.0)
@@ -297,6 +300,8 @@ PODS:
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
     - nanopb (~> 2.30907.0)
+  - FirebaseDynamicLinks (7.6.0):
+    - FirebaseCore (~> 7.0)
   - FirebaseFirestore (7.6.0):
     - abseil/algorithm (= 0.20200225.0)
     - abseil/base (= 0.20200225.0)
@@ -706,6 +711,8 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
+  - RNDeviceInfo (8.0.5):
+    - React-Core
   - RNFBAnalytics (10.8.0):
     - Firebase/Analytics (~> 7.6.0)
     - React-Core
@@ -715,6 +722,11 @@ PODS:
     - React-Core
   - RNFBAuth (10.8.0):
     - Firebase/Auth (~> 7.6.0)
+    - React-Core
+    - RNFBApp
+  - RNFBDynamicLinks (11.0.0):
+    - Firebase/DynamicLinks (~> 7.6.0)
+    - GoogleUtilities/AppDelegateSwizzler
     - React-Core
     - RNFBApp
   - RNFBFirestore (10.8.0):
@@ -815,9 +827,11 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
+  - "RNFBDynamicLinks (from `../node_modules/@react-native-firebase/dynamic-links`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBFunctions (from `../node_modules/@react-native-firebase/functions`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
@@ -846,6 +860,7 @@ SPEC REPOS:
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
+    - FirebaseDynamicLinks
     - FirebaseFirestore
     - FirebaseFunctions
     - FirebaseInstallations
@@ -945,12 +960,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/checkbox"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFBAnalytics:
     :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
     :path: "../node_modules/@react-native-firebase/auth"
+  RNFBDynamicLinks:
+    :path: "../node_modules/@react-native-firebase/dynamic-links"
   RNFBFirestore:
     :path: "../node_modules/@react-native-firebase/firestore"
   RNFBFunctions:
@@ -994,6 +1013,7 @@ SPEC CHECKSUMS:
   FirebaseAuth: 0a1df88dc32569db509e6269c3e4bf2a168e8ae8
   FirebaseCore: 0a43b7f1c5b36f3358cd703011ca4c7e0df55870
   FirebaseCoreDiagnostics: ee1184d51da3293335b83355aad20f537acc24cf
+  FirebaseDynamicLinks: 1ba27bcead0c55cb3fa48db7e1ca75005f8123d0
   FirebaseFirestore: b860346d5095c741528efac94995bab39275d0bf
   FirebaseFunctions: 03e30a9506b04786917e0de6d8c85cdc260fb2c8
   FirebaseInstallations: 6e4e77396559bc2ae0504823837ed737b1c7e47f
@@ -1048,9 +1068,11 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 0701cb7395f06d744184641241888a0eec0e2f2a
   RNCCheckbox: 500919ac122273ea8eef93dae01431091968c14a
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
+  RNDeviceInfo: e92b781f4af9d0faebe00695ffe5ce5b7671ec0f
   RNFBAnalytics: 90d32a12ca53f8cd6246030b7f1c12615c148f1f
   RNFBApp: 97b618641633d6d23187a9d0537c3893482c483f
   RNFBAuth: 7c6c9e7289d98709cd5d1333d829925f81823375
+  RNFBDynamicLinks: 60cee4aa642495d4e1fcba95dd12a3d1073ef42e
   RNFBFirestore: 859fc78b3dc89ef10e430b39cd9f14e07ef4e158
   RNFBFunctions: 5309ef8d560a841ab8a298e694290bf8a157306e
   RNFBMessaging: 1823217d31e942531cc3f51fb5367dcbc69c1e10

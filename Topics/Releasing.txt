@@ -1,5 +1,5 @@
 To release on iOS:
-appcenter codepush release-react -a zyad-professional/Of-the-Day-iOS -d Production --plist-file ios/Topics/Info.plist
+appcenter codepush release-react -a zyad-professional/Of-the-Day-iOS -d Production -t 1.0.2
 
 To release on Android:
-appcenter codepush release-react -a zyad-professional/Of-the-Day-Android -d Production
+appcenter codepush release-react -a zyad-professional/Of-the-Day-Android -d Production -t 1.0.0

@@ -16,7 +16,7 @@ import TopicsWhiteButton from '../../../components/TopicsWhiteButton/TopicsWhite
 // Creates the component
 const TopicManagerMessagesScreen = ({navigation, route}) => {
   // Fetches the route params
-  const {userID, topic, userObject} = route.params;
+  const {deviceID, topic, userObject} = route.params;
 
   // Contains the current state of the messages
   const [messages, setMessages] = useState([]);
@@ -159,7 +159,7 @@ const TopicManagerMessagesScreen = ({navigation, route}) => {
         textInputStyle={[fontStyles.black, fontStyles.subFontStyle]}
         maxComposerHeight={screenHeight * 0.01}
         user={{
-          _id: userID,
+          _id: deviceID,
         }}
       />
     </View>

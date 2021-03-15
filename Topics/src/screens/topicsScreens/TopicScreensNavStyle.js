@@ -9,7 +9,7 @@ export default StyleSheet.create({
     borderRadius: screenHeight * 0.05,
     position: 'absolute',
     height: screenHeight * 0.1,
-    width: screenHeight * 0.2,
+    width: screenHeight * 0.1,
     shadowColor: colors.black,
     shadowOffset: {
       height: 3,

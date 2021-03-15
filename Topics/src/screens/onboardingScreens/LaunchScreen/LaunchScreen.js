@@ -16,7 +16,7 @@ const LaunchScreen = ({navigation}) => {
     x: 0,
     y: screenHeight * 0.6,
   });
-  let currentImageWidth = new Animated.Value(screenWidth * 0.1);
+  let currentImageHeight = new Animated.Value(screenHeight * 0.05);
   let currentOpacity = new Animated.Value(0);
 
   // Starts the animation that will be rendered when the screen is launched
@@ -28,14 +28,14 @@ const LaunchScreen = ({navigation}) => {
       delay: 200,
       toValue: {
         x: 0,
-        y: screenHeight * 0.1,
+        y: screenHeight * 0.05,
       },
       useNativeDriver: false,
     }).start();
 
     // Starts the animation for the image zoom
-    Animated.timing(currentImageWidth, {
-      toValue: screenWidth * 0.5,
+    Animated.timing(currentImageHeight, {
+      toValue: screenHeight * 0.2,
       duration: 1200,
       delay: 200,
       useNativeDriver: false,
@@ -53,10 +53,10 @@ const LaunchScreen = ({navigation}) => {
   // Renders the component
   return (
     <ImageBackground style={LaunchScreenStyle.container} source={Lines}>
-      <Animated.View style={currentImagePos.getLayout()}>
+      <Animated.View style={[currentImagePos.getLayout()]}>
         <Animated.Image
           source={Logo}
-          style={[{width: currentImageWidth}, LaunchScreenStyle.logoStyle]}
+          style={[{height: currentImageHeight}, LaunchScreenStyle.logoStyle]}
           resizeMode={'contain'}
         />
       </Animated.View>

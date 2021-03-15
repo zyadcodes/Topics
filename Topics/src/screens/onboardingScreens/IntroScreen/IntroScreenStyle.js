@@ -1,5 +1,5 @@
 // This is going to contain the StyleSheet for the intro screen
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {screenHeight, screenWidth} from '../../../config/dimensions';
 import colors from '../../../config/colors';
 
@@ -27,7 +27,8 @@ export default StyleSheet.create({
     shadowOpacity: 0.5,
   },
   imageStyle: {
-    height: screenHeight * 0.55,
+    height:
+      Platform.OS === 'android' ? screenHeight * 0.45 : screenHeight * 0.55,
     maxWidth: screenWidth,
   },
   buttonContainer: {

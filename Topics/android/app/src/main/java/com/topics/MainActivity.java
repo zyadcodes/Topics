@@ -1,4 +1,4 @@
-package com.topics;
+package com.topics.topics;
 
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;

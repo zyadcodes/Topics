@@ -18,127 +18,29 @@ const profileImages = {
 };
 
 // This function is going to take in some information about a user and is going to send their information
-// up to Firebase Auth and store it in Firestore
-const createUser = async (
-  email,
-  phoneNumber,
-  formattedPhoneNumber,
-  countryCode,
-  password,
-) => {
-  try {
-    logEvent('UserCreateInitiated', {});
-    // Creates the auth user
-    const user = await auth().createUserWithEmailAndPassword(email, password);
-    // Adds the user data (without password) to Firestore
-    const userID = user.user.uid;
-    await firestore().collection('Users').doc(userID).set({
-      userID,
-      email,
-      formattedPhoneNumber,
-      phoneNumber,
-      countryCode,
-      createdTopics: [],
-      followingTopics: [],
-    });
+// up to Firestore
+const createUser = async (deviceID) => {
+  logEvent('UserCreateInitiated', {});
+  const doc = await firestore().collection('Users').doc(deviceID).set({
+    deviceID,
+    createdTopics: [],
+    followingTopics: [],
+  });
 
-    await auth().signInWithEmailAndPassword(email, password);
-    logEvent('UserCreateSuccess', {});
-    return 0;
-  } catch (error) {
-    if (
-      error.message ===
-      '[auth/email-already-in-use] The email address is already in use by another account.'
-    ) {
-      return 1;
-    } else if (
-      error.message ===
-      '[auth/invalid-email] The email address is badly formatted.'
-    ) {
-      return 2;
-    }
-  }
+  logEvent('UserCreateSuccess', {});
+  return 0;
 };
 
-// This function is going to update a user's information in the database by updating it in Auth as well as updating it
-// in Cloud Firestore
-const updateUserInfo = async (
-  userID,
-  oldEmail,
-  newEmail,
-  formattedPhoneNumber,
-  phoneNumber,
-  password,
-) => {
-  try {
-    logEvent('UserUpdateInitiated', {});
-    await auth().signInWithEmailAndPassword(oldEmail, password);
-    await auth().currentUser.updateEmail(newEmail);
-    await firestore()
-      .collection('Users')
-      .doc(userID)
-      .update({email: newEmail, formattedPhoneNumber, phoneNumber});
+// Checks if the user exists with the deviceID that is given in. If the user does exist,
+// it will return the user's object
+const doesUserExist = async (deviceID) => {
+  const userDoc = await firestore().collection('Users').doc(deviceID).get();
 
-    const userObject = (
-      await firestore().collection('Users').doc(userID).get()
-    ).data();
-    logEvent('UserUpdateSuccess', {});
-    return userObject;
-  } catch (error) {
-    if (
-      error.message ===
-      '[auth/email-already-in-use] The email address is already in use by another account.'
-    ) {
-      return 1;
-    } else if (
-      error.message ===
-      '[auth/invalid-email] The email address is badly formatted.'
-    ) {
-      return 2;
-    } else {
-      return -1;
-    }
+  if (userDoc.exists) {
+    return userDoc.data();
+  } else {
+    return false;
   }
-};
-
-// This method is going to attempt to log the user into their account and return an error if incorrect info
-const logIn = async (email, password) => {
-  try {
-    logEvent('UserLoginInitiated', {});
-    const user = await auth().signInWithEmailAndPassword(email, password);
-    AppEventsLogger.setUserData({
-      email,
-    });
-    logEvent('UserLoginFailed', {});
-    return user.user.uid;
-  } catch (error) {
-    return -1;
-  }
-};
-
-// This method will take in an array of topicIDs & will subscribe to all of the topics associated with them
-// This method will be called when the user is logged in
-const subscribeToTopics = async (userID) => {
-  const userObject = await getUserByID(userID);
-  const promises = userObject.followingTopics.map((eachTopicID) => messaging().subscribeToTopic(eachTopicID));
-  await Promise.all(promises);
-  return 0;
-}
-
-// This method will take in an array of topicIDs & will unsubscribe to all of the topics associated with them
-// This method will be called when the user signs out
-const unsubscribeFromTopics = async (userID) => {
-  const userObject = await getUserByID(userID);
-  const promises = userObject.followingTopics.map((eachTopicID) => messaging().unsubscribeFromTopic(eachTopicID));
-  await Promise.all(promises);
-  return 0;
-}
-
-// This method is going to send a user password reset email for users that forgot their passwords
-const resetPassword = async (email) => {
-  logEvent('UserResetPassword', {});
-  await auth().sendPasswordResetEmail(email);
-  return 0;
 };
 
 // This method is going to fetch a user object from firestore based on user id
@@ -154,14 +56,14 @@ const getUserByID = async (id) => {
 
 // This method is going to take in topic information and upload it to both Firestore
 // and Storage. It will use the topicID to link the storage with the Firestore together
-const createTopic = async (topicName, topicSubname, userID) => {
+const createTopic = async (topicName, topicSubname, deviceID) => {
   logEvent('CreateTopicInitiated', {});
 
   // Creates the document topic
   const topic = await firestore().collection('Topics').add({
     topicName,
     topicSubname,
-    userID,
+    deviceID,
     followers: 0,
     mostRecentMessage: '',
   });
@@ -169,7 +71,7 @@ const createTopic = async (topicName, topicSubname, userID) => {
   // Creates promises to speed up the process
   const firestorePromise = firestore()
     .collection('Users')
-    .doc(userID)
+    .doc(deviceID)
     .update({
       createdTopics: firestore.FieldValue.arrayUnion(topic.id),
     });
@@ -223,13 +125,13 @@ const getTopicByID = async (topicID) => {
 
 // This method is going to make a user follow a specific topic by updating firestore as well as subscribing the user
 // to the topic's Cloud Messaging Topic
-const followTopic = async (userID, topicID) => {
+const followTopic = async (deviceID, topicID) => {
   logEvent('FollowTopicInitiated', {});
   // Constructs an array of promises and executes them all
   await Promise.all([
     firestore()
       .collection('Users')
-      .doc(userID)
+      .doc(deviceID)
       .update({
         followingTopics: firestore.FieldValue.arrayUnion(topicID),
       }),
@@ -247,13 +149,13 @@ const followTopic = async (userID, topicID) => {
 
 // This method is going to make a user unfollow a specific topic by updating firestore as well as unsubscribing the user
 // to the topic's Cloud Messaging Topic
-const unfollowTopic = async (userID, topicID) => {
+const unfollowTopic = async (deviceID, topicID) => {
   logEvent('UnfollowTopicInitiated', {});
   // Constructs an array of promises and executes them all
   await Promise.all([
     firestore()
       .collection('Users')
-      .doc(userID)
+      .doc(deviceID)
       .update({
         followingTopics: firestore.FieldValue.arrayRemove(topicID),
       }),
@@ -295,10 +197,10 @@ const sendMessage = async (topicSubname, topicID, message) => {
 };
 
 // Adds a listener to a specific user document to detect changes
-const addUserDocListener = async (userID, functionToExec) => {
+const addUserDocListener = async (deviceID, functionToExec) => {
   const listener = firestore()
     .collection('Users')
-    .doc(userID)
+    .doc(deviceID)
     .onSnapshot((docSnapshot) => {
       functionToExec(docSnapshot);
     });
@@ -341,14 +243,6 @@ const getAllTopics = async () => {
   });
 };
 
-// This method is going to sign the current user out
-const signOut = async () => {
-  logEvent('UserSignOut', {});
-  await auth().signOut();
-
-  return 0;
-};
-
 // this method will log a custom event to Firebase Analytics as well as Facebook Analytics
 const logEvent = (eventName, params) => {
   analytics().logEvent(eventName, params);
@@ -358,14 +252,9 @@ const logEvent = (eventName, params) => {
 // Exports all of the functions
 export {
   createUser,
-  updateUserInfo,
-  logIn,
   saveTopic,
-  resetPassword,
   getUserByID,
   createTopic,
-  subscribeToTopics,
-  unsubscribeFromTopics,
   followTopic,
   unfollowTopic,
   addUserDocListener,
@@ -373,6 +262,6 @@ export {
   getAllTopics,
   logEvent,
   getTopicByID,
+  doesUserExist,
   sendMessage,
-  signOut,
 };

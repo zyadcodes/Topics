@@ -20,11 +20,13 @@ import {Icon} from 'react-native-elements';
 import fontStyles from '../../../config/fontStyles';
 import {screenHeight, screenWidth} from '../../../config/dimensions';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {
-  getUserByID,
   getAllTopics,
   addUserDocListener,
   logEvent,
+  createUser,
+  doesUserExist,
 } from '../../../config/server';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Spinner from 'react-native-spinkit';
@@ -32,6 +34,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {sleep} from '../../../config/sleep';
 import Lines from '../../../assets/Lines.png';
 import * as Animatable from 'react-native-animatable';
+import DeviceInfo from 'react-native-device-info';
 
 // Creates the functional component
 const ExploreScreen = ({navigation}) => {
@@ -40,7 +43,6 @@ const ExploreScreen = ({navigation}) => {
   // Stores the state of the searched item
   const [userObject, setUserObject] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [isReloading, setIsReloading] = useState(false);
   const [topics, setAllTopics] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -48,36 +50,59 @@ const ExploreScreen = ({navigation}) => {
 
   // This is going to perform the logic for whether or not to show the intro onboarding screens
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
+    fetchData();
   }, []);
 
   // The reference for the searchBarRef
   const searchBarRef = useRef();
 
-  // Checks if a user is logged in
-  const onAuthStateChanged = async (user) => {
-    const allTopicsArray = await getAllTopics();
-    setAllTopics(allTopicsArray);
-    if (!user) {
-      setUserObject('');
-      await sleep(500);
-      setIsLoading(false);
-    } else {
-      logEvent('LoggedInAppOpen', {});
-      fetchUser(user.uid);
-    }
-  };
+  // This is going to perform all of the necessary logic to fetch a user from Firestore. It will
+  // also create the user
+  const fetchData = async () => {
+    // Fetches all of the necessary data from Firestore
+    const deviceID = DeviceInfo.getUniqueId();
+    const resultOfPromises = await Promise.all([
+      doesUserExist(deviceID),
+      getAllTopics(),
+    ]);
+    setAllTopics(resultOfPromises[1]);
 
-  // Fetches the sets the userID
-  const fetchUser = async (userID) => {
-    const newUserObject = await getUserByID(userID);
-    setUserObject(newUserObject);
-    addUserDocListener(newUserObject.userID, async (docSnapshot) => {
+    // If no user exists, creates one. If a user is logged in, it is going to create a new doc
+    // in Firebase with that user's information
+    if (resultOfPromises[0] === false) {
+      if (auth().currentUser) {
+        const userID = auth().currentUser.uid;
+        const currentUserDocument = (
+          await firestore().collection('Users').doc(userID).get()
+        ).data();
+        await firestore().collection('Users').doc(deviceID).set({
+          deviceID,
+          createdTopics: currentUserDocument.createdTopics,
+          followingTopics: currentUserDocument.followingTopics,
+        });
+        await firestore().collection('Users').doc(userID).delete();
+        await auth().signOut();
+        setUserObject({
+          deviceID,
+          createdTopics: currentUserDocument.createdTopics,
+          followingTopics: currentUserDocument.followingTopics,
+        });
+      } else {
+        await createUser(deviceID);
+        setUserObject({deviceID, createdTopics: [], followingTopics: []});
+      }
+    } else {
+      setUserObject(resultOfPromises[0]);
+    }
+
+    // Adds a listener to the user's object
+    addUserDocListener(deviceID, async (docSnapshot) => {
       const allTopics = await getAllTopics();
       setAllTopics(allTopics);
       setUserObject(docSnapshot._data);
     });
+
+    // Removes the loading spinner
     await sleep(500);
     setIsLoading(false);
   };
@@ -141,7 +166,7 @@ const ExploreScreen = ({navigation}) => {
             }}
           />
           <View style={ExploreScreenStyle.topRow}>
-            {userObject.userID === 'ObXHfZoWaIZRrbwp5mu9SeCgTvf1' ? (
+            {userObject.deviceID === '9140B096-638D-4BF9-BA28-2C09E60675D3' ? (
               <TouchableOpacity
                 onPress={async () => {
                   logEvent('OTDManagerClicked', {});
@@ -172,7 +197,7 @@ const ExploreScreen = ({navigation}) => {
                   {strings.OTDManager}
                 </Text>
               </TouchableOpacity>
-            ) : (
+           ) : (
               <View />
             )}
             <TouchableOpacity
@@ -186,7 +211,7 @@ const ExploreScreen = ({navigation}) => {
                 name={'search'}
                 color={colors.white}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> 
           </View>
           <View style={ExploreScreenStyle.topicsListContainer}>
             <FlatList
@@ -225,20 +250,6 @@ const ExploreScreen = ({navigation}) => {
               }}
             />
           </View>
-          <AwesomeAlert
-            show={isReloading}
-            closeOnTouchOutside={false}
-            showCancelButton={false}
-            showConfirmButton={false}
-            customView={
-              <Spinner
-                isVisible={true}
-                size={100}
-                type={'Bounce'}
-                color={colors.lightBlue}
-              />
-            }
-          />
         </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
