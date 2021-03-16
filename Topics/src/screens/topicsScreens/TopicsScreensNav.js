@@ -27,60 +27,7 @@ const TopicsScreensNav = ({navigation, route}) => {
         }
 
         return (
-          <View style={TopicsScreensNavStyle.tabBarStyle}>
-            {state.routes.map((route, index) => {
-              const {options} = descriptors[route.key];
-              const label =
-                options.tabBarLabel !== undefined
-                  ? options.tabBarLabel
-                  : options.title !== undefined
-                  ? options.title
-                  : route.name;
-
-              const isFocused = state.index === index;
-
-              const onPress = () => {
-                const event = navigation.emit({
-                  type: 'tabPress',
-                  target: route.key,
-                  canPreventDefault: true,
-                });
-
-                if (!isFocused && !event.defaultPrevented) {
-                  navigation.navigate(route.name);
-                }
-              };
-
-              const onLongPress = () => {
-                navigation.emit({
-                  type: 'tabLongPress',
-                  target: route.key,
-                });
-              };
-
-              return (
-                <TouchableOpacity
-                  key={index}
-                  accessibilityRole="button"
-                  accessibilityState={isFocused ? {selected: true} : {}}
-                  accessibilityLabel={options.tabBarAccessibilityLabel}
-                  testID={options.tabBarTestID}
-                  onPress={onPress}
-                  onLongPress={onLongPress}
-                  style={
-                    isFocused
-                      ? TopicsScreensNavStyle.touchableCircleSelected
-                      : TopicsScreensNavStyle.touchableCircleUnselected
-                  }>
-                  {options.tabBarIcon({
-                    focused: isFocused,
-                    color: isFocused ? colors.white : colors.lightGray,
-                    size: screenHeight * 0.1,
-                  })}
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+          <View />
         );
       }}>
       <Tab.Screen
